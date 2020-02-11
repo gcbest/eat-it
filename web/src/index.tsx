@@ -10,6 +10,7 @@ import { onError } from "apollo-link-error";
 import { ApolloLink, Observable } from "apollo-link";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import jwtDecode from "jwt-decode";
+import './assets/css/bootswatch.min.css';
 
 const cache = new InMemoryCache({});
 

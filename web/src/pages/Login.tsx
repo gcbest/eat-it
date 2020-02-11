@@ -32,15 +32,14 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
               }
             });
           }
-        });
-
+        }).catch(err => {return console.error(err)});
+        
         console.log(response);
-
         if (response && response.data) {
           setAccessToken(response.data.login.accessToken);
+          history.push("/");
         }
 
-        history.push("/");
       }}
     >
       <div>

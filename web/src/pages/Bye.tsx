@@ -14,7 +14,7 @@ export const Bye: React.FC<Props> = () => {
 
   if (error) {
     console.log(error);
-    return <div>err</div>;
+    return <div>error</div>;
   }
 
   if (!data) {
