@@ -35,7 +35,7 @@ export const Header: React.FC<Props> = () => {
 
   return (
     <header>
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="primary" expand="lg">
         <Navbar.Brand as={Link} to="/">
           <img src="" alt=""/>
             Eat It!

@@ -3,7 +3,7 @@ import "reflect-metadata";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { UserResolver } from "./UserResolver";
+import { UserResolver } from "./resolvers/UserResolver";
 import { createConnection } from "typeorm";
 import cookieParser from "cookie-parser";
 import { verify } from "jsonwebtoken";
@@ -18,7 +18,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
 
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: process.env.PORT || "http://localhost:3000",
       credentials: true
     })
   );
@@ -67,6 +67,6 @@ import { createAccessToken, createRefreshToken } from "./auth";
   apolloServer.applyMiddleware({ app, cors: false });
 
   app.listen(PORT, () => {
-    console.log("express server started");
+    console.log(`express server started on port: ${PORT}`);
   });
 })();
