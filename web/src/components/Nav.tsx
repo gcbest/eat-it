@@ -6,23 +6,23 @@ import { setAccessToken } from "../accessToken";
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 
 
-const [logout, { client }] = useLogoutMutation();
-const handleLogout = async (eventKey: string) => {
-  if (eventKey !== "1") return;
-  await logout();
-  setAccessToken("");
-  await client!.resetStore();
-};
 
 const LoginLink = () => (<Nav.Link as={Link} to="/login">Login</Nav.Link>)
 const LogoutLink = () => (<Nav.Link eventKey="1" as={Link} to="/login">Logout</Nav.Link>)
 const RegisterLink = () => (<Nav.Link as={Link} to="/register">Register</Nav.Link>)
 
-
 interface Props { }
 
 export const NavComponent: React.FC<Props> = () => {
+  const [logout, { client }] = useLogoutMutation();
   const { data, loading } = useMeQuery();
+
+  const handleLogout = async (eventKey: string) => {
+    if (eventKey !== "1") return;
+    await logout();
+    setAccessToken("");
+    await client!.resetStore();
+  };
 
   return (
     <Fragment>

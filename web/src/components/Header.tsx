@@ -1,11 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useMeQuery } from "./generated/graphql";
-import { setAccessToken } from "./accessToken";
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import Nav from "./Nav";
+import { useMeQuery } from "../generated/graphql";
 
-interface Props {}
+interface Props { }
 
 export const Header: React.FC<Props> = () => {
   const { data, loading } = useMeQuery();
@@ -20,12 +17,12 @@ export const Header: React.FC<Props> = () => {
     body = <div>not logged in</div>;
   }
 
-  
+
 
 
   return (
     <header>
-      
+      <Nav />
       {body}
     </header>
   );

@@ -55,7 +55,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
     return res.send({ ok: true, accessToken: createAccessToken(user) });
   });
 
-  await createConnection();
+  await createConnection().catch(err => { console.error(err.message) });
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({

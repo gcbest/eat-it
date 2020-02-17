@@ -4,7 +4,7 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Bye } from "./pages/Bye";
-import { Header } from "./Header";
+import { Header } from "./components/Header";
 
 export const Routes: React.FC = () => {
   return (
