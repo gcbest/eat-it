@@ -2,7 +2,7 @@ import React from "react";
 import Nav from "./Nav";
 import { useMeQuery } from "../generated/graphql";
 
-interface Props { }
+interface Props { };
 
 export const Header: React.FC<Props> = () => {
   const { data, loading } = useMeQuery();
@@ -16,9 +16,6 @@ export const Header: React.FC<Props> = () => {
   } else {
     body = <div>not logged in</div>;
   }
-
-
-
 
   return (
     <header>

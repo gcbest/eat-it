@@ -37,7 +37,7 @@ export const NavComponent: React.FC<Props> = () => {
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             {!loading && data && data.me ? null : <RegisterLink />}
             {!loading && data && data.me ? <LogoutLink /> : <LoginLink />}
-            <Nav.Link as={Link} to="/bye">Bye</Nav.Link>
+            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
