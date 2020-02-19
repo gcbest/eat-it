@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import { RouteComponentProps, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { useRegisterMutation } from "../generated/graphql";
 import useForm from 'lib/useForm';
 
@@ -16,7 +16,18 @@ export const RegistrationForm: React.FC = () => {
 
     const confirmPasswordsMatch = (): boolean => {
         const { password, confirmPassword } = inputs;
-        return password === confirmPassword;
+        if (password.length > 0 && confirmPassword.length > 0)
+            return password === confirmPassword;
+        else
+            return true;
+    }
+
+    const validateForm = (): boolean => {
+        const { password, confirmPassword } = inputs;
+        if (password.length > 0 && confirmPassword.length > 0)
+            return true;
+        else
+            return false;
     }
 
     const handleSubmit = async (e: any) => {
@@ -36,9 +47,9 @@ export const RegistrationForm: React.FC = () => {
         });
         console.log(response);
         resetForm();
-        // history.push('/');
         return <Redirect to="/" push={true} />
     }
+
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -50,6 +61,11 @@ export const RegistrationForm: React.FC = () => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="password" placeholder="*********" value={inputs.password} onChange={handleChange} />
             </Form.Group>
+            {
+                (!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)
+
+            }
+
             <Form.Group controlId="exampleForm.ControlInput1">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control type="password" name="confirmPassword" placeholder="*********" value={inputs.confirmPassword} onChange={handleChange} />
