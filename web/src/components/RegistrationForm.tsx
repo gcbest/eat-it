@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -8,32 +8,29 @@ import useForm from 'lib/useForm';
 
 
 export const RegistrationForm: React.FC = () => {
-    const { inputs, handleChange, resetForm } = useForm({
+    const { inputs, handleChange, resetForm, isValid, confirmPasswordsMatch } = useForm({
         password: '',
         confirmPassword: ''
     });
+    const [showCompleteFormAlert, setShowCompleteFormAlert] = useState(false)
     const [register] = useRegisterMutation();
 
-    const confirmPasswordsMatch = (): boolean => {
-        const { password, confirmPassword } = inputs;
-        if (password.length > 0 && confirmPassword.length > 0)
-            return password === confirmPassword;
-        else
-            return true;
-    }
+    // const handleSubmit = event => {
+    //     const form = event.currentTarget;
+    //     if (form.checkValidity() === false) {
+    //       event.preventDefault();
+    //       event.stopPropagation();
+    //     }
 
-    const validateForm = (): boolean => {
-        const { password, confirmPassword } = inputs;
-        if (password.length > 0 && confirmPassword.length > 0)
-            return true;
-        else
-            return false;
-    }
+    //     setValidated(true);
+    //   };
+
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        if (!confirmPasswordsMatch()) {
-            alert('passwords do not match!');
+        if (!isValid()) {
+            setShowCompleteFormAlert(true);
+            setTimeout(() => setShowCompleteFormAlert(false), 2500)
             return;
         }
 
@@ -61,11 +58,7 @@ export const RegistrationForm: React.FC = () => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="password" placeholder="*********" value={inputs.password} onChange={handleChange} />
             </Form.Group>
-            {
-                (!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)
-
-            }
-
+            {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)}
             <Form.Group controlId="exampleForm.ControlInput1">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control type="password" name="confirmPassword" placeholder="*********" value={inputs.confirmPassword} onChange={handleChange} />
@@ -94,8 +87,9 @@ export const RegistrationForm: React.FC = () => {
                 <Form.Label>Example textarea</Form.Label>
                 <Form.Control as="textarea" rows="3" />
             </Form.Group>
-            <Button variant="secondary" type="submit">Submit</Button>
-
+            {(showCompleteFormAlert && <Alert variant='warning'>Please answer all questions</Alert>)}
+            {/* {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)} */}
+            <Button variant="secondary" type="submit" disabled={showCompleteFormAlert || !confirmPasswordsMatch()} >Submit</Button>
         </Form>
     )
 }
