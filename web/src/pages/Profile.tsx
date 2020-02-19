@@ -1,14 +1,11 @@
 import React from "react";
 import { useByeQuery } from "../generated/graphql";
-import { Redirect } from 'react-router-dom'
+import { Redirect, RouteComponentProps } from 'react-router-dom'
 
-
-interface Props { }
-
-export const Profile: React.FC<Props> = () => {
+export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   // TODO: createProfileQuery
   const { data, loading, error } = useByeQuery({
-    fetchPolicy: "network-only"
+    fetchPolicy: "network-only" // TODO switch from network only in production
   });
 
   if (loading)
@@ -17,7 +14,7 @@ export const Profile: React.FC<Props> = () => {
 
   // if (error && error.name === 'userNotFound') {
   if (error) {
-    return <Redirect to="/register" push={true} />
+    history.push('/register')
   }
 
   if (error) {
