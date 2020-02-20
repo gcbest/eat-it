@@ -6,10 +6,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-export const Register: React.FC<RouteComponentProps> = ({ history }) => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [register] = useRegisterMutation();
+// export const Register: React.FC<RouteComponentProps> = ({ history }) => {
+export const Register: React.FC = () => {
 
   return (
     <Container>

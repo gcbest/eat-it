@@ -38,6 +38,8 @@ export type MutationLoginArgs = {
 
 
 export type MutationRegisterArgs = {
+  diets: Scalars['String'],
+  exerciseLevel: Scalars['Float'],
   password: Scalars['String'],
   email: Scalars['String']
 };
@@ -48,6 +50,14 @@ export type Query = {
   bye: Scalars['String'],
   users: Array<User>,
   me?: Maybe<User>,
+};
+
+export type Recipe = {
+   __typename?: 'Recipe',
+  id: Scalars['Int'],
+  name: Scalars['String'],
+  url: Scalars['String'],
+  image_url: Scalars['String'],
 };
 
 export type User = {
@@ -110,7 +120,9 @@ export type MeQuery = (
 
 export type RegisterMutationVariables = {
   email: Scalars['String'],
-  password: Scalars['String']
+  password: Scalars['String'],
+  exerciseLevel: Scalars['Float'],
+  diets: Scalars['String']
 };
 
 
@@ -211,8 +223,8 @@ export const MeDocument = gql`
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $password: String!) {
-  register(email: $email, password: $password)
+    mutation Register($email: String!, $password: String!, $exerciseLevel: Float!, $diets: String!) {
+  register(email: $email, password: $password, exerciseLevel: $exerciseLevel, diets: $diets)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;

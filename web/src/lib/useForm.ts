@@ -16,7 +16,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
             const selectedOptions: string[] = Array.from(e.target.selectedOptions).map((opt: any) => opt.value);
             updateInputs({
                 ...inputs,
-                [e.target.name]: [...selectedOptions],
+                [e.target.name]: [...selectedOptions].join(), // create a string of all selected numbers: e.g. 2,4
             });
         } else {
             updateInputs({

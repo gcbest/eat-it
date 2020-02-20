@@ -29,6 +29,6 @@
     "typeorm": "^0.2.21"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "nodemon --inspect src/index.ts"
   }
 }

@@ -35,11 +35,13 @@ export const RegistrationForm: React.FC = () => {
         }
 
         console.log("form submitted");
-        const { email, password } = inputs;
+        const { email, password, exerciseLevel, diets } = inputs;
         const response = await register({
             variables: {
                 email,
-                password
+                password,
+                exerciseLevel,
+                diets
             }
         });
         console.log(response);
@@ -65,22 +67,22 @@ export const RegistrationForm: React.FC = () => {
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Example select</Form.Label>
-                <Form.Control as="select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <Form.Control as="select" name="exerciseLevel" onChange={handleChange}>
+                    <option value="1">1 (Exercise? What's That?)</option>
+                    <option value="2">2 </option>
+                    <option value="3">3 (3+ days/week)</option>
+                    <option value="4">4</option>
+                    <option value="5">5 (High Intensity 5+ days/week)</option>
                 </Form.Control>
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlSelect2">
                 <Form.Label>Example multiple select</Form.Label>
                 <Form.Control as="select" multiple name="diets" onChange={handleChange}>
-                    <option>Carnivore</option>
-                    <option>Mediterranean</option>
-                    <option>Pescatarian</option>
-                    <option>Vegetarian</option>
-                    <option>Vegan</option>
+                    <option value="1">Carnivore</option>
+                    <option value="2">Mediterranean</option>
+                    <option value="3">Pescatarian</option>
+                    <option value="4">Vegetarian</option>
+                    <option value="5">Vegan</option>
                 </Form.Control>
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlTextarea1">
