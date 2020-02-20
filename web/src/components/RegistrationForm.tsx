@@ -8,9 +8,12 @@ import useForm from 'lib/useForm';
 
 
 export const RegistrationForm: React.FC = () => {
-    const { inputs, handleChange, resetForm, isValid, confirmPasswordsMatch } = useForm({
+    const { inputs, handleChange, resetForm, isRegistrationValid, confirmPasswordsMatch } = useForm({
+        email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        exerciseLevel: '1',
+        diets: []
     });
     const [showCompleteFormAlert, setShowCompleteFormAlert] = useState(false)
     const [register] = useRegisterMutation();
@@ -28,7 +31,7 @@ export const RegistrationForm: React.FC = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        if (!isValid()) {
+        if (!isRegistrationValid()) {
             setShowCompleteFormAlert(true);
             setTimeout(() => setShowCompleteFormAlert(false), 2500)
             return;
@@ -40,7 +43,7 @@ export const RegistrationForm: React.FC = () => {
             variables: {
                 email,
                 password,
-                exerciseLevel,
+                exerciseLevel: parseInt(exerciseLevel),
                 diets
             }
         });
@@ -52,22 +55,22 @@ export const RegistrationForm: React.FC = () => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Group controlId="email">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" name="email" placeholder="name@example.com" value={inputs.email} onChange={handleChange} />
             </Form.Group>
-            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Group controlId="password">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" name="password" placeholder="*********" value={inputs.password} onChange={handleChange} />
             </Form.Group>
             {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)}
-            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Group controlId="confirmPassword">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control type="password" name="confirmPassword" placeholder="*********" value={inputs.confirmPassword} onChange={handleChange} />
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Example select</Form.Label>
-                <Form.Control as="select" name="exerciseLevel" onChange={handleChange}>
+                <Form.Control as="select" name="exerciseLevel" value={inputs.exerciseLevel} onChange={handleChange}>
                     <option value="1">1 (Exercise? What's That?)</option>
                     <option value="2">2 </option>
                     <option value="3">3 (3+ days/week)</option>
@@ -77,7 +80,7 @@ export const RegistrationForm: React.FC = () => {
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlSelect2">
                 <Form.Label>Example multiple select</Form.Label>
-                <Form.Control as="select" multiple name="diets" onChange={handleChange}>
+                <Form.Control as="select" multiple name="diets" value={inputs.diets} onChange={handleChange}>
                     <option value="1">Carnivore</option>
                     <option value="2">Mediterranean</option>
                     <option value="3">Pescatarian</option>

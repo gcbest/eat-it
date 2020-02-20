@@ -1,7 +1,3 @@
-mutation Register($email: String!, $password: String!, 
-# $exerciseLevel: Float!, 
-$diets: String!) {
-  register(email: $email, password: $password, 
-  # exerciseLevel: $exerciseLevel, 
-  diets: $diets)
+mutation Register($email: String!, $password: String!, $exerciseLevel: Int!, $diets: String!) {
+  register(email: $email, password: $password, exerciseLevel: $exerciseLevel, diets: $diets)
 }

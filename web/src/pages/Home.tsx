@@ -38,7 +38,7 @@ export const Home: React.FC<Props> = () => {
   return (
     <Fragment>
       <div className="hero">
-        <img className={moduleStyles.heroImg} src={heroImg} alt="Fruit Salads" />
+        <img className={moduleStyles.heroImg} width="100vh" height="100%" src={heroImg} alt="Fruit Salads" />
         <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
         {/* <Button className={moduleStyles.signUpBtn} variant="secondary">Sign Up Now!</Button> */}
       </div>

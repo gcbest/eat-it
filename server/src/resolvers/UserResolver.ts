@@ -18,6 +18,7 @@ import { sendRefreshToken } from "../sendRefreshToken";
 import { getConnection } from "typeorm";
 import { verify } from "jsonwebtoken";
 
+
 @ObjectType()
 class LoginResponse {
   @Field()
@@ -111,7 +112,7 @@ export class UserResolver {
   async register(
     @Arg("email") email: string,
     @Arg("password") password: string,
-    // @Arg("exerciseLevel") exerciseLevel: number,
+    @Arg("exerciseLevel") exerciseLevel: number,
     @Arg("diets") diets: string,
   ) {
     const hashedPassword = await hash(password, 12);
@@ -120,7 +121,7 @@ export class UserResolver {
       await User.insert({
         email,
         password: hashedPassword,
-        // exerciseLevel,
+        exerciseLevel,
         diets,
       });
     } catch (err) {

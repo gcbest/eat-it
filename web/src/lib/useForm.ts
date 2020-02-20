@@ -4,7 +4,7 @@ interface useFormInterface {
     inputs: any;
     handleChange(e: any): void;
     resetForm(): void;
-    isValid(): boolean;
+    isRegistrationValid(): boolean;
     confirmPasswordsMatch(): boolean;
 }
 
@@ -30,11 +30,11 @@ export default function useForm(initialState: any = {}): useFormInterface {
         updateInputs(initialState);
     }
 
-    function isValid() {
+    function isRegistrationValid() {
         if (!confirmPasswordsMatch())
             return false;
 
-        const required_fields = ['email', 'password', 'confirmPassword', 'diets'];
+        const required_fields = ['email', 'password', 'confirmPassword', 'exerciseLevel', 'diets'];
         const hasAll = required_fields.every(prop => inputs.hasOwnProperty(prop));
 
         if (!hasAll)
@@ -42,7 +42,6 @@ export default function useForm(initialState: any = {}): useFormInterface {
 
         for (const key in inputs) {
             if (inputs.hasOwnProperty(key)) {
-                debugger;
                 const value = inputs[key];
                 if (value.length < 1)
                     return false;
@@ -67,7 +66,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
         inputs,
         handleChange,
         resetForm,
-        isValid,
+        isRegistrationValid,
         confirmPasswordsMatch
     };
 }

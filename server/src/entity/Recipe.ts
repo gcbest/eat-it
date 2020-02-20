@@ -1,9 +1,9 @@
 import {
   Entity, PrimaryGeneratedColumn, Column, BaseEntity,
-  // OneToMany
+  OneToMany
 } from "typeorm";
 import { ObjectType, Field, Int } from "type-graphql";
-// import { UserRecipe } from "./UserRecipe";
+import { UserRecipe } from "./UserRecipe";
 
 @ObjectType()
 @Entity("recipes")
@@ -24,6 +24,6 @@ export class Recipe extends BaseEntity {
   @Column("text")
   image_url: string;
 
-  // @OneToMany(() => UserRecipe, ur => ur.recipe)
-  // userConnection: Promise<UserRecipe[]>;
+  @OneToMany(() => UserRecipe, ur => ur.recipe)
+  userConnection: Promise<UserRecipe[]>;
 }
