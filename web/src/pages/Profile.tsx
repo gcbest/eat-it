@@ -11,7 +11,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   if (loading)
     return <div>loading...</div>;
 
-
+  // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
   if (error) {
     history.push('/register')
