@@ -1,6 +1,6 @@
 import React from "react";
 import { useByeQuery } from "../generated/graphql";
-import { Redirect, RouteComponentProps } from 'react-router-dom'
+import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
 
 export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   // TODO: createProfileQuery
@@ -23,7 +23,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   if (!data)
-    return <div>no data</div>;
+    return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
 
   return <div>{data.bye}</div>;
