@@ -28,3 +28,10 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   return <div>{data.bye}</div>;
 };
+
+// TODOs:
+// Create CRUD app
+// Able to hit spoonacular API and get search results or save a recipe URL
+// can add tags to each recipe to sort them
+// show lists of different bigger tags like breakfast, lunch, dinner, snack, dessert
+// able to filter all at same time
