@@ -16,7 +16,7 @@ const apiSpoonClient = axios.create({
 });
 
 const apiClient = axios.create({
-    baseURL: 'localhost://3000',
+    baseURL: process.env.PORT || 'localhost:4000',
     responseType: 'json',
     headers: {
         'Content-Type': 'application/json'
@@ -25,7 +25,12 @@ const apiClient = axios.create({
 
 export const spoonacular = {
     random: async (params: RandomParams) => {
-        const results = await apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params }).catch(err => err);
-        return results;
+        try {
+            const results = await apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params })
+            // .catch(err => { throw new Error(`Error fetching random recipes: ${err}`) });
+            return results;
+        } catch (error) {
+            return error;
+        }
     }
 }
