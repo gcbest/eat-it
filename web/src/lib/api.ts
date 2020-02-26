@@ -7,6 +7,7 @@ const SPOONACULAR_ENDPOINT = 'https://api.spoonacular.com/recipes'
 interface RandomParams {
     tags: string | undefined;
     number: number;
+    apiKey?: string | undefined;
 }
 
 const apiSpoonClient = axios.create({
@@ -36,6 +37,7 @@ interface SpoonError {
 
 export const spoonacular = {
     random: async (params: RandomParams) => {
+        params.apiKey = process.env.SPOONACULAR_APIKEY;
         try {
             debugger;
             const results = await apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params })
