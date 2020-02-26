@@ -38,6 +38,7 @@ export const NavComponent: React.FC<Props> = () => {
             {!loading && data && data.me ? null : <RegisterLink />}
             {!loading && data && data.me ? <LogoutLink /> : <LoginLink />}
             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+            <Nav.Link as={Link} to="/discover">Discover</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

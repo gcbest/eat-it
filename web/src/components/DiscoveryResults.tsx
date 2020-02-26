@@ -1,21 +1,32 @@
 import React, { useState, useContext } from 'react'
 import { DiscoveryCard } from './DiscoveryCard'
-import { QueryContext } from 'pages/Discover'
+import { AxiosResponse } from 'axios';
+// import { QueryContext } from 'pages/Discover'
 
+interface Props {
+    recipes: Recipe[] | Error | AxiosResponse | undefined;
+}
 
+interface Recipe {
+    title: string;
+}
+
+// export const DiscoveryResults: React.FC<Props> = ({ recipes }) => {
 export const DiscoveryResults: React.FC = () => {
     //TODO: use context for search results
-    const query = useContext(QueryContext)
+    // const query = useContext(QueryContext)
 
-    const [results, setResults] = useState([])
+    // const [results, setResults] = useState([])
+    // console.log(recipes);
+    // debugger;
 
     return (
         <div>
             {
                 // !loading && 
-                results && results.map(r => {
-                    <DiscoveryCard recipe={r} />
-                })
+                // Array.isArray(recipes) && recipes.length > 0 ? recipes.map(r => <DiscoveryCard recipe={r} />) : null
+                <DiscoveryCard recipe={{}} />
+
             }
         </div>
     )
