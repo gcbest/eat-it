@@ -11,8 +11,7 @@ interface Recipe {
     title: string;
 }
 
-// export const DiscoveryResults: React.FC<Props> = ({ recipes }) => {
-export const DiscoveryResults: React.FC = () => {
+export const DiscoveryResults: React.FC<Props> = ({ recipes }) => {
     //TODO: use context for search results
     // const query = useContext(QueryContext)
 
@@ -24,8 +23,8 @@ export const DiscoveryResults: React.FC = () => {
         <div>
             {
                 // !loading && 
-                // Array.isArray(recipes) && recipes.length > 0 ? recipes.map(r => <DiscoveryCard recipe={r} />) : null
-                <DiscoveryCard recipe={{}} />
+                Array.isArray(recipes) && recipes.length > 0 ? recipes.map(r => <DiscoveryCard recipe={r} />) : null
+                // <DiscoveryCard recipe={{}} />
 
             }
         </div>

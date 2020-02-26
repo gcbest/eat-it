@@ -2,34 +2,24 @@ import React, { useState, useRef, useEffect } from 'react'
 import { DiscoveryResults } from 'components/DiscoveryResults'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
-// import FormControl from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { spoonacular } from '../lib/api'
 import { AxiosResponse } from 'axios'
 import hasIn from '@bit/lodash.lodash.has-in'
-
-// export const QueryContext = React.createContext();
 
 interface Recipe {
     title: string;
 }
 
 export const Discover: React.FC = () => {
-    // const [query, setQuery] = useState('')
     const [recipes, setRecipes] = useState<Error | AxiosResponse | undefined>(undefined)
     const queryRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        // let x = queryRef?.current?.value;
-
-        // return () => {};
-    }, [])
-
     const handleSearch = async () => {
         try {
-            debugger;
             if (queryRef !== null && queryRef.current !== null) {
                 const results = await spoonacular.random({ tags: queryRef.current.value, number: 2 })
+                debugger;
                 setRecipes(results)
             }
         } catch (error) {
@@ -57,8 +47,8 @@ export const Discover: React.FC = () => {
                     <Button variant="outline-secondary" onClick={handleSearch}>Discover</Button>
                 </InputGroup.Append>
             </InputGroup>
-            {/* <DiscoveryResults recipes={recipes} /> */}
-            <DiscoveryResults />
+            <DiscoveryResults recipes={recipes} />
+            {/* <DiscoveryResults /> */}
             {/* </QueryContext.Provider> */}
         </div>
     )
