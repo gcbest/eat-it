@@ -6,20 +6,18 @@ import Button from 'react-bootstrap/Button'
 import { spoonacular } from '../lib/api'
 import { AxiosResponse } from 'axios'
 import hasIn from '@bit/lodash.lodash.has-in'
+import { Recipe } from 'lib/interfaces'
 
-interface Recipe {
-    title: string;
-}
+
 
 export const Discover: React.FC = () => {
-    const [recipes, setRecipes] = useState<Error | AxiosResponse | undefined>(undefined)
+    const [recipes, setRecipes] = useState<Recipe[] | Error | AxiosResponse | undefined>(undefined)
     const queryRef = useRef<HTMLInputElement>(null);
 
     const handleSearch = async () => {
         try {
             if (queryRef !== null && queryRef.current !== null) {
                 const results = await spoonacular.random({ tags: queryRef.current.value, number: 2 })
-                debugger;
                 setRecipes(results)
             }
         } catch (error) {

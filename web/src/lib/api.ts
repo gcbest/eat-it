@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Recipe } from './interfaces'
 
 const SPOONACULAR_ENDPOINT = 'https://api.spoonacular.com/recipes'
 
@@ -29,10 +30,13 @@ interface SpoonError {
     message: string;
 }
 
+
+
 export const spoonacular = {
-    random: async (params: RandomParams) => {
-        params.apiKey = process.env.SPOONACULAR_APIKEY;
+    apiKey: process.env.SPOONACULAR_APIKEY,
+    random: async function (params: RandomParams) {
         try {
+            params.apiKey = this.apiKey
             const results = await apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params })
             return results;
         } catch (error) {

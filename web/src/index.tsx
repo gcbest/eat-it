@@ -1,6 +1,5 @@
 import React from "react"
 import ReactDOM from "react-dom"
-require('dotenv').config()
 import { ApolloProvider } from "@apollo/react-hooks"
 import { getAccessToken, setAccessToken } from "./accessToken"
 import { App } from "./App"
