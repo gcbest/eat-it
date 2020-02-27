@@ -13,7 +13,12 @@ interface Props<T> {
 }
 
 
-export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
+
+
+// interface Props { }
+
+// export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
+export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
     const { title, readyInMinutes, servings, image, summary, analyzedInstructions, sourceUrl } = recipe
 
     function CustomToggle({ children, eventKey }: CustomToggleInterface) {
@@ -24,28 +29,35 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
         return (<Button variant="secondary" onClick={decoratedOnClick}>{children}</Button>);
     }
 
+    function createMarkup(markup: string): { __html: string } {
+        // function createMarkup(): { __html: string } {
+        return ({ __html: markup });
+        // return { __html: 'First &middot; Second' };
+    }
+
 
     return (
         <Card style={{ width: '18rem' }}>
             <Card.Img variant="top" src={image} />
-            <Card.Body>
+            <Card.Body style={{ maxHeight: '8rem', overflowY: "scroll" }}>
                 <Card.Title>{title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">Servings: {servings}</Card.Subtitle>
                 <Card.Subtitle className="mb-2 text-muted">Ready in: {readyInMinutes} mins</Card.Subtitle>
                 <Card.Text>
-                    {summary}
+                    {<span dangerouslySetInnerHTML={createMarkup(summary)}></span>}
                 </Card.Text>
 
                 {Array.isArray(analyzedInstructions) && analyzedInstructions.length > 0 ?
-                    <Accordion defaultActiveKey="0">
-                        <Card>
+                    <Accordion>
+                        <Card border="primary">
                             <Card.Header>
                                 <CustomToggle eventKey="0">Expand Instructions</CustomToggle>
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
-                                    <ListGroup variant="flush">
-                                        {analyzedInstructions[0].steps.map(s => <ListGroup.Item>{s.number} {s.step}</ListGroup.Item>)}
+                                    {/* <ListGroup variant="flush"> */}
+                                    <ListGroup>
+                                        {analyzedInstructions[0].steps.map((s: any) => <ListGroup.Item > {s.number}. {s.step}</ListGroup.Item>)}
                                     </ListGroup>
                                 </Card.Body>
                             </Accordion.Collapse>
@@ -53,9 +65,9 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                     </Accordion>
                     : null
                 }
-                <a href={sourceUrl} target="_blank"><Button variant="primary">View Recipe</Button></a>
+                <a href={sourceUrl} target="_blank"><Button variant="primary" style={{ marginTop: '3rem' }}>View Recipe</Button></a>
             </Card.Body>
-        </Card>
+        </Card >
     )
 }
 
