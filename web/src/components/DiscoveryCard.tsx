@@ -55,9 +55,10 @@ export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
-                                    {/* <ListGroup variant="flush"> */}
                                     <ListGroup>
-                                        {analyzedInstructions[0].steps.map((s: any) => <ListGroup.Item > {s.number}. {s.step}</ListGroup.Item>)}
+                                        {analyzedInstructions[0].steps.map((s: any) => {
+                                            return (<ListGroup.Item>{s.number}. {s.step}</ListGroup.Item>)
+                                        })}
                                     </ListGroup>
                                 </Card.Body>
                             </Accordion.Collapse>

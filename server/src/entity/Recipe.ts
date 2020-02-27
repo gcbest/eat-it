@@ -14,15 +14,31 @@ export class Recipe extends BaseEntity {
 
   @Field()
   @Column("text")
-  name: string;
+  title: string;
+
+  @Field(() => Int)
+  @Column()
+  readyInMinutes: number;
+
+  @Field(() => Int)
+  @Column()
+  servings: number;
 
   @Field()
   @Column("text")
-  url: string;
+  image: string;
 
   @Field()
   @Column("text")
-  image_url: string;
+  summary: string;
+
+  @Field()
+  @Column("text")
+  sourceUrl: string;
+
+  @Field()
+  @Column("text")
+  analyzedInstructions: string;
 
   @OneToMany(() => UserRecipe, ur => ur.recipe)
   userConnection: Promise<UserRecipe[]>;

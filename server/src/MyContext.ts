@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+/* eslint-disable prettier/prettier */
+import { Request, Response } from 'express';
 
 export interface MyContext {
   req: Request;
