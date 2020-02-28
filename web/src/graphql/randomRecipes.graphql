@@ -1,5 +1,12 @@
-query randomRecipes {
-    randomRecipes {
-        
-    }
+query randomRecipes($tags: String!, $number: Float!) {
+  randomRecipes(tags: $tags, number: $number) {
+    id
+    title
+    readyInMinutes
+    servings
+    image
+    summary
+    sourceUrl
+    analyzedInstructions
+  }
 }

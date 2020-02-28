@@ -50,14 +50,25 @@ export type Query = {
   bye: Scalars['String'],
   users: Array<User>,
   me?: Maybe<User>,
+  randomRecipes: Array<Recipe>,
+};
+
+
+export type QueryRandomRecipesArgs = {
+  number: Scalars['Float'],
+  tags: Scalars['String']
 };
 
 export type Recipe = {
    __typename?: 'Recipe',
   id: Scalars['Int'],
-  name: Scalars['String'],
-  url: Scalars['String'],
-  image_url: Scalars['String'],
+  title: Scalars['String'],
+  readyInMinutes: Scalars['Int'],
+  servings: Scalars['Int'],
+  image: Scalars['String'],
+  summary: Scalars['String'],
+  sourceUrl: Scalars['String'],
+  analyzedInstructions: Scalars['String'],
 };
 
 export type User = {
@@ -115,6 +126,20 @@ export type MeQuery = (
   & { me: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email'>
+  )> }
+);
+
+export type RandomRecipesQueryVariables = {
+  tags: Scalars['String'],
+  number: Scalars['Float']
+};
+
+
+export type RandomRecipesQuery = (
+  { __typename?: 'Query' }
+  & { randomRecipes: Array<(
+    { __typename?: 'Recipe' }
+    & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions'>
   )> }
 );
 
@@ -222,6 +247,30 @@ export const MeDocument = gql`
       
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
+export const RandomRecipesDocument = gql`
+    query randomRecipes($tags: String!, $number: Float!) {
+  randomRecipes(tags: $tags, number: $number) {
+    id
+    title
+    readyInMinutes
+    servings
+    image
+    summary
+    sourceUrl
+    analyzedInstructions
+  }
+}
+    `;
+
+    export function useRandomRecipesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RandomRecipesQuery, RandomRecipesQueryVariables>) {
+      return ApolloReactHooks.useQuery<RandomRecipesQuery, RandomRecipesQueryVariables>(RandomRecipesDocument, baseOptions);
+    }
+      export function useRandomRecipesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RandomRecipesQuery, RandomRecipesQueryVariables>) {
+        return ApolloReactHooks.useLazyQuery<RandomRecipesQuery, RandomRecipesQueryVariables>(RandomRecipesDocument, baseOptions);
+      }
+      
+export type RandomRecipesQueryHookResult = ReturnType<typeof useRandomRecipesQuery>;
+export type RandomRecipesQueryResult = ApolloReactCommon.QueryResult<RandomRecipesQuery, RandomRecipesQueryVariables>;
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!, $exerciseLevel: Float!, $diets: String!) {
   register(email: $email, password: $password, exerciseLevel: $exerciseLevel, diets: $diets)

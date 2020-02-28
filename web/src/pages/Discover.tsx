@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { DiscoveryResults } from 'components/DiscoveryResults'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
@@ -10,20 +10,48 @@ import { spoonacular } from '../lib/api'
 import { AxiosResponse } from 'axios'
 import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
+import { QueryResult } from '@apollo/react-common';
+
+import { useRandomRecipesQuery } from "../generated/graphql";
+
 
 
 
 export const Discover: React.FC = () => {
     // const [recipes, setRecipes] = useState<Recipe[] | Error | AxiosResponse | undefined>(undefined)
-    const [recipes, setRecipes] = useState<Object[] | Error | AxiosResponse | undefined>(undefined)
+    // const [recipes, setRecipes] = useState<Object[] | Error | AxiosResponse | undefined>(undefined)
+    const [recipes, setRecipes] = useState<QueryResult | undefined>(undefined)
     const queryRef = useRef<HTMLInputElement>(null);
+
+    const memoizedCallback = useCallback(
+        () => {
+            if (queryRef !== null && queryRef.current !== null) {
+
+                const recipeResults = useRandomRecipesQuery({
+                    variables: {
+                        tags: queryRef.current.value,
+                        number: 1
+                    }
+                })
+                setRecipes(recipeResults)
+            }
+        },
+        [],
+    );
 
     const handleSearch = async () => {
         try {
             if (queryRef !== null && queryRef.current !== null) {
-                const results = await spoonacular.random({ tags: queryRef.current.value, number: 2 })
-                const { data: { recipes: recipeResults } } = results;
+                // const results = await spoonacular.random({ tags: queryRef.current.value, number: 2 })
+                // const { data: { recipes: recipeResults } } = results;
                 //debugger;
+
+                const recipeResults = useRandomRecipesQuery({
+                    variables: {
+                        tags: queryRef.current.value,
+                        number: 1
+                    }
+                })
                 setRecipes(recipeResults)
             }
         } catch (error) {
