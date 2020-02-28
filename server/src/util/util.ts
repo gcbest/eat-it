@@ -10,7 +10,6 @@ interface RandomParams {
 
 const SPOONACULAR_ENDPOINT = 'https://api.spoonacular.com/recipes'
 export const spoonacular = {
-
     apiSpoonClient: axios.create({
         baseURL: SPOONACULAR_ENDPOINT,
         responseType: 'json',
@@ -24,8 +23,8 @@ export const spoonacular = {
         try {
             params.apiKey = this.apiKey;
             console.log('sending request to spoonacular');
-            const results = await this.apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params });
-            return results;
+            const { data: { recipes: randomRecipesArr } } = await this.apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params });
+            return randomRecipesArr;
         } catch (error) {
             throw new Error(`Fetching random recipes with params: (${JSON.stringify(params)}) - ${error}`);
         }

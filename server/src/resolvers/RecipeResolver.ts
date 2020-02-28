@@ -1,6 +1,15 @@
-import { Resolver, Query, Mutation, Arg, ObjectType, Field, Ctx, UseMiddleware, Int } from 'type-graphql';
+import {
+    Resolver, Query,
+    // Mutation,
+    //  Arg,
+    //  ObjectType,
+    //  Field,
+    Ctx,
+    // UseMiddleware,
+    //  Int
+} from 'type-graphql';
 import { Recipe } from '../entity/Recipe';
-import { isAuth } from '../isAuth';
+// import { isAuth } from '../isAuth';
 import { MyContext } from "../MyContext";
 import { spoonacular } from '../util/util'
 
@@ -13,19 +22,18 @@ import { spoonacular } from '../util/util'
 @Resolver()
 export class RecipeResolver {
     @Query(() => [Recipe])
-    @UseMiddleware(isAuth)
+    // @UseMiddleware(isAuth)
     async randomRecipes(@Ctx() { req }: MyContext) {
-        console.log(req.body);
-        const { tags, number } = req.body
-        const params = { tags, number }
+        console.log(req.body)
+        const { tags = 'vegetarian', number = 1 } = req.body
+        let params = { tags, number }
         try {
-            return await spoonacular.random(params)
+            const results = await spoonacular.random(params)
+            console.log(results);
+            return results;
         } catch (err) {
             console.error(err);
             return err;
         }
-
     }
-
-
 }
