@@ -47,7 +47,7 @@ export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
                     {<span dangerouslySetInnerHTML={createMarkup(summary)}></span>}
                 </Card.Text>
 
-                {Array.isArray(analyzedInstructions) && analyzedInstructions.length > 0 ?
+                {analyzedInstructions ?
                     <Accordion>
                         <Card border="primary">
                             <Card.Header>
@@ -56,7 +56,7 @@ export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <ListGroup>
-                                        {analyzedInstructions[0].steps.map((s: any) => {
+                                        {analyzedInstructions.steps.map((s: any) => {
                                             return (<ListGroup.Item>{s.number}. {s.step}</ListGroup.Item>)
                                         })}
                                     </ListGroup>

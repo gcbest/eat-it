@@ -34,7 +34,12 @@ export class RecipeResolver {
         try {
             const results = await spoonacular.random(params)
             console.log(results);
-            return results;
+            // convert analyzedInstructions into string
+            const formattedResults = results.map((r: Recipe) => {
+                r.analyzedInstructions = JSON.stringify(r.analyzedInstructions[0])
+                return r
+            })
+            return formattedResults;
         } catch (err) {
             console.error(err);
             return err;

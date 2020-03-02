@@ -16,7 +16,8 @@ export interface Recipe {
     image: string;
     summary: string;
     sourceUrl: string;
-    analyzedInstructions: Instructions[];
+    // analyzedInstructions: Instructions[];
+    analyzedInstructions: string;
 }
 
 export interface CustomToggleInterface {

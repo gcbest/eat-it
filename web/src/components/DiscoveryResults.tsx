@@ -3,17 +3,21 @@ import { AxiosResponse } from 'axios';
 import { DiscoveryCard } from './DiscoveryCard'
 import CardDeck from 'react-bootstrap/CardDeck'
 import { Recipe } from 'lib/interfaces';
+import { QueryResult } from '@apollo/react-common';
+
 // import { QueryContext } from 'pages/Discover'
 
 interface Props {
-    // recipes: Recipe[] | Error | AxiosResponse | undefined;
-    recipes: Object[] | Error | AxiosResponse | undefined;
+    recipes: Recipe[] | Error | AxiosResponse | QueryResult | undefined;
 }
 
 
-export const DiscoveryResults: React.FC<Props> = ({ recipes }) => {
-    // const DiscoveryCardList = (recipes: Recipe[]) => recipes.map(r => <DiscoveryCard recipe={r} />)
-    const DiscoveryCardList = (recipes: Object[]) => recipes.map(r => <DiscoveryCard recipe={r} />)
+const DiscoveryResults: React.FC<Props> = ({ recipes }) => {
+    const DiscoveryCardList = (recipes: Recipe[]) => recipes.map(r => {
+        // convert analyzedInstructions from string back into object
+        r.analyzedInstructions = JSON.parse(r.analyzedInstructions)
+        return < DiscoveryCard recipe={r} />
+    })
 
     return (
         <div>
@@ -26,3 +30,4 @@ export const DiscoveryResults: React.FC<Props> = ({ recipes }) => {
     )
 }
 
+export default React.memo(DiscoveryResults)
