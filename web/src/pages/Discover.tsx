@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import gql from 'graphql-tag';
-import DiscoveryResults from 'components/DiscoveryResults'
+import { DiscoveryResults } from 'components/DiscoveryResults'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
@@ -13,11 +13,6 @@ import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
-// import { useRandomRecipesQuery } from "../generated/graphql";
-import RANDOM_RECIPES from '../graphql/randomRecipes.graphql'
-import x from '../../src/lib/temp1.json'
-
-
 
 
 export const Discover: React.FC = () => {
@@ -93,10 +88,7 @@ export const Discover: React.FC = () => {
     //     setQuery(e.currentTarget.value)
     // }
 
-    debugger;
-    if (loading) {
-        return <p>Loading ...</p>;
-    }
+
 
     // debugger;
     // useMemo(() => {
@@ -104,6 +96,10 @@ export const Discover: React.FC = () => {
     //     setRecipes(data.randomRecipes);
     //     // }
     // }, [data])
+
+    // if (data && data.randomRecipes) {
+    //     setRecipes(data.randomRecipes)
+    // }
 
     return (
         <Container>
@@ -120,8 +116,12 @@ export const Discover: React.FC = () => {
                         <InputGroup.Append>
                             <Button variant="outline-secondary" onClick={handleSearch}>Discover</Button>
                         </InputGroup.Append>
-                    </InputGroup>
-                    <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} />
+                    </InputGroup> {
+                        loading ?
+                            <p>Loading ...</p> :
+                            <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} />
+                    }
+                    {/* <DiscoveryResults recipes={recipes} /> */}
                     {/* {recipes && <DiscoveryResults recipes={recipes} />} */}
                     {/* <DiscoveryResults /> */}
                     {/* </QueryContext.Provider> */}

@@ -5,20 +5,14 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Accordion from 'react-bootstrap/Accordion'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 
-import { Recipe, CustomToggleInterface } from 'lib/interfaces'
+import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
 
 
 interface Props<T> {
     recipe: T;
 }
 
-
-
-
-// interface Props { }
-
-// export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
-export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
+export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
     const { title, readyInMinutes, servings, image, summary, analyzedInstructions, sourceUrl } = recipe
 
     function CustomToggle({ children, eventKey }: CustomToggleInterface) {
@@ -30,11 +24,10 @@ export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
     }
 
     function createMarkup(markup: string): { __html: string } {
-        // function createMarkup(): { __html: string } {
         return ({ __html: markup });
-        // return { __html: 'First &middot; Second' };
     }
 
+    const convertToJSON = (stringifiedContent: string): Array<Instructions> => JSON.parse(stringifiedContent)
 
     return (
         <Card style={{ width: '18rem' }}>
@@ -47,7 +40,7 @@ export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
                     {<span dangerouslySetInnerHTML={createMarkup(summary)}></span>}
                 </Card.Text>
 
-                {analyzedInstructions ?
+                {analyzedInstructions && Array.isArray(analyzedInstructions) ?
                     <Accordion>
                         <Card border="primary">
                             <Card.Header>
@@ -56,9 +49,11 @@ export const DiscoveryCard: React.FC<Props<any>> = ({ recipe }) => {
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <ListGroup>
-                                        {analyzedInstructions.steps.map((s: any) => {
-                                            return (<ListGroup.Item>{s.number}. {s.step}</ListGroup.Item>)
-                                        })}
+                                        {
+                                            convertToJSON(analyzedInstructions)[0]
+                                                .steps.map((s: any) => {
+                                                    return (<ListGroup.Item key={s.number}>{s.number}. {s.step}</ListGroup.Item>)
+                                                })}
                                     </ListGroup>
                                 </Card.Body>
                             </Accordion.Collapse>
