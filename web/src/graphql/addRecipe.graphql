@@ -1,3 +1,13 @@
-mutation AddRecipe($recipe: Recipe) {
-    addRecipe(recipe: $recipe)
+input AddRecipeInput  {
+        title: string
+        readyInMinutes: number
+        servings: number
+        image: string
+        summary: string
+        sourceUrl: string
+        analyzedInstructions: string
+    }
+
+mutation AddRecipe($recipe: AddRecipeInput!) {
+    addRecipe(input: $recipe)
 }

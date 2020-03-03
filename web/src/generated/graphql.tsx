@@ -11,6 +11,16 @@ export type Scalars = {
   Float: number,
 };
 
+export type AddRecipeInput = {
+  title: Scalars['String'],
+  readyInMinutes: Scalars['Float'],
+  servings: Scalars['Float'],
+  image: Scalars['String'],
+  summary: Scalars['String'],
+  sourceUrl: Scalars['String'],
+  analyzedInstructions: Scalars['String'],
+};
+
 export type LoginResponse = {
    __typename?: 'LoginResponse',
   accessToken: Scalars['String'],
@@ -23,6 +33,7 @@ export type Mutation = {
   revokeRefreshTokensForUser: Scalars['Boolean'],
   login: LoginResponse,
   register: Scalars['Boolean'],
+  addRecipe: Scalars['Boolean'],
 };
 
 
@@ -42,6 +53,11 @@ export type MutationRegisterArgs = {
   exerciseLevel: Scalars['Float'],
   password: Scalars['String'],
   email: Scalars['String']
+};
+
+
+export type MutationAddRecipeArgs = {
+  input: AddRecipeInput
 };
 
 export type Query = {
@@ -76,6 +92,16 @@ export type User = {
   id: Scalars['Int'],
   email: Scalars['String'],
 };
+export type AddRecipeMutationVariables = {
+  recipe: AddRecipeInput
+};
+
+
+export type AddRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addRecipe'>
+);
+
 export type ByeQueryVariables = {};
 
 
@@ -167,6 +193,19 @@ export type UsersQuery = (
   )> }
 );
 
+export const AddRecipeDocument = gql`
+    mutation AddRecipe($recipe: AddRecipeInput!) {
+  addRecipe(input: $recipe)
+}
+    `;
+export type AddRecipeMutationFn = ApolloReactCommon.MutationFunction<AddRecipeMutation, AddRecipeMutationVariables>;
+
+    export function useAddRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddRecipeMutation, AddRecipeMutationVariables>) {
+      return ApolloReactHooks.useMutation<AddRecipeMutation, AddRecipeMutationVariables>(AddRecipeDocument, baseOptions);
+    }
+export type AddRecipeMutationHookResult = ReturnType<typeof useAddRecipeMutation>;
+export type AddRecipeMutationResult = ApolloReactCommon.MutationResult<AddRecipeMutation>;
+export type AddRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<AddRecipeMutation, AddRecipeMutationVariables>;
 export const ByeDocument = gql`
     query Bye {
   bye

@@ -59,10 +59,10 @@ export class RecipeResolver {
     }
 
     @Mutation(() => Boolean)
-    async addRecipe(@Arg("data") newRecipeData: AddRecipeInput): Promise<Boolean> {
+    async addRecipe(@Arg("input") input: AddRecipeInput): Promise<Boolean> {
         // sample implementation
-        // const recipe = Recipe.create(newRecipeData, ctx.req.body.user);
-        const recipe = await Recipe.insert(newRecipeData)
+        // const recipe = Recipe.create(input, ctx.req.body.user);
+        const recipe = await Recipe.insert(input)
 
         console.log(recipe);
         return true;

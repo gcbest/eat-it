@@ -30,3 +30,7 @@ export interface ModalInterface {
     handleShow?: (recipe: Recipe) => void
     handleClose: (isSaved: boolean, data?: Recipe) => void
 }
+
+export interface AddRecipeInput extends Recipe {
+
+}

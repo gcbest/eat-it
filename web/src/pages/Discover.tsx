@@ -14,6 +14,7 @@ import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { EditModal } from 'components/EditModal'
 import { ModalInterface } from '../lib/interfaces'
 import { ModalCategory } from '../lib/enums'
+import { useAddRecipeMutation, AddRecipeInput } from 'generated/graphql';
 
 
 
@@ -23,16 +24,18 @@ export const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
 
     const [show, setShow] = useState(false);
-    const [modalInfo, setModalInfo] = useState<Recipe | null>(null)
+    const [modalInfo, setModalInfo] = useState<Recipe | AddRecipeInput | any>(null)
     const [hasSearched, setHasSearched] = useState(false)
 
     const handleClose = (isSaved: boolean) => {
-        // save the result to DB
-        // create mutation
-        if (isSaved) {
+        if (isSaved && modalInfo) {
+            const formattedRecipe = { ...modalInfo }
+            // remove properties not needed by mutation
+            delete formattedRecipe.id
+            delete formattedRecipe.__typename
             addRecipe({
                 variables: {
-                    recipe: modalInfo
+                    recipe: formattedRecipe
                 }
             })
         }
@@ -62,11 +65,23 @@ export const Discover: React.FC = () => {
         }
     `);
 
-    const [addRecipe, { loading: addRecipeLoading, data: addRecipeData }] = useMutation(gql`
-        mutation AddRecipe($recipe: Recipe) {
-        addRecipe(recipe: $recipe)
-        }
-    `)
+    // class AddRecipeInput implements Partial<Recipe> {
+    // input AddRecipeInput  {
+    //     title: string;
+    //     readyInMinutes: number;
+    //     servings: number;
+    //     image: string;
+    //     summary: string;
+    //     sourceUrl: string;
+    //     analyzedInstructions: string;
+    // }
+    const [addRecipe] = useAddRecipeMutation()
+
+    // const [addRecipe, { loading: addRecipeLoading, data: addRecipeData }] = useMutation(gql`
+    //     mutation AddRecipe($recipe: AddRecipeInput) {
+    //     addRecipe(input: $recipe)
+    //     }
+    // `)
 
     const handleSearch = async () => {
         setHasSearched(true)
