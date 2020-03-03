@@ -30,6 +30,13 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 };
 
 // TODOs:
+// Fix showing analyzedInstructions
+// Add button to save to favorites from discover
+// Add tags to a recipe
+// Use downshift just for general search
+// Each section can filter by tags or recipe info
+// 
+// 
 // Create CRUD app
 // Able to hit spoonacular API and get search results or save a recipe URL
 // can add tags to each recipe to sort them

@@ -27,7 +27,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
         return ({ __html: markup });
     }
 
-    const convertToJSON = (stringifiedContent: string): Array<Instructions> => JSON.parse(stringifiedContent)
+    const convertToJSON = (stringifiedContent: string): Instructions => JSON.parse(stringifiedContent)
 
     return (
         <Card style={{ width: '18rem' }}>
@@ -40,7 +40,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                     {<span dangerouslySetInnerHTML={createMarkup(summary)}></span>}
                 </Card.Text>
 
-                {analyzedInstructions && Array.isArray(analyzedInstructions) ?
+                {analyzedInstructions ?
                     <Accordion>
                         <Card border="primary">
                             <Card.Header>
@@ -49,11 +49,10 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <ListGroup>
-                                        {
-                                            convertToJSON(analyzedInstructions)[0]
-                                                .steps.map((s: any) => {
-                                                    return (<ListGroup.Item key={s.number}>{s.number}. {s.step}</ListGroup.Item>)
-                                                })}
+                                        {convertToJSON(analyzedInstructions)
+                                            .steps.map((s: any) => {
+                                                return (<ListGroup.Item key={s.number}>{s.number}. {s.step}</ListGroup.Item>)
+                                            })}
                                     </ListGroup>
                                 </Card.Body>
                             </Accordion.Collapse>

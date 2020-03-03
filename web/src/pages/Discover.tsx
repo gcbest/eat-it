@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import gql from 'graphql-tag';
 import { DiscoveryResults } from 'components/DiscoveryResults'
+import { SpinnerComponent } from 'components/Spinner'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
@@ -118,7 +119,7 @@ export const Discover: React.FC = () => {
                         </InputGroup.Append>
                     </InputGroup> {
                         loading ?
-                            <p>Loading ...</p> :
+                            <SpinnerComponent /> :
                             <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} />
                     }
                     {/* <DiscoveryResults recipes={recipes} /> */}
