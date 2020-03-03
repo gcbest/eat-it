@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useRef } from 'react'
 import gql from 'graphql-tag';
 import { DiscoveryResults } from 'components/DiscoveryResults'
 import { SpinnerComponent } from 'components/Spinner'
@@ -12,12 +12,10 @@ import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks'
 import { EditModal } from 'components/EditModal'
+import { ModalInterface } from '../lib/interfaces'
+import { ModalType } from '../lib/enums'
 
-interface ModalInterface {
-    show: boolean
-    handleShow: () => void
-    handleClose: () => void
-}
+
 
 export const ModalContext = React.createContext<Partial<ModalInterface>>({})
 
@@ -26,10 +24,14 @@ export const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
 
     const [show, setShow] = useState(false);
+    const [modalInfo, setModalInfo] = useState<Recipe | null>(null)
 
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = (recipe: Recipe) => {
+        setModalInfo(recipe)
+        setShow(true)
+    }
 
     const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
@@ -71,7 +73,7 @@ export const Discover: React.FC = () => {
         <Container>
             <Row>
                 <Col>
-                    <EditModal show={show} handleClose={handleClose} />
+                    <EditModal show={show} handleClose={handleClose} type={ModalType.New} data={modalInfo} />
                     <InputGroup className="mb-3">
                         <FormControl
                             type="input"

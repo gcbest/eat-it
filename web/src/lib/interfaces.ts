@@ -24,3 +24,10 @@ export interface CustomToggleInterface {
     children: any;
     eventKey: string;
 }
+
+export interface ModalInterface {
+    show: boolean
+    handleShow: (recipe: Recipe) => void
+    handleClose: () => void
+    setModalInfo: () => void
+}

@@ -32,7 +32,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
     const handleSave = (): void => {
         // show modal update in context
-        modalContext.handleShow!()
+        modalContext.handleShow!(recipe)
     }
 
     return (
