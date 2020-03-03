@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Accordion from 'react-bootstrap/Accordion'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
+import { ModalContext } from '../pages/Discover'
+
 
 import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
 
@@ -14,8 +16,9 @@ interface Props<T> {
 
 export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
     const { title, readyInMinutes, servings, image, summary, analyzedInstructions, sourceUrl } = recipe
+    const modalContext = useContext(ModalContext)
 
-    function CustomToggle({ children, eventKey }: CustomToggleInterface) {
+    const CustomToggle = ({ children, eventKey }: CustomToggleInterface) => {
         const decoratedOnClick = useAccordionToggle(eventKey, () =>
             console.log('totally custom!'),
         );
@@ -23,11 +26,14 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
         return (<Button variant="secondary" onClick={decoratedOnClick}>{children}</Button>);
     }
 
-    function createMarkup(markup: string): { __html: string } {
-        return ({ __html: markup });
-    }
+    const createMarkup = (markup: string): { __html: string } => ({ __html: markup })
 
     const convertToJSON = (stringifiedContent: string): Instructions => JSON.parse(stringifiedContent)
+
+    const handleSave = (): void => {
+        // show modal update in context
+        modalContext.handleShow!()
+    }
 
     return (
         <Card style={{ width: '18rem' }}>
@@ -61,6 +67,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                     : null
                 }
                 <a href={sourceUrl} target="_blank"><Button variant="primary" style={{ marginTop: '3rem' }}>View Recipe</Button></a>
+                <Button variant="secondary" style={{ margin: '3rem' }} onClick={handleSave}>Save</Button>
             </Card.Body>
         </Card >
     )

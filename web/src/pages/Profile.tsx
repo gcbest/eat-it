@@ -30,8 +30,8 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 };
 
 // TODOs:
-// Fix showing analyzedInstructions
 // Add button to save to favorites from discover
+// Create Modal for Editing/Saving Recipe
 // Add tags to a recipe
 // Use downshift just for general search
 // Each section can filter by tags or recipe info

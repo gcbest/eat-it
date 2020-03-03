@@ -8,36 +8,28 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { spoonacular } from '../lib/api'
-import { AxiosResponse } from 'axios'
 import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
-import { useLazyQuery } from '@apollo/react-hooks';
-import { QueryResult } from '@apollo/react-common';
+import { useLazyQuery } from '@apollo/react-hooks'
+import { EditModal } from 'components/EditModal'
 
+interface ModalInterface {
+    show: boolean
+    handleShow: () => void
+    handleClose: () => void
+}
+
+export const ModalContext = React.createContext<Partial<ModalInterface>>({})
 
 export const Discover: React.FC = () => {
-    // const [recipes, setRecipes] = useState<Recipe[] | Error | AxiosResponse | undefined>(undefined)
-    // const [recipes, setRecipes] = useState<Object[] | Error | AxiosResponse | undefined>(undefined)
-    // const [recipes, setRecipes] = useState<QueryResult | undefined>(undefined)
-    const [recipes, setRecipes] = useState<any>(undefined)
+    // const [recipes, setRecipes] = useState<any>(undefined)
     const queryRef = useRef<HTMLInputElement>(null);
 
-    // const memoizedCallback = useCallback(
-    //     () => {
-    //         if (queryRef !== null && queryRef.current !== null) {
+    const [show, setShow] = useState(false);
 
-    //             const recipeResults = useRandomRecipesQuery({
-    //                 variables: {
-    //                     tags: queryRef.current.value,
-    //                     number: 1
-    //                 }
-    //             })
-    //             setRecipes(recipeResults)
-    //         }
-    //     },
-    //     [],
-    // );
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
@@ -58,12 +50,6 @@ export const Discover: React.FC = () => {
     const handleSearch = async () => {
         try {
             if (queryRef !== null && queryRef.current !== null) {
-                // const results = await spoonacular.random({ tags: queryRef.current.value, number: 2 })
-                // const { data: { recipes: recipeResults } } = results;
-                //debugger;
-
-                // setRecipes([x])
-
                 getRandomRecipes({
                     variables: {
                         tags: queryRef.current.value,
@@ -75,37 +61,17 @@ export const Discover: React.FC = () => {
             }
         } catch (error) {
             //debugger;
-            setRecipes(undefined);
+            // setRecipes(undefined);
             console.error(error);
         }
 
     }
 
-    // useEffect(() => {
-    //     setRecipes(data && data.randomRecipes ? data.randomRecipes : undefined)
-    // }, [recipes])
-
-    // const handleChange = (e: React.FormEvent<FormControl & HTMLInputElement>) => {
-    //     setQuery(e.currentTarget.value)
-    // }
-
-
-
-    // debugger;
-    // useMemo(() => {
-    //     // if (data && data.randomRecipes) {
-    //     setRecipes(data.randomRecipes);
-    //     // }
-    // }, [data])
-
-    // if (data && data.randomRecipes) {
-    //     setRecipes(data.randomRecipes)
-    // }
-
     return (
         <Container>
             <Row>
                 <Col>
+                    <EditModal show={show} handleClose={handleClose} />
                     <InputGroup className="mb-3">
                         <FormControl
                             type="input"
@@ -120,12 +86,10 @@ export const Discover: React.FC = () => {
                     </InputGroup> {
                         loading ?
                             <SpinnerComponent /> :
-                            <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} />
+                            <ModalContext.Provider value={{ show, handleClose, handleShow }}>
+                                <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} />
+                            </ModalContext.Provider>
                     }
-                    {/* <DiscoveryResults recipes={recipes} /> */}
-                    {/* {recipes && <DiscoveryResults recipes={recipes} />} */}
-                    {/* <DiscoveryResults /> */}
-                    {/* </QueryContext.Provider> */}
                 </Col>
             </Row>
         </Container>
