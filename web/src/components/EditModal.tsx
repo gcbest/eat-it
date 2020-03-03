@@ -2,25 +2,24 @@ import React from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
-import { ModalType, MealType } from '../lib/enums'
-import { Recipe } from 'lib/interfaces'
+import { ModalCategory, MealCategory } from '../lib/enums'
+import { Recipe, ModalInterface } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 
 
-interface Props {
-    show: boolean,
-    handleClose: (isSaved: boolean) => void
-    type: ModalType
+interface Props extends ModalInterface {
+    type: ModalCategory
     data: Recipe | null
 }
 
 export const EditModal: React.FC<Props> = ({ show, handleClose, type, data }) => {
-    const renderTitle = (type: ModalType): string => {
+    const renderText = (type: ModalCategory): string => {
+        // let text = {title: '', actionButton: ''}
         switch (type) {
-            case ModalType.New:
-                return 'Save This Recipe'
-            case ModalType.Edit:
-                return 'Edit This Recipe'
+            case ModalCategory.New:
+                return 'Add'
+            case ModalCategory.Edit:
+                return 'Edit'
         }
     }
 
@@ -31,12 +30,12 @@ export const EditModal: React.FC<Props> = ({ show, handleClose, type, data }) =>
     return (
         <Modal show={show} onHide={() => handleClose(false)}>
             <Modal.Header closeButton>
-                <Modal.Title>{renderTitle(type)}</Modal.Title>
+                <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title>
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect2">
                         <Form.Label>Example multiple select</Form.Label>
                         <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
-                            {Object.keys(MealType).filter((key: string | number | any) => !isNaN(Number(MealType[key]))).map((key: string | any) => <option key={key} value={MealType[key]}>{key}</option>)}
+                            {Object.keys(MealCategory).filter((key: string | number | any) => !isNaN(Number(MealCategory[key]))).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
                         </Form.Control>
                     </Form.Group>
                 </Form>
@@ -47,7 +46,7 @@ export const EditModal: React.FC<Props> = ({ show, handleClose, type, data }) =>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => handleClose(true)}>
-                    Save Recipe
+                    {`${renderText(type)} Recipe`}
                 </Button>
             </Modal.Footer>
         </Modal>

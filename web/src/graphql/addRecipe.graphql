@@ -1,0 +1,3 @@
+mutation AddRecipe($recipe: Recipe) {
+    addRecipe(recipe: $recipe)
+}

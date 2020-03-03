@@ -1,4 +1,4 @@
-export default query randomRecipes($tags: String!, $number: Float!) {
+query randomRecipes($tags: String!, $number: Float!) {
   randomRecipes(tags: $tags, number: $number) {
     id
     title

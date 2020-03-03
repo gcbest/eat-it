@@ -27,6 +27,6 @@ export interface CustomToggleInterface {
 
 export interface ModalInterface {
     show: boolean
-    handleShow: (recipe: Recipe) => void
-    handleClose: (isSaved: boolean) => void
+    handleShow?: (recipe: Recipe) => void
+    handleClose: (isSaved: boolean, data?: Recipe) => void
 }

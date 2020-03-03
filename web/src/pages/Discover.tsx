@@ -10,10 +10,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
-import { useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { EditModal } from 'components/EditModal'
 import { ModalInterface } from '../lib/interfaces'
-import { ModalType } from '../lib/enums'
+import { ModalCategory } from '../lib/enums'
 
 
 
@@ -30,7 +30,11 @@ export const Discover: React.FC = () => {
         // save the result to DB
         // create mutation
         if (isSaved) {
-
+            addRecipe({
+                variables: {
+                    recipe: modalInfo
+                }
+            })
         }
 
 
@@ -58,6 +62,11 @@ export const Discover: React.FC = () => {
         }
     `);
 
+    const [addRecipe, { loading: addRecipeLoading, data: addRecipeData }] = useMutation(gql`
+        mutation AddRecipe($recipe: Recipe) {
+        addRecipe(recipe: $recipe)
+        }
+    `)
 
     const handleSearch = async () => {
         setHasSearched(true)
@@ -80,7 +89,7 @@ export const Discover: React.FC = () => {
         <Container>
             <Row>
                 <Col>
-                    <EditModal show={show} handleClose={handleClose} type={ModalType.New} data={modalInfo} />
+                    <EditModal show={show} handleClose={handleClose} type={ModalCategory.New} data={modalInfo} />
                     <InputGroup className="mb-3">
                         <FormControl
                             type="input"

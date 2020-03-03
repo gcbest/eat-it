@@ -2,34 +2,46 @@ import {
     Resolver, Query,
     // Mutation,
     Arg,
-    //  ObjectType,
-    //  Field,
+    // ObjectType,
+    InputType,
+    // Length,
+    Field,
     // Ctx,
-    // UseMiddleware,
+    UseMiddleware,
+    Mutation,
     //  Int
 } from 'type-graphql';
 import { Recipe } from '../entity/Recipe';
-// import { isAuth } from '../isAuth';
+import { isAuth } from '../isAuth';
 // import { MyContext } from "../MyContext";
 import { spoonacular } from '../util/util'
 
-// @ObjectType()
-// class RecipeClass {
-//     @Field(() => Recipe)
-//     recipe: Recipe;
-// }
+@InputType()
+class AddRecipeInput implements Partial<Recipe> {
+    @Field()
+    title: string;
+    @Field()
+    readyInMinutes: number;
+    @Field()
+    servings: number;
+    @Field()
+    image: string;
+    @Field()
+    summary: string;
+    @Field()
+    sourceUrl: string;
+    @Field()
+    analyzedInstructions: string;
+}
 
 @Resolver()
 export class RecipeResolver {
     @Query(() => [Recipe])
-    // @UseMiddleware(isAuth)
-    // async randomRecipes(@Ctx() { req }: MyContext) {
+    @UseMiddleware(isAuth)
     async randomRecipes(
         @Arg("tags") tags: string,
         @Arg("number") number: number
     ) {
-        // console.log(req.body)
-        // const { tags = 'vegetarian', number = 1 } = req.body
         let params = { tags, number }
         try {
             const results = await spoonacular.random(params)
@@ -45,4 +57,49 @@ export class RecipeResolver {
             return err;
         }
     }
+
+    @Mutation(() => Boolean)
+    async addRecipe(@Arg("data") newRecipeData: AddRecipeInput): Promise<Boolean> {
+        // sample implementation
+        // const recipe = Recipe.create(newRecipeData, ctx.req.body.user);
+        const recipe = await Recipe.insert(newRecipeData)
+
+        console.log(recipe);
+        return true;
+
+    }
 }
+
+
+
+
+
+/*
+
+@Mutation(() => Boolean)
+async createRecipe(
+        // @Arg("recipe", () => RecipeClass) recipe: RecipeClass
+        @Arg("data", () => RecipeClass)
+{
+    // email,
+    // firstName,
+    // lastName,
+    title
+}: Recipe
+    ) {
+    try {
+        let x = {
+            title
+            // email,
+            // firstName,
+            // lastName,
+        }
+        await Recipe.create(x).save()
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+    return true
+}
+}
+*/

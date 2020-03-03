@@ -1,9 +1,9 @@
-export enum ModalType {
+export enum ModalCategory {
     New,
     Edit
 }
 
-export enum MealType {
+export enum MealCategory {
     Breakfast,
     Lunch,
     Dinner,
