@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import hasIn from '@bit/lodash.lodash.has-in'
+// import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks'
 import { EditModal } from 'components/EditModal'
@@ -20,14 +20,24 @@ import { ModalType } from '../lib/enums'
 export const ModalContext = React.createContext<Partial<ModalInterface>>({})
 
 export const Discover: React.FC = () => {
-    // const [recipes, setRecipes] = useState<any>(undefined)
     const queryRef = useRef<HTMLInputElement>(null);
 
     const [show, setShow] = useState(false);
     const [modalInfo, setModalInfo] = useState<Recipe | null>(null)
+    const [hasSearched, setHasSearched] = useState(false)
+
+    const handleClose = (isSaved: boolean) => {
+        // save the result to DB
+        // create mutation
+        if (isSaved) {
+
+        }
 
 
-    const handleClose = () => setShow(false);
+        setShow(false)
+    }
+
+
     const handleShow = (recipe: Recipe) => {
         setModalInfo(recipe)
         setShow(true)
@@ -50,6 +60,7 @@ export const Discover: React.FC = () => {
 
 
     const handleSearch = async () => {
+        setHasSearched(true)
         try {
             if (queryRef !== null && queryRef.current !== null) {
                 getRandomRecipes({
@@ -58,13 +69,9 @@ export const Discover: React.FC = () => {
                         number: 1
                     }
                 })
-                // debugger;
-                // setRecipes(data && data.randomRecipes ? data.randomRecipes : undefined)
             }
         } catch (error) {
-            //debugger;
-            // setRecipes(undefined);
-            console.error(error);
+            console.error(error)
         }
 
     }
@@ -89,7 +96,7 @@ export const Discover: React.FC = () => {
                         loading ?
                             <SpinnerComponent /> :
                             <ModalContext.Provider value={{ show, handleClose, handleShow }}>
-                                <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} />
+                                <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
                             </ModalContext.Provider>
                     }
                 </Col>
