@@ -32,5 +32,10 @@ export interface ModalInterface {
 }
 
 export interface AddRecipeInput extends Recipe {
+    userId?: number
+}
 
+export interface User {
+    id: number
+    email: string
 }
