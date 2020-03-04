@@ -12,26 +12,30 @@ import {
     //  Int
 } from 'type-graphql';
 import { Recipe } from '../entity/Recipe';
+import { User } from '../entity/User';
 import { isAuth } from '../isAuth';
 // import { MyContext } from "../MyContext";
 import { spoonacular } from '../util/util'
 
 @InputType()
 class AddRecipeInput implements Partial<Recipe> {
+    // class AddRecipeInput {
     @Field()
-    title: string;
+    title: string
     @Field()
-    readyInMinutes: number;
+    readyInMinutes: number
     @Field()
-    servings: number;
+    servings: number
     @Field()
-    image: string;
+    image: string
     @Field()
-    summary: string;
+    summary: string
     @Field()
-    sourceUrl: string;
+    sourceUrl: string
     @Field()
-    analyzedInstructions: string;
+    analyzedInstructions: string
+    @Field()
+    userId: number
 }
 
 @Resolver()
@@ -58,14 +62,22 @@ export class RecipeResolver {
         }
     }
 
-    @Mutation(() => Boolean)
-    async addRecipe(@Arg("input") input: AddRecipeInput): Promise<Boolean> {
+    @Mutation(() => Boolean, { nullable: true })
+    async addRecipe(@Arg("input") input: AddRecipeInput): Promise<Boolean | null> {
         // sample implementation
         // const recipe = Recipe.create(input, ctx.req.body.user);
-        const recipe = await Recipe.insert(input)
+        try {
+            const user = await User.findOne({ id: input.userId })
+            const newRecipe = { ...input, user: user! }
+            const recipe = await Recipe.insert(newRecipe)
 
-        console.log(recipe);
-        return true;
+            console.log(recipe);
+            return true;
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+
 
     }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes } from './Routes';
-import { setAccessToken } from './accessToken';
+import { setAccessToken } from './lib/accessToken';
 import './styles/App.css'
 
 interface Props { }

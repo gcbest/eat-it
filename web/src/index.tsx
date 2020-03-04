@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { ApolloProvider } from "@apollo/react-hooks"
-import { getAccessToken, setAccessToken } from "./accessToken"
+import { getAccessToken, setAccessToken } from "./lib/accessToken"
 import { App } from "./App"
 import { ApolloClient } from "apollo-client"
 import { InMemoryCache } from "apollo-cache-inmemory"

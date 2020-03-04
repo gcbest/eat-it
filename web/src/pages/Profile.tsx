@@ -30,13 +30,13 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 };
 
 // TODOs:
-// Add button to save to favorites from discover
-// Create Modal for Editing/Saving Recipe
+// Connect tables (add recipe id to list of user recipes)
 // Add tags to a recipe
+// Add profile page components
 // Use downshift just for general search
 // Each section can filter by tags or recipe info
-// 
-// 
+// can choose a random meal from your saved list
+
 // Create CRUD app
 // Able to hit spoonacular API and get search results or save a recipe URL
 // can add tags to each recipe to sort them

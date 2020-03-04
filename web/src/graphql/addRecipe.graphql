@@ -6,6 +6,7 @@ input AddRecipeInput  {
         summary: string
         sourceUrl: string
         analyzedInstructions: string
+        userId: number
     }
 
 mutation AddRecipe($recipe: AddRecipeInput!) {

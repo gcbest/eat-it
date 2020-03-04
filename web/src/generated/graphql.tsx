@@ -19,21 +19,22 @@ export type AddRecipeInput = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  userId: Scalars['Float'],
 };
 
 export type LoginResponse = {
-   __typename?: 'LoginResponse',
+  __typename?: 'LoginResponse',
   accessToken: Scalars['String'],
   user: User,
 };
 
 export type Mutation = {
-   __typename?: 'Mutation',
+  __typename?: 'Mutation',
   logout: Scalars['Boolean'],
   revokeRefreshTokensForUser: Scalars['Boolean'],
   login: LoginResponse,
   register: Scalars['Boolean'],
-  addRecipe: Scalars['Boolean'],
+  addRecipe?: Maybe<Scalars['Boolean']>,
 };
 
 
@@ -61,7 +62,7 @@ export type MutationAddRecipeArgs = {
 };
 
 export type Query = {
-   __typename?: 'Query',
+  __typename?: 'Query',
   hello: Scalars['String'],
   bye: Scalars['String'],
   users: Array<User>,
@@ -76,7 +77,7 @@ export type QueryRandomRecipesArgs = {
 };
 
 export type Recipe = {
-   __typename?: 'Recipe',
+  __typename?: 'Recipe',
   id: Scalars['Int'],
   title: Scalars['String'],
   readyInMinutes: Scalars['Int'],
@@ -88,10 +89,11 @@ export type Recipe = {
 };
 
 export type User = {
-   __typename?: 'User',
+  __typename?: 'user',
   id: Scalars['Int'],
   email: Scalars['String'],
 };
+
 export type AddRecipeMutationVariables = {
   recipe: AddRecipeInput
 };
@@ -126,14 +128,18 @@ export type LoginMutationVariables = {
 
 export type LoginMutation = (
   { __typename?: 'Mutation' }
-  & { login: (
-    { __typename?: 'LoginResponse' }
-    & Pick<LoginResponse, 'accessToken'>
-    & { user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'email'>
-    ) }
-  ) }
+  & {
+    login: (
+      { __typename?: 'LoginResponse' }
+      & Pick<LoginResponse, 'accessToken'>
+      & {
+        user: (
+          { __typename?: 'user' }
+          & Pick<User, 'id' | 'email'>
+        )
+      }
+    )
+  }
 );
 
 export type LogoutMutationVariables = {};
@@ -149,10 +155,25 @@ export type MeQueryVariables = {};
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'email'>
-  )> }
+  & {
+    me: Maybe<(
+      { __typename?: 'user' }
+      & Pick<User, 'id' | 'email'>
+    )>
+  }
+);
+
+export type MeLocalQueryVariables = {};
+
+
+export type MeLocalQuery = (
+  { __typename?: 'Query' }
+  & {
+    me: Maybe<(
+      { __typename?: 'user' }
+      & Pick<User, 'id' | 'email'>
+    )>
+  }
 );
 
 export type RandomRecipesQueryVariables = {
@@ -163,10 +184,12 @@ export type RandomRecipesQueryVariables = {
 
 export type RandomRecipesQuery = (
   { __typename?: 'Query' }
-  & { randomRecipes: Array<(
-    { __typename?: 'Recipe' }
-    & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions'>
-  )> }
+  & {
+    randomRecipes: Array<(
+      { __typename?: 'Recipe' }
+      & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions'>
+    )>
+  }
 );
 
 export type RegisterMutationVariables = {
@@ -187,10 +210,12 @@ export type UsersQueryVariables = {};
 
 export type UsersQuery = (
   { __typename?: 'Query' }
-  & { users: Array<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'email'>
-  )> }
+  & {
+    users: Array<(
+      { __typename?: 'user' }
+      & Pick<User, 'id' | 'email'>
+    )>
+  }
 );
 
 export const AddRecipeDocument = gql`
@@ -200,9 +225,9 @@ export const AddRecipeDocument = gql`
     `;
 export type AddRecipeMutationFn = ApolloReactCommon.MutationFunction<AddRecipeMutation, AddRecipeMutationVariables>;
 
-    export function useAddRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddRecipeMutation, AddRecipeMutationVariables>) {
-      return ApolloReactHooks.useMutation<AddRecipeMutation, AddRecipeMutationVariables>(AddRecipeDocument, baseOptions);
-    }
+export function useAddRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddRecipeMutation, AddRecipeMutationVariables>) {
+  return ApolloReactHooks.useMutation<AddRecipeMutation, AddRecipeMutationVariables>(AddRecipeDocument, baseOptions);
+}
 export type AddRecipeMutationHookResult = ReturnType<typeof useAddRecipeMutation>;
 export type AddRecipeMutationResult = ApolloReactCommon.MutationResult<AddRecipeMutation>;
 export type AddRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<AddRecipeMutation, AddRecipeMutationVariables>;
@@ -212,13 +237,13 @@ export const ByeDocument = gql`
 }
     `;
 
-    export function useByeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ByeQuery, ByeQueryVariables>) {
-      return ApolloReactHooks.useQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
-    }
-      export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ByeQuery, ByeQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
-      }
-      
+export function useByeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ByeQuery, ByeQueryVariables>) {
+  return ApolloReactHooks.useQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
+}
+export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ByeQuery, ByeQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<ByeQuery, ByeQueryVariables>(ByeDocument, baseOptions);
+}
+
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const HelloDocument = gql`
@@ -227,13 +252,13 @@ export const HelloDocument = gql`
 }
     `;
 
-    export function useHelloQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HelloQuery, HelloQueryVariables>) {
-      return ApolloReactHooks.useQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
-    }
-      export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<HelloQuery, HelloQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
-      }
-      
+export function useHelloQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HelloQuery, HelloQueryVariables>) {
+  return ApolloReactHooks.useQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
+}
+export function useHelloLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<HelloQuery, HelloQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<HelloQuery, HelloQueryVariables>(HelloDocument, baseOptions);
+}
+
 export type HelloQueryHookResult = ReturnType<typeof useHelloQuery>;
 export type HelloQueryResult = ApolloReactCommon.QueryResult<HelloQuery, HelloQueryVariables>;
 export const LoginDocument = gql`
@@ -249,9 +274,9 @@ export const LoginDocument = gql`
     `;
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
-    export function useLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-      return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
-    }
+export function useLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+  return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+}
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation>;
 export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
@@ -262,9 +287,9 @@ export const LogoutDocument = gql`
     `;
 export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
-    export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-      return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
-    }
+export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+  return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+}
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
@@ -277,15 +302,33 @@ export const MeDocument = gql`
 }
     `;
 
-    export function useMeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>) {
-      return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-    }
-      export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-      }
-      
+export function useMeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>) {
+  return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
+export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
+
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
+export const MeLocalDocument = gql`
+    query meLocal {
+  me @client {
+    id
+    email
+  }
+}
+    `;
+
+export function useMeLocalQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeLocalQuery, MeLocalQueryVariables>) {
+  return ApolloReactHooks.useQuery<MeLocalQuery, MeLocalQueryVariables>(MeLocalDocument, baseOptions);
+}
+export function useMeLocalLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeLocalQuery, MeLocalQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<MeLocalQuery, MeLocalQueryVariables>(MeLocalDocument, baseOptions);
+}
+
+export type MeLocalQueryHookResult = ReturnType<typeof useMeLocalQuery>;
+export type MeLocalQueryResult = ApolloReactCommon.QueryResult<MeLocalQuery, MeLocalQueryVariables>;
 export const RandomRecipesDocument = gql`
     query randomRecipes($tags: String!, $number: Float!) {
   randomRecipes(tags: $tags, number: $number) {
@@ -301,13 +344,13 @@ export const RandomRecipesDocument = gql`
 }
     `;
 
-    export function useRandomRecipesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RandomRecipesQuery, RandomRecipesQueryVariables>) {
-      return ApolloReactHooks.useQuery<RandomRecipesQuery, RandomRecipesQueryVariables>(RandomRecipesDocument, baseOptions);
-    }
-      export function useRandomRecipesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RandomRecipesQuery, RandomRecipesQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<RandomRecipesQuery, RandomRecipesQueryVariables>(RandomRecipesDocument, baseOptions);
-      }
-      
+export function useRandomRecipesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<RandomRecipesQuery, RandomRecipesQueryVariables>) {
+  return ApolloReactHooks.useQuery<RandomRecipesQuery, RandomRecipesQueryVariables>(RandomRecipesDocument, baseOptions);
+}
+export function useRandomRecipesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<RandomRecipesQuery, RandomRecipesQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<RandomRecipesQuery, RandomRecipesQueryVariables>(RandomRecipesDocument, baseOptions);
+}
+
 export type RandomRecipesQueryHookResult = ReturnType<typeof useRandomRecipesQuery>;
 export type RandomRecipesQueryResult = ApolloReactCommon.QueryResult<RandomRecipesQuery, RandomRecipesQueryVariables>;
 export const RegisterDocument = gql`
@@ -317,9 +360,9 @@ export const RegisterDocument = gql`
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
-    export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-      return ApolloReactHooks.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
-    }
+export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+  return ApolloReactHooks.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+}
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
@@ -332,12 +375,12 @@ export const UsersDocument = gql`
 }
     `;
 
-    export function useUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-      return ApolloReactHooks.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
-    }
-      export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
-      }
-      
+export function useUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+  return ApolloReactHooks.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+}
+export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+}
+
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;

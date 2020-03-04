@@ -9,7 +9,7 @@ export interface Instructions {
 }
 
 export interface Recipe {
-    id: number;
+    id?: number;
     title: string;
     readyInMinutes: number;
     servings: number;

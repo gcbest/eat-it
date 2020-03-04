@@ -14,7 +14,7 @@ import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { EditModal } from 'components/EditModal'
 import { ModalInterface } from '../lib/interfaces'
 import { ModalCategory } from '../lib/enums'
-import { useAddRecipeMutation, AddRecipeInput } from 'generated/graphql';
+import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQuery } from 'generated/graphql';
 
 
 
@@ -30,9 +30,14 @@ export const Discover: React.FC = () => {
     const handleClose = (isSaved: boolean) => {
         if (isSaved && modalInfo) {
             const formattedRecipe = { ...modalInfo }
+            formattedRecipe.userId = dataLocal!.me!.id
             // remove properties not needed by mutation
             delete formattedRecipe.id
             delete formattedRecipe.__typename
+            // getMeLocal()
+            console.log(`ME LOCAL: ${dataLocal}`);
+
+
             addRecipe({
                 variables: {
                     recipe: formattedRecipe
@@ -65,23 +70,18 @@ export const Discover: React.FC = () => {
         }
     `);
 
-    // class AddRecipeInput implements Partial<Recipe> {
-    // input AddRecipeInput  {
-    //     title: string;
-    //     readyInMinutes: number;
-    //     servings: number;
-    //     image: string;
-    //     summary: string;
-    //     sourceUrl: string;
-    //     analyzedInstructions: string;
-    // }
-    const [addRecipe] = useAddRecipeMutation()
+    // const [getMeLocal, { data: dataLocal, loading: loadingLocal }] = useMeLocalLazyQuery()
+    const { data: dataLocal, loading: loadingLocal } = useMeLocalQuery()
 
-    // const [addRecipe, { loading: addRecipeLoading, data: addRecipeData }] = useMutation(gql`
-    //     mutation AddRecipe($recipe: AddRecipeInput) {
-    //     addRecipe(input: $recipe)
-    //     }
-    // `)
+    if (loadingLocal)
+        console.log('loading local');
+
+    if (dataLocal)
+        console.log(dataLocal);
+
+
+
+    const [addRecipe] = useAddRecipeMutation()
 
     const handleSearch = async () => {
         setHasSearched(true)

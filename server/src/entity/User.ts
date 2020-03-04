@@ -2,12 +2,17 @@ import {
   Entity, PrimaryGeneratedColumn, Column, BaseEntity,
   OneToMany
 } from "typeorm";
-import { ObjectType, Field, Int } from "type-graphql";
+import {
+  ObjectType,
+  Field,
+  Int,
+  InputType,
+} from "type-graphql";
 import { Recipe } from './Recipe';
-import { UserRecipe } from './UserRecipe';
 
-@ObjectType()
-@Entity("users")
+@ObjectType('user')
+@InputType()
+@Entity('users')
 export class User extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
@@ -29,6 +34,6 @@ export class User extends BaseEntity {
   @Column("int", { default: 0 })
   tokenVersion: number;
 
-  @OneToMany(() => UserRecipe, ur => ur.user)
-  recipeConnection: Promise<Recipe[]>;
+  @OneToMany(() => Recipe, recipe => recipe.user, { cascade: true })
+  recipes: Recipe[]
 }

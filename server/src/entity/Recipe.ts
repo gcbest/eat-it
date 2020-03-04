@@ -1,9 +1,14 @@
 import {
   Entity, PrimaryGeneratedColumn, Column, BaseEntity,
-  OneToMany
+  ManyToOne
 } from "typeorm";
-import { ObjectType, Field, Int } from "type-graphql";
-import { UserRecipe } from "./UserRecipe";
+import {
+  ObjectType,
+  Field,
+  Int
+} from "type-graphql";
+import { User } from "./User";
+
 
 @ObjectType()
 @Entity("recipes")
@@ -40,6 +45,6 @@ export class Recipe extends BaseEntity {
   @Column("text")
   analyzedInstructions: string;
 
-  @OneToMany(() => UserRecipe, ur => ur.recipe)
-  userConnection: Promise<UserRecipe[]>;
+  @ManyToOne(() => User, user => user.recipes, { onDelete: 'CASCADE' })
+  user: User
 }

@@ -1,0 +1,6 @@
+query meLocal {
+    me @client {
+        id
+        email
+    }
+}

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { setAccessToken } from "../accessToken";
+import { setAccessToken } from "../lib/accessToken";
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 
 
