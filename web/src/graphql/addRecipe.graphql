@@ -1,11 +1,11 @@
 input AddRecipeInput  {
         title: string
-        readyInMinutes: number
-        servings: number
-        image: string
-        summary: string
-        sourceUrl: string
-        analyzedInstructions: string
+        # readyInMinutes: number
+        # servings: number
+        # image: string
+        # summary: string
+        # sourceUrl: string
+        # analyzedInstructions: string
         userId: number
     }
 

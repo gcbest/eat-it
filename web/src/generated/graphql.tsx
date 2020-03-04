@@ -19,6 +19,7 @@ export type AddRecipeInput = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  mealType: Scalars['Float'],
   userId: Scalars['Float'],
 };
 
@@ -86,6 +87,7 @@ export type Recipe = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  mealType: Scalars['Int'],
 };
 
 export type User = {

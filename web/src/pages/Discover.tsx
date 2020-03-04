@@ -21,7 +21,6 @@ export const Discover: React.FC = () => {
 
     const [hasSearched, setHasSearched] = useState(false)
 
-    //TODO: change name from oldData
     const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
         randomRecipes(tags: $tags, number: $number) {
@@ -54,7 +53,7 @@ export const Discover: React.FC = () => {
             if (queryRef !== null && queryRef.current !== null) {
                 getRandomRecipes({
                     variables: {
-                        tags: queryRef.current.value,
+                        tags: queryRef.current.value.toLowerCase(),
                         number: 1
                     }
                 })
@@ -835,7 +834,6 @@ export const Discover: React.FC = () => {
                     </InputGroup> {
                         loading ?
                             <SpinnerComponent /> :
-                            // TODO: remove as any on next line
                             <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
                     }
                 </Col>
