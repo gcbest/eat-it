@@ -35,6 +35,8 @@ class AddRecipeInput implements Partial<Recipe> {
     @Field()
     analyzedInstructions: string
     @Field()
+    mealType: number
+    @Field()
     userId: number
 }
 

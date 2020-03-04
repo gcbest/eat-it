@@ -19,4 +19,5 @@ export interface RecipeInterface {
     sourceUrl: string;
     // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
+    mealType: number
 }

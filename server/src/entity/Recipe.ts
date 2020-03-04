@@ -45,6 +45,10 @@ export class Recipe extends BaseEntity {
   @Column("text")
   analyzedInstructions: string;
 
+  @Field(() => Int)
+  @Column()
+  mealType: number;
+
   @ManyToOne(() => User, user => user.recipes, { onDelete: 'CASCADE' })
   user: User
 }

@@ -11,14 +11,12 @@ import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 interface Props extends ModalInterface {
     options: {
         type: ModalCategory
-        // user: User
     }
     recipe: Recipe | null
 }
 
 export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
     const { type } = options
-    // const [getMeLocal, { data: dataLocal, loading: loadingLocal }] = useMeLocalLazyQuery()
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
 
@@ -40,12 +38,11 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
 
     const handleSave = () => {
         if (recipe) {
-            const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id }
+            const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
             // remove properties not needed by mutation
             delete formattedRecipe.id
             delete formattedRecipe.__typename
-            // getMeLocal()
-            console.log(`ME LOCAL: ${user}`);
+            console.log('adding recipe');
 
             addRecipe({
                 variables: {
@@ -58,7 +55,7 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     }
 
     const { inputs, handleChange } = useForm({
-        mealType: ""
+        mealType: 1
     });
 
     return (
@@ -79,7 +76,7 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 <p>{recipe ? recipe.summary : ''}</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => handleSave}>
+                <Button variant="secondary" onClick={handleSave}>
                     {`${renderText(type)} Recipe`}
                 </Button>
             </Modal.Footer>

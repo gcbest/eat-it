@@ -33,7 +33,9 @@ export interface ModalInterface {
 
 export interface AddRecipeInput extends Recipe {
     userId: number
+    mealType: number
     __typename?: string
+
 }
 
 export interface User {
