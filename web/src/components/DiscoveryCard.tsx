@@ -1,14 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Accordion from 'react-bootstrap/Accordion'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
-import { ModalContext } from '../pages/Discover'
-
+// import { ModalContext } from '../pages/Discover'
+import { ModalCategory } from '../lib/enums'
+import { EditRecipeModal } from 'components/EditRecipeModal'
 
 import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
-
 
 interface Props<T> {
     recipe: T;
@@ -16,7 +16,12 @@ interface Props<T> {
 
 export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
     const { title, readyInMinutes, servings, image, summary, analyzedInstructions, sourceUrl } = recipe
-    const modalContext = useContext(ModalContext)
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    // const modalContext = useContext(ModalContext)
 
     const CustomToggle = ({ children, eventKey }: CustomToggleInterface) => {
         const decoratedOnClick = useAccordionToggle(eventKey, () =>
@@ -30,13 +35,10 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
     const convertToJSON = (stringifiedContent: string): Instructions => JSON.parse(stringifiedContent)
 
-    const handleSave = (): void => {
-        // show modal update in context
-        modalContext.handleShow!(recipe)
-    }
-
     return (
         <Card style={{ width: '18rem' }}>
+            <EditRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.New }} recipe={recipe} />
+
             <Card.Img variant="top" src={image} />
             <Card.Body style={{ maxHeight: '8rem', overflowY: "scroll" }}>
                 <Card.Title>{title}</Card.Title>
@@ -54,12 +56,12 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
-                                    <ListGroup>
+                                    {/* <ListGroup>
                                         {convertToJSON(analyzedInstructions)
                                             .steps.map((s: any) => {
                                                 return (<ListGroup.Item key={s.number}>{s.number}. {s.step}</ListGroup.Item>)
                                             })}
-                                    </ListGroup>
+                                    </ListGroup> */}
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
@@ -67,7 +69,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                     : null
                 }
                 <a href={sourceUrl} target="_blank"><Button variant="primary" style={{ marginTop: '3rem' }}>View Recipe</Button></a>
-                <Button variant="secondary" style={{ margin: '3rem' }} onClick={handleSave}>Save</Button>
+                <Button variant="secondary" style={{ margin: '3rem' }} onClick={handleShow}>Add Recipe</Button>
             </Card.Body>
         </Card >
     )

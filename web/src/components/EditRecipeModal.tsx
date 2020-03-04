@@ -3,16 +3,31 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
-import { Recipe, ModalInterface } from 'lib/interfaces'
+import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
+import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 
 
 interface Props extends ModalInterface {
-    type: ModalCategory
-    data: Recipe | null
+    options: {
+        type: ModalCategory
+        // user: User
+    }
+    recipe: Recipe | null
 }
 
-export const EditModal: React.FC<Props> = ({ show, handleClose, type, data }) => {
+export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+    const { type } = options
+    // const [getMeLocal, { data: dataLocal, loading: loadingLocal }] = useMeLocalLazyQuery()
+    const [addRecipe] = useAddRecipeMutation()
+    const { data: user, loading: loadingLocal } = useMeLocalQuery()
+
+    if (loadingLocal)
+        console.log('loading local');
+
+    if (user)
+        console.log(user);
+
     const renderText = (type: ModalCategory): string => {
         // let text = {title: '', actionButton: ''}
         switch (type) {
@@ -23,12 +38,31 @@ export const EditModal: React.FC<Props> = ({ show, handleClose, type, data }) =>
         }
     }
 
+    const handleSave = () => {
+        if (recipe) {
+            const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id }
+            // remove properties not needed by mutation
+            delete formattedRecipe.id
+            delete formattedRecipe.__typename
+            // getMeLocal()
+            console.log(`ME LOCAL: ${user}`);
+
+            addRecipe({
+                variables: {
+                    recipe: formattedRecipe
+                }
+            })
+        }
+
+        handleClose()
+    }
+
     const { inputs, handleChange } = useForm({
         mealType: ""
     });
 
     return (
-        <Modal show={show} onHide={() => handleClose(false)}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title>
                 <Form>
@@ -41,11 +75,11 @@ export const EditModal: React.FC<Props> = ({ show, handleClose, type, data }) =>
                 </Form>
             </Modal.Header>
             <Modal.Body>
-                <h3>{data ? data.title : ''}</h3>
-                <p>{data ? data.summary : ''}</p>
+                <h3>{recipe ? recipe.title : ''}</h3>
+                <p>{recipe ? recipe.summary : ''}</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => handleClose(true)}>
+                <Button variant="secondary" onClick={() => handleSave}>
                     {`${renderText(type)} Recipe`}
                 </Button>
             </Modal.Footer>

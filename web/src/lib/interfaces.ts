@@ -28,11 +28,12 @@ export interface CustomToggleInterface {
 export interface ModalInterface {
     show: boolean
     handleShow?: (recipe: Recipe) => void
-    handleClose: (isSaved: boolean, data?: Recipe) => void
+    handleClose: () => void
 }
 
 export interface AddRecipeInput extends Recipe {
-    userId?: number
+    userId: number
+    __typename?: string
 }
 
 export interface User {
