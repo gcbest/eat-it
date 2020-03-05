@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form';
-import useForm from 'lib/useForm';
-// import { MealCategory } from 'lib/enums';
 import { RecipeSlim } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 
@@ -14,9 +12,18 @@ interface Props {
 }
 
 export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
-    const { inputs, handleChange } = useForm({
-        filter: 1
-    });
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchResults, setSearchResults] = useState<RecipeSlim[]>([])
+
+    const handleFilter = (e: any) => {
+        setSearchTerm(e.target.value)
+    }
+
+    useEffect(() => {
+        const results: RecipeSlim[] = recipesSlim.filter(rs => searchTerm === '' || rs.title.toLowerCase().trim().includes(searchTerm.toLowerCase()))
+        setSearchResults(results)
+    }, [searchTerm])
+
 
     return (
         <Card>
@@ -24,19 +31,16 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
             <Card.Body>
                 <Card.Title>
                     <Form>
-                        <Form.Group controlId={`${header}-filter`}>
-                            <Form.Control name={`${header}-filter`} value={inputs.filter} onChange={handleChange} placeholder='Filter Recipes'>
-
+                        <Form.Group controlId={`${header}Filter`}>
+                            <Form.Control name={`${header}Query`} value={searchTerm} onChange={handleFilter} placeholder='Filter Recipes'>
                             </Form.Control>
                         </Form.Group>
                     </Form>
                 </Card.Title>
                 <ListGroup>
-                    {recipesSlim &&
-                        recipesSlim.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} />)}
-
+                    {searchResults &&
+                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} />)}
                 </ListGroup>
-
             </Card.Body>
             <Card.Footer>
                 <Button>Add New</Button>
