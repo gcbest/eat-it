@@ -21,6 +21,7 @@ export interface Recipe {
 }
 
 export interface RecipeSlim {
+    id: number
     title: string
     image: string
     mealType: number

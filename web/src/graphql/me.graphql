@@ -3,6 +3,7 @@ query Me {
     id
     email
     recipes {
+      id
       title
       image
       mealType

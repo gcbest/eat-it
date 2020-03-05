@@ -1,33 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { MealCategory } from 'lib/enums'
 import { MealCard } from './MealCard'
 import { RecipeSlim } from 'lib/interfaces'
 import { getEnumNames, getKeyByValue } from 'lib/utils'
 
 interface Props {
-    recipesSlim: RecipeSlim[]
+    recipesSlim: RecipeSlim[] | undefined
 }
 
 export const MealsArea: React.FC<Props> = ({ recipesSlim }) => {
-    // TODO: filter recipesSlim based on Meal type
-    const sortedMeals: any = {}
-    useEffect(() => {
-        // loop thru each MealCategory, create separate empty array for each one 
-        getEnumNames(MealCategory).map(mealName => {
-            sortedMeals[mealName] = []
-        })
-        // loop thru recipesSlim and push to corresponding array
-        recipesSlim.forEach(rcpSlm => {
-            const mealName = getKeyByValue(MealCategory, rcpSlm.mealType)
-            sortedMeals[mealName!].push(rcpSlm)
-        })
-    }, [recipesSlim])
+
+    const sortedMeals: any = getEnumNames(MealCategory).reduce((acc, currentMealName) => {
+        return { ...acc, [currentMealName]: [] }
+    }, {})
+
+    if (recipesSlim === undefined || (Array.isArray(recipesSlim) && recipesSlim.length < 1))
+        return null
+
+    recipesSlim.forEach(rcpSlm => {
+        const mealName = getKeyByValue(MealCategory, rcpSlm.mealType)
+        sortedMeals[mealName!].push(rcpSlm)
+    })
 
     return (
         <div>
             {getEnumNames(MealCategory).map(mealName => {
                 const recipesForThisMeal = sortedMeals[mealName]
-                return <MealCard header={mealName} recipesSlim={recipesForThisMeal} />
+                return <MealCard key={mealName} header={mealName} recipesSlim={recipesForThisMeal} />
             })}
         </div>
     )

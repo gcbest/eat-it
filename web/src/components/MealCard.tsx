@@ -20,7 +20,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
 
     return (
         <Card>
-            <Card.Header>Breakfast</Card.Header>
+            <Card.Header>{header}</Card.Header>
             <Card.Body>
                 <Card.Title>
                     <Form>
@@ -32,9 +32,8 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
                     </Form>
                 </Card.Title>
                 <ListGroup>
-                    {/* {recipesSlim.map(rcpSlm => {
-                        <MealItem />
-                    })} */}
+                    {recipesSlim &&
+                        recipesSlim.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} />)}
 
                 </ListGroup>
 

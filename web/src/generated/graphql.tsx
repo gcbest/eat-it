@@ -157,7 +157,7 @@ export type LoginMutation = (
           & {
             recipes: Array<(
               { __typename?: 'Recipe' }
-              & Pick<Recipe, 'title' | 'image' | 'mealType'>
+              & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
             )>
           }
         )
@@ -186,7 +186,7 @@ export type MeQuery = (
       & {
         recipes: Array<(
           { __typename?: 'Recipe' }
-          & Pick<Recipe, 'title' | 'image' | 'mealType'>
+          & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
         )>
       }
     )>
@@ -205,7 +205,7 @@ export type MeLocalQuery = (
       & {
         recipes: Array<(
           { __typename?: 'Recipe' }
-          & Pick<Recipe, 'title' | 'image' | 'mealType'>
+          & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
         )>
       }
     )>
@@ -305,6 +305,7 @@ export const LoginDocument = gql`
       id
       email
       recipes {
+        id
         title
         image
         mealType
@@ -340,6 +341,7 @@ export const MeDocument = gql`
     id
     email
     recipes {
+      id
       title
       image
       mealType
@@ -363,6 +365,7 @@ export const MeLocalDocument = gql`
     id
     email
     recipes {
+      id
       title
       image
       mealType

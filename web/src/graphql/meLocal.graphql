@@ -3,6 +3,7 @@ query meLocal {
         id
         email
         recipes {
+            id
             title
             image
             mealType

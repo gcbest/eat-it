@@ -1,5 +1,5 @@
 import React from "react";
-import { useByeQuery } from "../generated/graphql";
+import { useMeLocalQuery } from "../generated/graphql";
 import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
 import { MealsArea } from "components/MealsArea";
 
@@ -7,9 +7,8 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   // TODO: createProfileQuery - get user with relations - https://typeorm.io/#/many-to-one-one-to-many-relations
   // const users = await userRepository.find({ relations: ["photos"] });
 
-  const { data, loading, error } = useByeQuery({
-    fetchPolicy: "network-only" // TODO switch from network only in production
-  });
+  const { data, loading, error } = useMeLocalQuery();
+  // const {me: {recipes}} = data
 
   if (loading)
     return <div>loading...</div>;
@@ -25,14 +24,11 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Something went wrong!</div>;
   }
 
-  if (!data)
+  if (!data || !data.me)
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
 
-  return (<div>
-    {data.bye}
-    {/* <MealsArea /> */}
-  </div>)
+  return (<div><MealsArea recipesSlim={data.me.recipes} /></div>)
 };
 
 // TODOs:
