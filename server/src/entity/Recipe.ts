@@ -5,12 +5,14 @@ import {
 import {
   ObjectType,
   Field,
-  Int
+  Int,
+  InputType
 } from "type-graphql";
 import { User } from "./User";
 
 
 @ObjectType()
+@InputType('RecipeInput')
 @Entity("recipes")
 export class Recipe extends BaseEntity {
   @Field(() => Int)

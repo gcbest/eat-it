@@ -67,6 +67,7 @@ export type Query = {
   hello: Scalars['String'],
   bye: Scalars['String'],
   users: Array<User>,
+  profile: User,
   me?: Maybe<User>,
   randomRecipes: Array<Recipe>,
 };
@@ -90,11 +91,25 @@ export type Recipe = {
   mealType: Scalars['Int'],
 };
 
+export type RecipeInput = {
+  id: Scalars['Int'],
+  title: Scalars['String'],
+  readyInMinutes: Scalars['Int'],
+  servings: Scalars['Int'],
+  image: Scalars['String'],
+  summary: Scalars['String'],
+  sourceUrl: Scalars['String'],
+  analyzedInstructions: Scalars['String'],
+  mealType: Scalars['Int'],
+};
+
 export type User = {
   __typename?: 'user',
   id: Scalars['Int'],
   email: Scalars['String'],
-  recipes: [Recipe]
+  exerciseLevel: Scalars['Float'],
+  diets: Scalars['String'],
+  recipes: Array<Recipe>,
 };
 
 export type AddRecipeMutationVariables = {
@@ -139,6 +154,12 @@ export type LoginMutation = (
         user: (
           { __typename?: 'user' }
           & Pick<User, 'id' | 'email'>
+          & {
+            recipes: Array<(
+              { __typename?: 'Recipe' }
+              & Pick<Recipe, 'title' | 'image' | 'mealType'>
+            )>
+          }
         )
       }
     )
@@ -162,6 +183,12 @@ export type MeQuery = (
     me: Maybe<(
       { __typename?: 'user' }
       & Pick<User, 'id' | 'email'>
+      & {
+        recipes: Array<(
+          { __typename?: 'Recipe' }
+          & Pick<Recipe, 'title' | 'image' | 'mealType'>
+        )>
+      }
     )>
   }
 );
@@ -175,6 +202,12 @@ export type MeLocalQuery = (
     me: Maybe<(
       { __typename?: 'user' }
       & Pick<User, 'id' | 'email'>
+      & {
+        recipes: Array<(
+          { __typename?: 'Recipe' }
+          & Pick<Recipe, 'title' | 'image' | 'mealType'>
+        )>
+      }
     )>
   }
 );
@@ -271,6 +304,11 @@ export const LoginDocument = gql`
     user {
       id
       email
+      recipes {
+        title
+        image
+        mealType
+      }
     }
   }
 }
@@ -301,6 +339,11 @@ export const MeDocument = gql`
   me {
     id
     email
+    recipes {
+      title
+      image
+      mealType
+    }
   }
 }
     `;
@@ -319,6 +362,11 @@ export const MeLocalDocument = gql`
   me @client {
     id
     email
+    recipes {
+      title
+      image
+      mealType
+    }
   }
 }
     `;

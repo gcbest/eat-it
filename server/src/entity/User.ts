@@ -25,9 +25,11 @@ export class User extends BaseEntity {
   @Column("text")
   password: string;
 
+  @Field()
   @Column("float")
   exerciseLevel: number;
 
+  @Field()
   @Column("text")
   diets: string;
 
@@ -35,5 +37,6 @@ export class User extends BaseEntity {
   tokenVersion: number;
 
   @OneToMany(() => Recipe, recipe => recipe.user, { cascade: true })
+  @Field(() => [Recipe])
   recipes: Recipe[]
 }

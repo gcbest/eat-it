@@ -2,5 +2,10 @@ query meLocal {
     me @client {
         id
         email
+        recipes {
+            title
+            image
+            mealType
+        }
     }
 }

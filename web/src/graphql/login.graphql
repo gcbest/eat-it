@@ -4,6 +4,11 @@ mutation Login($email: String!, $password: String!) {
     user {
       id
       email
+      recipes {
+        title
+        image
+        mealType
+      }
     }
   }
 }

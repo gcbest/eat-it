@@ -17,6 +17,7 @@ import { isAuth } from "../isAuth";
 import { sendRefreshToken } from "../sendRefreshToken";
 import { getConnection } from "typeorm";
 import { verify } from "jsonwebtoken";
+// import { Recipe } from "../entity/Recipe";
 
 
 @ObjectType()
@@ -25,6 +26,8 @@ class LoginResponse {
   accessToken: string;
   @Field(() => User)
   user: User;
+  // @Field(() => [Recipe])
+  // recipes: Recipe[];
 }
 
 @Resolver()
@@ -46,14 +49,9 @@ export class UserResolver {
     return User.find();
   }
 
-  // @Query(() => User)
-  // @UseMiddleware(isAuth)
-  // profile() {
-  //   return User.findOne(payload.userId);
-  // }
-
-  @Query(() => User, { nullable: true })
-  me(@Ctx() context: MyContext) {
+  @Query(() => User)
+  @UseMiddleware(isAuth)
+  profile(@Ctx() context: MyContext) {
     const authorization = context.req.headers["authorization"];
 
     if (!authorization) {
@@ -64,6 +62,26 @@ export class UserResolver {
       const token = authorization.split(" ")[1];
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
       return User.findOne(payload.userId, { relations: ["recipes"] });
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() context: MyContext) {
+    const authorization = context.req.headers["authorization"];
+
+    if (!authorization) {
+      return null;
+    }
+
+    try {
+      const token = authorization.split(" ")[1];
+      const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
+      const user = await User.findOne(payload.userId, { relations: ["recipes"] });
+      console.log(user);
+      return user;
     } catch (err) {
       console.log(err);
       return null;
@@ -92,7 +110,8 @@ export class UserResolver {
     @Arg("password") password: string,
     @Ctx() { res }: MyContext
   ): Promise<LoginResponse> {
-    const user = await User.findOne({ where: { email } });
+    // const user = await User.findOne({ where: { email } }, { relations: ["recipes"] });
+    const user = await User.findOne({ where: { email }, relations: ["recipes"] });
 
     if (!user) {
       throw new Error("could not find user");
@@ -110,7 +129,8 @@ export class UserResolver {
 
     return {
       accessToken: createAccessToken(user),
-      user
+      user,
+      // recipes: user.recipes
     };
   }
 

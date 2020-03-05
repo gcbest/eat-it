@@ -2,6 +2,10 @@ query Me {
   me {
     id
     email
-    recipes
+    recipes {
+      title
+      image
+      mealType
+    }
   }
 }

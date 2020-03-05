@@ -18,12 +18,15 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
         const response = await login({
           variables: {
             email,
-            password
+            password,
           },
           update: (store, { data }) => {
             if (!data) {
               return null;
             }
+
+            console.log('DATA from CACHE');
+            console.log(data);
 
             store.writeQuery<MeQuery>({
               query: MeDocument,
