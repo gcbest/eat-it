@@ -6,6 +6,7 @@ import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
+import { getEnumNames } from 'lib/utils';
 
 
 interface Props extends ModalInterface {
@@ -66,7 +67,7 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                     <Form.Group controlId="exampleForm.ControlSelect2">
                         <Form.Label>Example multiple select</Form.Label>
                         <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
-                            {Object.keys(MealCategory).filter((key: string | number | any) => !isNaN(Number(MealCategory[key]))).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
+                            {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
                         </Form.Control>
                     </Form.Group>
                 </Form>

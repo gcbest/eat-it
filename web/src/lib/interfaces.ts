@@ -20,6 +20,12 @@ export interface Recipe {
     analyzedInstructions: string;
 }
 
+export interface RecipeSlim {
+    title: string
+    image: string
+    mealType: number
+}
+
 export interface CustomToggleInterface {
     children: any;
     eventKey: string;
@@ -41,4 +47,5 @@ export interface AddRecipeInput extends Recipe {
 export interface User {
     id: number
     email: string
+    recipes: [Recipe]
 }

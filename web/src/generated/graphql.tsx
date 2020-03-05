@@ -94,6 +94,7 @@ export type User = {
   __typename?: 'user',
   id: Scalars['Int'],
   email: Scalars['String'],
+  recipes: [Recipe]
 };
 
 export type AddRecipeMutationVariables = {

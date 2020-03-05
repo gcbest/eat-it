@@ -31,7 +31,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (<div>
     {data.bye}
-    <MealsArea />
+    {/* <MealsArea /> */}
   </div>)
 };
 

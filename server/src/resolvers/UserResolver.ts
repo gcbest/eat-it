@@ -46,6 +46,12 @@ export class UserResolver {
     return User.find();
   }
 
+  // @Query(() => User)
+  // @UseMiddleware(isAuth)
+  // profile() {
+  //   return User.findOne(payload.userId);
+  // }
+
   @Query(() => User, { nullable: true })
   me(@Ctx() context: MyContext) {
     const authorization = context.req.headers["authorization"];
@@ -57,7 +63,7 @@ export class UserResolver {
     try {
       const token = authorization.split(" ")[1];
       const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-      return User.findOne(payload.userId);
+      return User.findOne(payload.userId, { relations: ["recipes"] });
     } catch (err) {
       console.log(err);
       return null;

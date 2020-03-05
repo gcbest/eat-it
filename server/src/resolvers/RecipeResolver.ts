@@ -19,7 +19,6 @@ import { spoonacular } from '../util/util'
 
 @InputType()
 class AddRecipeInput implements Partial<Recipe> {
-    // class AddRecipeInput {
     @Field()
     title: string
     @Field()
@@ -65,6 +64,7 @@ export class RecipeResolver {
     }
 
     @Mutation(() => Boolean, { nullable: true })
+    @UseMiddleware(isAuth)
     async addRecipe(@Arg("input") input: AddRecipeInput): Promise<Boolean | null> {
         // sample implementation
         // const recipe = Recipe.create(input, ctx.req.body.user);
