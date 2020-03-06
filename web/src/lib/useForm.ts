@@ -6,6 +6,7 @@ interface useFormInterface {
     resetForm(): void;
     isRegistrationValid(): boolean;
     confirmPasswordsMatch(): boolean;
+    isCreateRecipeValid(): boolean
 }
 
 export default function useForm(initialState: any = {}): useFormInterface {
@@ -51,6 +52,18 @@ export default function useForm(initialState: any = {}): useFormInterface {
         return true;
     }
 
+    const isCreateRecipeValid = (): boolean => {
+
+        // TODO: move this to helper function in utils
+        const required_fields = ['title', 'summary'];
+        const hasAll = required_fields.every(prop => inputs.hasOwnProperty(prop));
+
+        if (!hasAll)
+            return false;
+
+        return true
+    }
+
     const confirmPasswordsMatch = (): boolean => {
         const { password, confirmPassword } = inputs;
         if (!password || !confirmPassword)
@@ -67,6 +80,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
         handleChange,
         resetForm,
         isRegistrationValid,
-        confirmPasswordsMatch
+        confirmPasswordsMatch,
+        isCreateRecipeValid
     };
 }

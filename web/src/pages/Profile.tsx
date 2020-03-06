@@ -32,11 +32,11 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 };
 
 // TODOs:
-// Connect tables (add recipe id to list of user recipes)
 // Add tags to a recipe
-// Add profile page components
 // Use downshift just for general search
-// Each section can filter by tags or recipe info
+// include add button for new meal
+// include delete button
+// include update to add tags, edit etc
 // can choose a random meal from your saved list
 
 // Create CRUD app

@@ -39,6 +39,22 @@ class AddRecipeInput implements Partial<Recipe> {
     userId: number
 }
 
+@InputType()
+class CreateNewRecipeInput implements Partial<Recipe>{
+    @Field()
+    title: string
+    @Field()
+    summary: string
+    @Field()
+    mealType: number
+    @Field()
+    userId: number
+    @Field()
+    sourceUrl: string
+    @Field()
+    image: string
+}
+
 @Resolver()
 export class RecipeResolver {
     @Query(() => [Recipe])
@@ -79,8 +95,22 @@ export class RecipeResolver {
             console.error(error);
             return null
         }
+    }
 
+    @Mutation(() => Boolean, { nullable: true })
+    @UseMiddleware(isAuth)
+    async createNewRecipe(@Arg('input') input: CreateNewRecipeInput): Promise<Boolean | null> {
+        try {
+            const user = await User.findOne({ id: input.userId })
+            const newRecipe = { ...input, user: user! }
+            const recipe = await Recipe.insert(newRecipe)
 
+            console.log(recipe);
+            return true;
+        } catch (error) {
+            console.error(error);
+            return null
+        }
     }
 }
 

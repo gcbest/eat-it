@@ -1,0 +1,13 @@
+input CreateNewRecipeInput {
+    title: string
+    summary: string
+    mealType: number
+    userId: number
+    sourceUrl: string
+    image: string
+
+}
+
+mutation CreateNewRecipe($newRecipe: CreateNewRecipeInput!) {
+    createNewRecipe(input: $newRecipe)
+}

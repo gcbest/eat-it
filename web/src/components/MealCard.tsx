@@ -5,13 +5,19 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form';
 import { RecipeSlim } from 'lib/interfaces';
 import { MealItem } from './MealItem';
+import { ModalCategory } from 'lib/enums';
+import { CreateRecipeModal } from './CreateRecipeModal';
 
 interface Props {
     header: string
     recipesSlim: RecipeSlim[]
 }
 
-export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
+export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState<RecipeSlim[]>([])
 
@@ -24,9 +30,13 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
         setSearchResults(results)
     }, [searchTerm])
 
+    const handleAddNew = () => {
+        handleShow()
+    }
 
     return (
         <Card>
+            <CreateRecipeModal show={show} handleClose={handleClose} options={{ header }} />
             <Card.Header>{header}</Card.Header>
             <Card.Body>
                 <Card.Title>
@@ -43,7 +53,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, }) => {
                 </ListGroup>
             </Card.Body>
             <Card.Footer>
-                <Button>Add New</Button>
+                <Button onClick={handleAddNew}>Add New</Button>
             </Card.Footer>
         </Card>
     )

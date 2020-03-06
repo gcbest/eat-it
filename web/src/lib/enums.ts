@@ -1,5 +1,6 @@
 export enum ModalCategory {
-    New,
+    NewDiscover,
+    NewCreate,
     Edit
 }
 

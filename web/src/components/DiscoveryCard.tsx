@@ -6,7 +6,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 // import { ModalContext } from '../pages/Discover'
 import { ModalCategory } from '../lib/enums'
-import { EditRecipeModal } from 'components/EditRecipeModal'
+import { ViewRecipeModal } from 'components/ViewRecipeModal'
 
 import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
 
@@ -20,8 +20,6 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    // const modalContext = useContext(ModalContext)
 
     const CustomToggle = ({ children, eventKey }: CustomToggleInterface) => {
         const decoratedOnClick = useAccordionToggle(eventKey, () =>
@@ -37,7 +35,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
     return (
         <Card style={{ width: '18rem' }}>
-            <EditRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.New }} recipe={recipe} />
+            <ViewRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.NewDiscover }} recipe={recipe} />
 
             <Card.Img variant="top" src={image} />
             <Card.Body style={{ maxHeight: '8rem', overflowY: "scroll" }}>
@@ -56,12 +54,12 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
-                                    {/* <ListGroup>
+                                    <ListGroup>
                                         {convertToJSON(analyzedInstructions)
                                             .steps.map((s: any) => {
                                                 return (<ListGroup.Item key={s.number}>{s.number}. {s.step}</ListGroup.Item>)
                                             })}
-                                    </ListGroup> */}
+                                    </ListGroup>
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>

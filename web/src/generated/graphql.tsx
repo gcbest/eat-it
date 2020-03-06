@@ -23,6 +23,15 @@ export type AddRecipeInput = {
   userId: Scalars['Float'],
 };
 
+export type CreateNewRecipeInput = {
+  title: Scalars['String'],
+  summary: Scalars['String'],
+  mealType: Scalars['Float'],
+  userId: Scalars['Float'],
+  sourceUrl: Scalars['String'],
+  image: Scalars['String'],
+};
+
 export type LoginResponse = {
   __typename?: 'LoginResponse',
   accessToken: Scalars['String'],
@@ -36,6 +45,7 @@ export type Mutation = {
   login: LoginResponse,
   register: Scalars['Boolean'],
   addRecipe?: Maybe<Scalars['Boolean']>,
+  createNewRecipe?: Maybe<Scalars['Boolean']>,
 };
 
 
@@ -62,6 +72,11 @@ export type MutationAddRecipeArgs = {
   input: AddRecipeInput
 };
 
+
+export type MutationCreateNewRecipeArgs = {
+  input: CreateNewRecipeInput
+};
+
 export type Query = {
   __typename?: 'Query',
   hello: Scalars['String'],
@@ -82,8 +97,8 @@ export type Recipe = {
   __typename?: 'Recipe',
   id: Scalars['Int'],
   title: Scalars['String'],
-  readyInMinutes: Scalars['Int'],
-  servings: Scalars['Int'],
+  readyInMinutes?: Maybe<Scalars['Int']>,
+  servings?: Maybe<Scalars['Int']>,
   image: Scalars['String'],
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
@@ -94,8 +109,8 @@ export type Recipe = {
 export type RecipeInput = {
   id: Scalars['Int'],
   title: Scalars['String'],
-  readyInMinutes: Scalars['Int'],
-  servings: Scalars['Int'],
+  readyInMinutes?: Maybe<Scalars['Int']>,
+  servings?: Maybe<Scalars['Int']>,
   image: Scalars['String'],
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
@@ -128,6 +143,16 @@ export type ByeQueryVariables = {};
 export type ByeQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'bye'>
+);
+
+export type CreateNewRecipeMutationVariables = {
+  newRecipe: CreateNewRecipeInput
+};
+
+
+export type CreateNewRecipeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createNewRecipe'>
 );
 
 export type HelloQueryVariables = {};
@@ -282,6 +307,19 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export const CreateNewRecipeDocument = gql`
+    mutation CreateNewRecipe($newRecipe: CreateNewRecipeInput!) {
+  createNewRecipe(input: $newRecipe)
+}
+    `;
+export type CreateNewRecipeMutationFn = ApolloReactCommon.MutationFunction<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>;
+
+export function useCreateNewRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>) {
+  return ApolloReactHooks.useMutation<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>(CreateNewRecipeDocument, baseOptions);
+}
+export type CreateNewRecipeMutationHookResult = ReturnType<typeof useCreateNewRecipeMutation>;
+export type CreateNewRecipeMutationResult = ApolloReactCommon.MutationResult<CreateNewRecipeMutation>;
+export type CreateNewRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello
