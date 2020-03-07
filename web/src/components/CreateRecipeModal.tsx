@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation, useCreateNewRecipeMutation } from 'generated/graphql';
+import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
 
 
@@ -17,16 +17,20 @@ interface Props extends ModalInterface {
 }
 
 export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
-    const [createNewRecipe] = useCreateNewRecipeMutation()
+    // const [createNewRecipe] = useCreateNewRecipeMutation()
+    const [addRecipe] = useAddRecipeMutation()
 
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { header } = options
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title: '',
-        sourceUrl: '',
-        summary: '',
+        readyInMinutes: 0,
+        servings: 0,
         image: '',
+        summary: '',
+        sourceUrl: '',
+        analyzedInstructions: '',
     });
 
 
@@ -45,10 +49,10 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
             return
         }
         const { title, sourceUrl, summary, image, mealType, } = inputs
-        const newRecipe = { ...inputs, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
-        console.log(newRecipe);
-        const response = await createNewRecipe({
-            variables: { newRecipe }
+        const recipe = { ...inputs, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
+        console.log(recipe);
+        const response = await addRecipe({
+            variables: { recipe }
         })
 
         console.log(response);
@@ -73,6 +77,14 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
                     <Form.Group controlId="sourceUrl">
                         <Form.Label>Link to recipe</Form.Label>
                         <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
+                    </Form.Group>
+                    <Form.Group controlId="readyInMinutes">
+                        <Form.Label>Prep + Cook Time</Form.Label>
+                        <Form.Control type="number" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
+                    </Form.Group>
+                    <Form.Group controlId="servings">
+                        <Form.Label># of Servings</Form.Label>
+                        <Form.Control type="number" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
                     </Form.Group>
                     <Form.Group controlId="image">
                         <Form.Label>Image URL</Form.Label>
