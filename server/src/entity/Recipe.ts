@@ -23,16 +23,16 @@ export class Recipe extends BaseEntity {
   @Column("text")
   title: string;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   @Column()
   readyInMinutes: number;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Int)
   @Column()
   servings: number;
 
   @Field()
-  @Column("text", { nullable: true })
+  @Column("text")
   image: string;
 
   @Field()
@@ -40,11 +40,11 @@ export class Recipe extends BaseEntity {
   summary: string;
 
   @Field()
-  @Column("text", { nullable: true })
+  @Column("text")
   sourceUrl: string;
 
   @Field()
-  @Column("text", { nullable: true })
+  @Column("text")
   analyzedInstructions: string;
 
   @Field(() => Int)

@@ -42,13 +42,11 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        console.log('submit it');
 
         if (!isCreateRecipeValid()) {
             console.log('fill out the mandatory fields');
             return
         }
-        const { title, sourceUrl, summary, image, mealType, } = inputs
         const recipe = { ...inputs, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
         console.log(recipe);
         const response = await addRecipe({
@@ -56,8 +54,6 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
         })
 
         console.log(response);
-
-
 
         resetForm()
         handleClose()
@@ -97,7 +93,7 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
                     </Form.Group>
                     <Button variant="secondary" type="submit">
                         Create Recipe
-                </Button>
+                    </Button>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

@@ -11,12 +11,15 @@ import { CreateRecipeModal } from './CreateRecipeModal';
 interface Props {
     header: string
     recipesSlim: RecipeSlim[]
+    userId: number
 }
 
-export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
+export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [recipes, setRecipes] = useState<RecipeSlim[]>([])
 
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState<RecipeSlim[]>([])
@@ -25,8 +28,12 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
         setSearchTerm(e.target.value)
     }
 
+
+
     useEffect(() => {
+
         const results: RecipeSlim[] = recipesSlim.filter(rs => searchTerm === '' || rs.title.toLowerCase().trim().includes(searchTerm.toLowerCase()))
+        // setRecipes(results)
         setSearchResults(results)
     }, [searchTerm])
 
@@ -49,7 +56,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
                 </Card.Title>
                 <ListGroup>
                     {searchResults &&
-                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} />)}
+                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} id={rcpSlm.id} userId={userId} />)}
                 </ListGroup>
             </Card.Body>
             <Card.Footer>

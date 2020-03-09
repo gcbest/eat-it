@@ -28,7 +28,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
 
-  return (<div><MealsArea recipesSlim={data.me.recipes} /></div>)
+  return (<div><MealsArea recipesSlim={data.me.recipes} userId={data.me.id} /></div>)
 };
 
 // TODOs:

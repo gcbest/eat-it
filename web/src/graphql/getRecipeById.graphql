@@ -1,0 +1,13 @@
+query GetRecipeById($id: Float!) {
+    getRecipeById(id: $id) {
+        id
+        title
+        readyInMinutes
+        servings
+        image
+        summary
+        sourceUrl
+        analyzedInstructions
+        mealType
+    }
+}

@@ -23,15 +23,6 @@ export type AddRecipeInput = {
   userId: Scalars['Float'],
 };
 
-export type CreateNewRecipeInput = {
-  title: Scalars['String'],
-  summary: Scalars['String'],
-  mealType: Scalars['Float'],
-  userId: Scalars['Float'],
-  sourceUrl: Scalars['String'],
-  image: Scalars['String'],
-};
-
 export type LoginResponse = {
   __typename?: 'LoginResponse',
   accessToken: Scalars['String'],
@@ -45,7 +36,8 @@ export type Mutation = {
   login: LoginResponse,
   register: Scalars['Boolean'],
   addRecipe?: Maybe<Scalars['Boolean']>,
-  createNewRecipe?: Maybe<Scalars['Boolean']>,
+  updateRecipeById: Scalars['Boolean'],
+  deleteRecipeById: Scalars['Boolean'],
 };
 
 
@@ -73,8 +65,13 @@ export type MutationAddRecipeArgs = {
 };
 
 
-export type MutationCreateNewRecipeArgs = {
-  input: CreateNewRecipeInput
+export type MutationUpdateRecipeByIdArgs = {
+  input: AddRecipeInput
+};
+
+
+export type MutationDeleteRecipeByIdArgs = {
+  id: Scalars['Float']
 };
 
 export type Query = {
@@ -85,6 +82,7 @@ export type Query = {
   profile: User,
   me?: Maybe<User>,
   randomRecipes: Array<Recipe>,
+  getRecipeById: Recipe,
 };
 
 
@@ -93,12 +91,17 @@ export type QueryRandomRecipesArgs = {
   tags: Scalars['String']
 };
 
+
+export type QueryGetRecipeByIdArgs = {
+  id: Scalars['Float']
+};
+
 export type Recipe = {
   __typename?: 'Recipe',
   id: Scalars['Int'],
   title: Scalars['String'],
-  readyInMinutes?: Maybe<Scalars['Int']>,
-  servings?: Maybe<Scalars['Int']>,
+  readyInMinutes: Scalars['Int'],
+  servings: Scalars['Int'],
   image: Scalars['String'],
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
@@ -109,8 +112,8 @@ export type Recipe = {
 export type RecipeInput = {
   id: Scalars['Int'],
   title: Scalars['String'],
-  readyInMinutes?: Maybe<Scalars['Int']>,
-  servings?: Maybe<Scalars['Int']>,
+  readyInMinutes: Scalars['Int'],
+  servings: Scalars['Int'],
   image: Scalars['String'],
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
@@ -145,14 +148,29 @@ export type ByeQuery = (
   & Pick<Query, 'bye'>
 );
 
-export type CreateNewRecipeMutationVariables = {
-  newRecipe: CreateNewRecipeInput
+export type DeleteRecipeByIdMutationVariables = {
+  id: Scalars['Float']
 };
 
 
-export type CreateNewRecipeMutation = (
+export type DeleteRecipeByIdMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createNewRecipe'>
+  & Pick<Mutation, 'deleteRecipeById'>
+);
+
+export type GetRecipeByIdQueryVariables = {
+  id: Scalars['Float']
+};
+
+
+export type GetRecipeByIdQuery = (
+  { __typename?: 'Query' }
+  & {
+    getRecipeById: (
+      { __typename?: 'Recipe' }
+      & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions' | 'mealType'>
+    )
+  }
 );
 
 export type HelloQueryVariables = {};
@@ -266,6 +284,16 @@ export type RegisterMutation = (
   & Pick<Mutation, 'register'>
 );
 
+export type UpdateRecipeByIdMutationVariables = {
+  input: AddRecipeInput
+};
+
+
+export type UpdateRecipeByIdMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateRecipeById'>
+);
+
 export type UsersQueryVariables = {};
 
 
@@ -307,19 +335,44 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
-export const CreateNewRecipeDocument = gql`
-    mutation CreateNewRecipe($newRecipe: CreateNewRecipeInput!) {
-  createNewRecipe(input: $newRecipe)
+export const DeleteRecipeByIdDocument = gql`
+    mutation DeleteRecipeById($id: Float!) {
+  deleteRecipeById(id: $id)
 }
     `;
-export type CreateNewRecipeMutationFn = ApolloReactCommon.MutationFunction<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>;
+export type DeleteRecipeByIdMutationFn = ApolloReactCommon.MutationFunction<DeleteRecipeByIdMutation, DeleteRecipeByIdMutationVariables>;
 
-export function useCreateNewRecipeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>) {
-  return ApolloReactHooks.useMutation<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>(CreateNewRecipeDocument, baseOptions);
+export function useDeleteRecipeByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteRecipeByIdMutation, DeleteRecipeByIdMutationVariables>) {
+  return ApolloReactHooks.useMutation<DeleteRecipeByIdMutation, DeleteRecipeByIdMutationVariables>(DeleteRecipeByIdDocument, baseOptions);
 }
-export type CreateNewRecipeMutationHookResult = ReturnType<typeof useCreateNewRecipeMutation>;
-export type CreateNewRecipeMutationResult = ApolloReactCommon.MutationResult<CreateNewRecipeMutation>;
-export type CreateNewRecipeMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateNewRecipeMutation, CreateNewRecipeMutationVariables>;
+export type DeleteRecipeByIdMutationHookResult = ReturnType<typeof useDeleteRecipeByIdMutation>;
+export type DeleteRecipeByIdMutationResult = ApolloReactCommon.MutationResult<DeleteRecipeByIdMutation>;
+export type DeleteRecipeByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteRecipeByIdMutation, DeleteRecipeByIdMutationVariables>;
+export const GetRecipeByIdDocument = gql`
+    query GetRecipeById($id: Float!) {
+  getRecipeById(id: $id) {
+    id
+    title
+    readyInMinutes
+    servings
+    image
+    summary
+    sourceUrl
+    analyzedInstructions
+    mealType
+  }
+}
+    `;
+
+export function useGetRecipeByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetRecipeByIdQuery, GetRecipeByIdQueryVariables>) {
+  return ApolloReactHooks.useQuery<GetRecipeByIdQuery, GetRecipeByIdQueryVariables>(GetRecipeByIdDocument, baseOptions);
+}
+export function useGetRecipeByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRecipeByIdQuery, GetRecipeByIdQueryVariables>) {
+  return ApolloReactHooks.useLazyQuery<GetRecipeByIdQuery, GetRecipeByIdQueryVariables>(GetRecipeByIdDocument, baseOptions);
+}
+
+export type GetRecipeByIdQueryHookResult = ReturnType<typeof useGetRecipeByIdQuery>;
+export type GetRecipeByIdQueryResult = ApolloReactCommon.QueryResult<GetRecipeByIdQuery, GetRecipeByIdQueryVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello
@@ -458,6 +511,19 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateRecipeByIdDocument = gql`
+    mutation UpdateRecipeById($input: AddRecipeInput!) {
+  updateRecipeById(input: $input)
+}
+    `;
+export type UpdateRecipeByIdMutationFn = ApolloReactCommon.MutationFunction<UpdateRecipeByIdMutation, UpdateRecipeByIdMutationVariables>;
+
+export function useUpdateRecipeByIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateRecipeByIdMutation, UpdateRecipeByIdMutationVariables>) {
+  return ApolloReactHooks.useMutation<UpdateRecipeByIdMutation, UpdateRecipeByIdMutationVariables>(UpdateRecipeByIdDocument, baseOptions);
+}
+export type UpdateRecipeByIdMutationHookResult = ReturnType<typeof useUpdateRecipeByIdMutation>;
+export type UpdateRecipeByIdMutationResult = ApolloReactCommon.MutationResult<UpdateRecipeByIdMutation>;
+export type UpdateRecipeByIdMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateRecipeByIdMutation, UpdateRecipeByIdMutationVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

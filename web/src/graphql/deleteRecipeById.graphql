@@ -1,0 +1,3 @@
+mutation DeleteRecipeById($recipeId: Float!, $userId: Float!) {
+    deleteRecipeById(recipeId: $recipeId, userId: $userId)
+}

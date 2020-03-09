@@ -7,6 +7,8 @@ import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 
 interface Props extends ModalInterface {
@@ -18,12 +20,76 @@ interface Props extends ModalInterface {
 
 interface ModalContent { title: string, actionButton: string, body: any }
 
-export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
     const [isEditing, setIsEditing] = useState(false)
     const { type } = options
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
-    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType = 1 } = recipe!
+
+    const ADD_RECIPE = gql`
+        mutation AddRecipe($recipe: AddRecipeInput!) {
+        addRecipe(input: $recipe) {
+            id
+            email
+            recipes {
+                id
+                title
+                image
+                mealType
+                }
+            }
+        }
+    `
+
+    const GET_ME = gql`
+query Me {
+  me {
+    id
+    email
+    recipes {
+      id
+      title
+      image
+      mealType
+    }
+  }
+}
+`
+
+    const GET_ME_LOCAL = gql`
+query meLocal {
+    me @client {
+        id
+        email
+        recipes {
+            id
+            title
+            image
+            mealType
+        }
+    }
+}
+`
+
+    const [addRecipeMutation] = useMutation(ADD_RECIPE, {
+        update(cache, { data: { addRecipe } }) {
+            debugger;
+            console.log(addRecipe);
+
+            const { me }: any = cache.readQuery({ query: GET_ME_LOCAL })
+
+            cache.writeQuery({
+                query: GET_ME_LOCAL,
+                data: { me: { ...me, recipes: addRecipe.recipes } }
+            })
+            const me2: User | null = cache.readQuery({ query: GET_ME_LOCAL })
+            console.log(me2);
+
+
+        }
+    })
+
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title,
@@ -74,13 +140,24 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         if (!recipe)
             throw new Error('recipe from discover not found')
 
+        console.log(`mealType: ${inputs.mealType}`);
+        if (!inputs.mealType)
+            throw new Error('need a meal type')
+
+
         const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.__typename
         console.log('adding recipe');
 
-        addRecipe({
+        // addRecipe({
+        //     variables: {
+        //         recipe: formattedRecipe
+        //     }
+        // })
+
+        addRecipeMutation({
             variables: {
                 recipe: formattedRecipe
             }
@@ -92,20 +169,21 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         // make graphql query to request them
     }
 
-    const handleSave = (category: ModalCategory) => {
+    const handleSave = () => {
         // switch case to handle the different saving/updating options
-        switch (category) {
-            case ModalCategory.NewDiscover:
+        // switch (category) {
+        //     case ModalCategory.NewDiscover:
 
-                // add from discover
-                addRecipeFromDiscover()
-                break
-            case ModalCategory.Edit:
-                editRecipe()
-                break
-        }
+        //         // add from discover
+        //         addRecipeFromDiscover()
+        //         break
+        //     case ModalCategory.Edit:
+        //         editRecipe()
+        //         break
+        // }
         // edit existing recipe
 
+        addRecipeFromDiscover()
         handleClose()
     }
 
@@ -195,16 +273,12 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             </Modal.Header>
             <Modal.Body>
                 {
-                    isEditing ? displayEditContent(recipe) :
-                        recipe && displayViewContent(recipe)
+                    recipe && displayViewContent(recipe)
                 }
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => handleSave(type)}>
-                    {`${renderText(type)} Recipe`}
-                </Button>
-                <Button variant="primary" onClick={() => setIsEditing(true)}>
-                    {`Edit Recipe`}
+                <Button variant="secondary" onClick={() => handleSave()}>
+                    {`Add Recipe`}
                 </Button>
             </Modal.Footer>
         </Modal>

@@ -6,7 +6,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 // import { ModalContext } from '../pages/Discover'
 import { ModalCategory } from '../lib/enums'
-import { ViewRecipeModal } from 'components/ViewRecipeModal'
+import { DiscoverRecipeModal } from 'components/DiscoverRecipeModal'
 
 import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
 
@@ -35,7 +35,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
     return (
         <Card style={{ width: '18rem' }}>
-            <ViewRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.NewDiscover }} recipe={recipe} />
+            <DiscoverRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.NewDiscover }} recipe={recipe} />
 
             <Card.Img variant="top" src={image} />
             <Card.Body style={{ maxHeight: '8rem', overflowY: "scroll" }}>

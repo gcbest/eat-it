@@ -16,6 +16,8 @@ import { User } from '../entity/User';
 import { isAuth } from '../isAuth';
 // import { MyContext } from "../MyContext";
 import { spoonacular } from '../util/util'
+import { getConnection } from "typeorm";
+
 
 @InputType()
 class AddRecipeInput implements Partial<Recipe> {
@@ -39,21 +41,6 @@ class AddRecipeInput implements Partial<Recipe> {
     userId: number
 }
 
-@InputType()
-class CreateNewRecipeInput implements Partial<Recipe>{
-    @Field()
-    title: string
-    @Field()
-    summary: string
-    @Field()
-    mealType: number
-    @Field()
-    userId: number
-    @Field()
-    sourceUrl: string
-    @Field()
-    image: string
-}
 
 @Resolver()
 export class RecipeResolver {
@@ -73,45 +60,85 @@ export class RecipeResolver {
                 return r
             })
             return formattedResults;
-        } catch (err) {
-            console.error(err);
-            return err;
+        } catch (error) {
+            console.error(error);
+            return error;
         }
     }
 
-    @Mutation(() => Boolean, { nullable: true })
+    @Query(() => Recipe)
     @UseMiddleware(isAuth)
-    async addRecipe(@Arg("input") input: AddRecipeInput): Promise<Boolean | null> {
+    async getRecipeById(@Arg('id') id: number) {
+        try {
+            const recipe = await Recipe.findOne({ id })
+            console.log(recipe);
+            return recipe
+        } catch (error) {
+            console.error(error);
+            return error;
+        }
+    }
+
+    @Mutation(() => User, { nullable: true })
+    @UseMiddleware(isAuth)
+    async addRecipe(@Arg("input") input: AddRecipeInput): Promise<User | undefined> {
         // sample implementation
         // const recipe = Recipe.create(input, ctx.req.body.user);
         try {
-            const user = await User.findOne({ id: input.userId })
+            let user = await User.findOne({ where: { id: input.userId } })
             const newRecipe = { ...input, user: user! }
-            const recipe = await Recipe.insert(newRecipe)
+            await Recipe.insert(newRecipe)
+            user = await User.findOne({ where: { id: input.userId }, relations: ["recipes"] })
 
-            console.log(recipe);
-            return true;
+            console.log(user);
+            return user;
         } catch (error) {
             console.error(error);
-            return null
+            return undefined
         }
     }
 
-    @Mutation(() => Boolean, { nullable: true })
+    @Mutation(() => Boolean)
     @UseMiddleware(isAuth)
-    async createNewRecipe(@Arg('input') input: CreateNewRecipeInput): Promise<Boolean | null> {
+    async updateRecipeById(@Arg("input") input: AddRecipeInput): Promise<Boolean> {
         try {
-            const user = await User.findOne({ id: input.userId })
-            const newRecipe = { ...input, user: user! }
-            const recipe = await Recipe.insert(newRecipe)
-
-            console.log(recipe);
-            return true;
+            await getConnection()
+                .createQueryBuilder()
+                .update(Recipe)
+                .set(input)
+                .where("id = :id", { id: input.userId })
+                .execute();
+            return true
         } catch (error) {
             console.error(error);
-            return null
+            return false
         }
     }
+
+    @Mutation(() => User)
+    @UseMiddleware(isAuth)
+    async deleteRecipeById(@Arg('recipeId') recipeId: number, @Arg('userId') userId: number): Promise<User | Boolean> {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .delete()
+                .from(Recipe)
+                .where("id = :id", { id: recipeId })
+                .execute();
+            const user = await User.findOne({ where: { id: userId }, relations: ["recipes"] })
+            console.log(user);
+
+            if (user)
+                return user
+            else
+                return false
+        } catch (error) {
+            console.error(error);
+            return false
+        }
+    }
+
+
 }
 
 

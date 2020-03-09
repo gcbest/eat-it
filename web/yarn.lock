@@ -1716,6 +1716,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@bit/lodash.lodash.clone-deep@^4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.clone-deep/-/lodash.lodash.clone-deep-4.17.11.tgz#209b1256c7c7c53e36bfe2effc1aa313271f28c0"
+  integrity sha1-IJsSVsfHxT42v+Lv/BqjEycfKMA=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-clone" "4.17.11"
+
 "@bit/lodash.lodash.eq@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.eq/-/lodash.lodash.eq-4.17.11.tgz#1fc5a241468acf2fba304dcf7481ff65cfd78541"
@@ -1729,10 +1736,45 @@
     "@bit/lodash.lodash.internal._base-has-in" "4.17.11"
     "@bit/lodash.lodash.internal._has-path" "4.17.11"
 
+"@bit/lodash.lodash.internal._array-each@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._array-each/-/lodash.lodash.internal._array-each-4.17.11.tgz#17a598ecef280dd7bb966b426af155c4f3ea1e3b"
+  integrity sha1-F6WY7O8oDde7lmtCavFVxPPqHjs=
+
+"@bit/lodash.lodash.internal._array-filter@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._array-filter/-/lodash.lodash.internal._array-filter-4.17.11.tgz#ca89bef5303179ef531d60ed86f6f34fc8e69cb8"
+  integrity sha1-yom+9TAxee9THWDthvbzT8jmnLg=
+
+"@bit/lodash.lodash.internal._array-like-keys@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._array-like-keys/-/lodash.lodash.internal._array-like-keys-4.17.11.tgz#0c996760e2355eef4cd51e131c6d7d51bf1102f7"
+  integrity sha1-DJlnYOI1Xu9M1R4THG19Ub8RAvc=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-times" "4.17.11"
+    "@bit/lodash.lodash.internal._is-index" "4.17.11"
+    "@bit/lodash.lodash.is-arguments" "4.17.11"
+    "@bit/lodash.lodash.is-array" "4.17.11"
+    "@bit/lodash.lodash.is-buffer" "4.17.11"
+    "@bit/lodash.lodash.is-typed-array" "4.17.11"
+
 "@bit/lodash.lodash.internal._array-map@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._array-map/-/lodash.lodash.internal._array-map-4.17.11.tgz#c9dc90f8b7592837a7c2454f933c850491be85db"
   integrity sha1-ydyQ+LdZKDenwkVPkzyFBJG+hds=
+
+"@bit/lodash.lodash.internal._array-push@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._array-push/-/lodash.lodash.internal._array-push-4.17.11.tgz#25ae036444e1e3b5714ea93be36976fe55e12fbe"
+  integrity sha1-Ja4DZETh47VxTqk742l2/lXhL74=
+
+"@bit/lodash.lodash.internal._assign-value@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._assign-value/-/lodash.lodash.internal._assign-value-4.17.11.tgz#5ea4b02012ff529267ec0c43f3284a37170300cf"
+  integrity sha1-XqSwIBL/UpJn7AxD8yhKNxcDAM8=
+  dependencies:
+    "@bit/lodash.lodash.eq" "4.17.11"
+    "@bit/lodash.lodash.internal._base-assign-value" "4.17.11"
 
 "@bit/lodash.lodash.internal._assoc-index-of@4.17.11":
   version "4.17.11"
@@ -1740,6 +1782,71 @@
   integrity sha1-NpZ+v0XCNx3zsLNLWJRji/Fsaog=
   dependencies:
     "@bit/lodash.lodash.eq" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-assign-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-assign-in/-/lodash.lodash.internal._base-assign-in-4.17.11.tgz#e505aa79a212519a9a3cfb7068a843e5f521f77a"
+  integrity sha1-5QWqeaISUZqaPPtwaKhD5fUh93o=
+  dependencies:
+    "@bit/lodash.lodash.internal._copy-object" "4.17.11"
+    "@bit/lodash.lodash.keys-in" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-assign-value@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-assign-value/-/lodash.lodash.internal._base-assign-value-4.17.11.tgz#09f754750cc041e2bab4ce48d1d0ec08680ff50b"
+  integrity sha1-CfdUdQzAQeK6tM5I0dDsCGgP9Qs=
+  dependencies:
+    "@bit/lodash.lodash.internal._define-property" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-assign@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-assign/-/lodash.lodash.internal._base-assign-4.17.11.tgz#40015dbc7cd0f7f103547cfdc902ba78919b2d42"
+  integrity sha1-QAFdvHzQ9/EDVHz9yQK6eJGbLUI=
+  dependencies:
+    "@bit/lodash.lodash.internal._copy-object" "4.17.11"
+    "@bit/lodash.lodash.keys" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-clone@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-clone/-/lodash.lodash.internal._base-clone-4.17.11.tgz#1f60744bf50178f5dc144db151997034ab97d073"
+  integrity sha1-H2B0S/UBePXcFE2xUZlwNKuX0HM=
+  dependencies:
+    "@bit/lodash.lodash.internal._array-each" "4.17.11"
+    "@bit/lodash.lodash.internal._assign-value" "4.17.11"
+    "@bit/lodash.lodash.internal._base-assign" "4.17.11"
+    "@bit/lodash.lodash.internal._base-assign-in" "4.17.11"
+    "@bit/lodash.lodash.internal._clone-buffer" "4.17.11"
+    "@bit/lodash.lodash.internal._copy-array" "4.17.11"
+    "@bit/lodash.lodash.internal._copy-symbols" "4.17.11"
+    "@bit/lodash.lodash.internal._copy-symbols-in" "4.17.11"
+    "@bit/lodash.lodash.internal._get-all-keys" "4.17.11"
+    "@bit/lodash.lodash.internal._get-all-keys-in" "4.17.11"
+    "@bit/lodash.lodash.internal._get-tag" "4.17.11"
+    "@bit/lodash.lodash.internal._init-clone-array" "4.17.11"
+    "@bit/lodash.lodash.internal._init-clone-by-tag" "4.17.11"
+    "@bit/lodash.lodash.internal._init-clone-object" "4.17.11"
+    "@bit/lodash.lodash.internal._stack" "4.17.11"
+    "@bit/lodash.lodash.is-array" "4.17.11"
+    "@bit/lodash.lodash.is-buffer" "4.17.11"
+    "@bit/lodash.lodash.is-map" "4.17.11"
+    "@bit/lodash.lodash.is-object" "4.17.11"
+    "@bit/lodash.lodash.is-set" "4.17.11"
+    "@bit/lodash.lodash.keys" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-create@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-create/-/lodash.lodash.internal._base-create-4.17.11.tgz#2c998df0edcbe9fc80f94791e2039ed3b35b3c27"
+  integrity sha1-LJmN8O3L6fyA+UeR4gOe07NbPCc=
+  dependencies:
+    "@bit/lodash.lodash.is-object" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-get-all-keys@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-get-all-keys/-/lodash.lodash.internal._base-get-all-keys-4.17.11.tgz#933f3336b8a1cb291fb9230090d1c651d77ce661"
+  integrity sha1-kz8zNrihyykfuSMAkNHGUdd85mE=
+  dependencies:
+    "@bit/lodash.lodash.internal._array-push" "4.17.11"
+    "@bit/lodash.lodash.is-array" "4.17.11"
 
 "@bit/lodash.lodash.internal._base-get-tag@4.17.11":
   version "4.17.11"
@@ -1763,6 +1870,14 @@
     "@bit/lodash.lodash.internal._base-get-tag" "4.17.11"
     "@bit/lodash.lodash.is-object-like" "4.17.11"
 
+"@bit/lodash.lodash.internal._base-is-map@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-is-map/-/lodash.lodash.internal._base-is-map-4.17.11.tgz#8102d2f92c5f96951e6dbc3edc196e6d7b8fdbdc"
+  integrity sha1-gQLS+SxflpUebbw+3BlubXuP29w=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-tag" "4.17.11"
+    "@bit/lodash.lodash.is-object-like" "4.17.11"
+
 "@bit/lodash.lodash.internal._base-is-native@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._base-is-native/-/lodash.lodash.internal._base-is-native-4.17.11.tgz#8ec252af08699a56ac4af47b987b5c157db7d444"
@@ -1772,6 +1887,45 @@
     "@bit/lodash.lodash.internal._to-source" "4.17.11"
     "@bit/lodash.lodash.is-function" "4.17.11"
     "@bit/lodash.lodash.is-object" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-is-set@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-is-set/-/lodash.lodash.internal._base-is-set-4.17.11.tgz#069b1ec6dc9f9c191d8ef4d87e6f26e15b5b2197"
+  integrity sha1-BpsextyfnBkdjvTYfm8m4VtbIZc=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-tag" "4.17.11"
+    "@bit/lodash.lodash.is-object-like" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-is-typed-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-is-typed-array/-/lodash.lodash.internal._base-is-typed-array-4.17.11.tgz#8197e1821c4f9acb36e2de1a0f1b01de3f862508"
+  integrity sha1-gZfhghxPmss24t4aDxsB3j+GJQg=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-get-tag" "4.17.11"
+    "@bit/lodash.lodash.is-length" "4.17.11"
+    "@bit/lodash.lodash.is-object-like" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-keys-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-keys-in/-/lodash.lodash.internal._base-keys-in-4.17.11.tgz#ca91f3e836e8c2f9239e559eda7314d2549b0dd2"
+  integrity sha1-ypHz6DbowvkjnlWe2nMU0lSbDdI=
+  dependencies:
+    "@bit/lodash.lodash.internal._is-prototype" "4.17.11"
+    "@bit/lodash.lodash.internal._native-keys-in" "4.17.11"
+    "@bit/lodash.lodash.is-object" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-keys@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-keys/-/lodash.lodash.internal._base-keys-4.17.11.tgz#a92eb315c8691d6e910aabbe8ba71df93706cf69"
+  integrity sha1-qS6zFchpHW6RCqu+i6cd+TcGz2k=
+  dependencies:
+    "@bit/lodash.lodash.internal._is-prototype" "4.17.11"
+    "@bit/lodash.lodash.internal._native-keys" "4.17.11"
+
+"@bit/lodash.lodash.internal._base-times@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-times/-/lodash.lodash.internal._base-times-4.17.11.tgz#ddbcb20ba7dae28271337905313515a05c36dde6"
+  integrity sha1-3byyC6fa4oJxM3kFMTUVoFw23eY=
 
 "@bit/lodash.lodash.internal._base-to-string@4.17.11":
   version "4.17.11"
@@ -1783,6 +1937,11 @@
     "@bit/lodash.lodash.is-array" "4.17.11"
     "@bit/lodash.lodash.is-symbol" "4.17.11"
 
+"@bit/lodash.lodash.internal._base-unary@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._base-unary/-/lodash.lodash.internal._base-unary-4.17.11.tgz#1ee0fbe59bfa83e1a6b3814167b0654debafc3a1"
+  integrity sha1-HuD75Zv6g+Gms4FBZ7BlTeuvw6E=
+
 "@bit/lodash.lodash.internal._cast-path@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._cast-path/-/lodash.lodash.internal._cast-path-4.17.11.tgz#d3aeaed3ab42a190de6b2ebeeb64a15c73ff7a59"
@@ -1793,6 +1952,75 @@
     "@bit/lodash.lodash.is-array" "4.17.11"
     "@bit/lodash.lodash.to-string" "4.17.11"
 
+"@bit/lodash.lodash.internal._clone-array-buffer@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._clone-array-buffer/-/lodash.lodash.internal._clone-array-buffer-4.17.11.tgz#a89b2895a7e952c6eda1dd1a33e676d9fb47dfca"
+  integrity sha1-qJsolafpUsbtod0aM+Z22ftH38o=
+  dependencies:
+    "@bit/lodash.lodash.internal._uint8-array" "4.17.11"
+
+"@bit/lodash.lodash.internal._clone-buffer@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._clone-buffer/-/lodash.lodash.internal._clone-buffer-4.17.11.tgz#288730f94fb943af38a18bb14259b7274f84493c"
+  integrity sha1-KIcw+U+5Q684oYuxQlm3J0+ESTw=
+  dependencies:
+    "@bit/lodash.lodash.internal._root" "4.17.11"
+
+"@bit/lodash.lodash.internal._clone-data-view@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._clone-data-view/-/lodash.lodash.internal._clone-data-view-4.17.11.tgz#9a9eb18ea49d8162974698f7bcb0a75bd01f0e3e"
+  integrity sha1-mp6xjqSdgWKXRpj3vLCnW9AfDj4=
+  dependencies:
+    "@bit/lodash.lodash.internal._clone-array-buffer" "4.17.11"
+
+"@bit/lodash.lodash.internal._clone-reg-exp@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._clone-reg-exp/-/lodash.lodash.internal._clone-reg-exp-4.17.11.tgz#e47393a3e7b1961d3d3e5a1b93ab0cc94c07e334"
+  integrity sha1-5HOTo+exlh09Plobk6sMyUwH4zQ=
+
+"@bit/lodash.lodash.internal._clone-symbol@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._clone-symbol/-/lodash.lodash.internal._clone-symbol-4.17.11.tgz#00411835f010f9c185fb033ff7203c3d05b21a94"
+  integrity sha1-AEEYNfAQ+cGF+wM/9yA8PQWyGpQ=
+  dependencies:
+    "@bit/lodash.lodash.internal._symbol" "4.17.11"
+
+"@bit/lodash.lodash.internal._clone-typed-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._clone-typed-array/-/lodash.lodash.internal._clone-typed-array-4.17.11.tgz#f824c6bd37e7074c85ed4b5a7f7cdaeea091851f"
+  integrity sha1-+CTGvTfnB0yF7Utaf3za7qCRhR8=
+  dependencies:
+    "@bit/lodash.lodash.internal._clone-array-buffer" "4.17.11"
+
+"@bit/lodash.lodash.internal._copy-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._copy-array/-/lodash.lodash.internal._copy-array-4.17.11.tgz#4f1b94aa4a472dbdeba19940838a4027b6a20562"
+  integrity sha1-TxuUqkpHLb3roZlAg4pAJ7aiBWI=
+
+"@bit/lodash.lodash.internal._copy-object@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._copy-object/-/lodash.lodash.internal._copy-object-4.17.11.tgz#5083a043109a176ffcd5926ce16da718b47bd64c"
+  integrity sha1-UIOgQxCaF2/81ZJs4W2nGLR71kw=
+  dependencies:
+    "@bit/lodash.lodash.internal._assign-value" "4.17.11"
+    "@bit/lodash.lodash.internal._base-assign-value" "4.17.11"
+
+"@bit/lodash.lodash.internal._copy-symbols-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._copy-symbols-in/-/lodash.lodash.internal._copy-symbols-in-4.17.11.tgz#dce1759ae14ef31708b57e3f17286ff7ac17fcd0"
+  integrity sha1-3OF1muFO8xcItX4/Fyhv96wX/NA=
+  dependencies:
+    "@bit/lodash.lodash.internal._copy-object" "4.17.11"
+    "@bit/lodash.lodash.internal._get-symbols-in" "4.17.11"
+
+"@bit/lodash.lodash.internal._copy-symbols@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._copy-symbols/-/lodash.lodash.internal._copy-symbols-4.17.11.tgz#9668050f83864ffda78e30fcfb9e052219976d05"
+  integrity sha1-lmgFD4OGT/2njjD8+54FIhmXbQU=
+  dependencies:
+    "@bit/lodash.lodash.internal._copy-object" "4.17.11"
+    "@bit/lodash.lodash.internal._get-symbols" "4.17.11"
+
 "@bit/lodash.lodash.internal._core-js-data@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._core-js-data/-/lodash.lodash.internal._core-js-data-4.17.11.tgz#f4bc186f8ffbd90930bf2140c53d45eb4eec0c08"
@@ -1800,10 +2028,43 @@
   dependencies:
     "@bit/lodash.lodash.internal._root" "4.17.11"
 
+"@bit/lodash.lodash.internal._data-view@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._data-view/-/lodash.lodash.internal._data-view-4.17.11.tgz#63cbe3b764ab4aa34350f32cf092ac2a3ecf605f"
+  integrity sha1-Y8vjt2SrSqNDUPMs8JKsKj7PYF8=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-native" "4.17.11"
+    "@bit/lodash.lodash.internal._root" "4.17.11"
+
+"@bit/lodash.lodash.internal._define-property@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._define-property/-/lodash.lodash.internal._define-property-4.17.11.tgz#7020202f6aa3126414d15f3d26a616d133f77f40"
+  integrity sha1-cCAgL2qjEmQU0V89JqYW0TP3f0A=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-native" "4.17.11"
+
 "@bit/lodash.lodash.internal._free-global@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._free-global/-/lodash.lodash.internal._free-global-4.17.11.tgz#a99d528f3ec060af107558ae11d61f5a81322801"
   integrity sha1-qZ1Sjz7AYK8QdViuEdYfWoEyKAE=
+
+"@bit/lodash.lodash.internal._get-all-keys-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._get-all-keys-in/-/lodash.lodash.internal._get-all-keys-in-4.17.11.tgz#1b776773d85c1d09e382a352a2c5bd10f68e58d7"
+  integrity sha1-G3dnc9hcHQnjgqNSosW9EPaOWNc=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-get-all-keys" "4.17.11"
+    "@bit/lodash.lodash.internal._get-symbols-in" "4.17.11"
+    "@bit/lodash.lodash.keys-in" "4.17.11"
+
+"@bit/lodash.lodash.internal._get-all-keys@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._get-all-keys/-/lodash.lodash.internal._get-all-keys-4.17.11.tgz#c689fbf74d00716271206d5467120f98ff4a9671"
+  integrity sha1-xon7900AcWJxIG1UZxIPmP9KlnE=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-get-all-keys" "4.17.11"
+    "@bit/lodash.lodash.internal._get-symbols" "4.17.11"
+    "@bit/lodash.lodash.keys" "4.17.11"
 
 "@bit/lodash.lodash.internal._get-map-data@4.17.11":
   version "4.17.11"
@@ -1820,12 +2081,50 @@
     "@bit/lodash.lodash.internal._base-is-native" "4.17.11"
     "@bit/lodash.lodash.internal._get-value" "4.17.11"
 
+"@bit/lodash.lodash.internal._get-prototype@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._get-prototype/-/lodash.lodash.internal._get-prototype-4.17.11.tgz#19ed3535662d0cc73e48c6f2242ec7f450a9c310"
+  integrity sha1-Ge01NWYtDMc+SMbyJC7H9FCpwxA=
+  dependencies:
+    "@bit/lodash.lodash.internal._over-arg" "4.17.11"
+
 "@bit/lodash.lodash.internal._get-raw-tag@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._get-raw-tag/-/lodash.lodash.internal._get-raw-tag-4.17.11.tgz#a277f95dbf9913568bd7930471fc145fd4a7f2f3"
   integrity sha1-onf5Xb+ZE1aL15MEcfwUX9Sn8vM=
   dependencies:
     "@bit/lodash.lodash.internal._symbol" "4.17.11"
+
+"@bit/lodash.lodash.internal._get-symbols-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._get-symbols-in/-/lodash.lodash.internal._get-symbols-in-4.17.11.tgz#19c7a698c7e597290000a9ce808e817b9b2aeefa"
+  integrity sha1-GcemmMfllykAAKnOgI6Be5sq7vo=
+  dependencies:
+    "@bit/lodash.lodash.internal._array-push" "4.17.11"
+    "@bit/lodash.lodash.internal._get-prototype" "4.17.11"
+    "@bit/lodash.lodash.internal._get-symbols" "4.17.11"
+    "@bit/lodash.lodash.stub-array" "4.17.11"
+
+"@bit/lodash.lodash.internal._get-symbols@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._get-symbols/-/lodash.lodash.internal._get-symbols-4.17.11.tgz#6e9cd5156870ded7730ddfef15ba41bba9f1667d"
+  integrity sha1-bpzVFWhw3tdzDd/vFbpBu6nxZn0=
+  dependencies:
+    "@bit/lodash.lodash.internal._array-filter" "4.17.11"
+    "@bit/lodash.lodash.stub-array" "4.17.11"
+
+"@bit/lodash.lodash.internal._get-tag@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._get-tag/-/lodash.lodash.internal._get-tag-4.17.11.tgz#0226fc270c4922bf019e5f4162392a43ba5fd614"
+  integrity sha1-Aib8JwxJIr8Bnl9BYjkqQ7pf1hQ=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-get-tag" "4.17.11"
+    "@bit/lodash.lodash.internal._data-view" "4.17.11"
+    "@bit/lodash.lodash.internal._map" "4.17.11"
+    "@bit/lodash.lodash.internal._promise" "4.17.11"
+    "@bit/lodash.lodash.internal._set" "4.17.11"
+    "@bit/lodash.lodash.internal._to-source" "4.17.11"
+    "@bit/lodash.lodash.internal._weak-map" "4.17.11"
 
 "@bit/lodash.lodash.internal._get-value@4.17.11":
   version "4.17.11"
@@ -1888,6 +2187,31 @@
     "@bit/lodash.lodash.internal._hash-has" "4.17.11"
     "@bit/lodash.lodash.internal._hash-set" "4.17.11"
 
+"@bit/lodash.lodash.internal._init-clone-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._init-clone-array/-/lodash.lodash.internal._init-clone-array-4.17.11.tgz#61c31231bb38ffd41b824e41a755a9365b78e4c8"
+  integrity sha1-YcMSMbs4/9Qbgk5Bp1WpNlt45Mg=
+
+"@bit/lodash.lodash.internal._init-clone-by-tag@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._init-clone-by-tag/-/lodash.lodash.internal._init-clone-by-tag-4.17.11.tgz#fdae14b6f7232f65019749b0434a410a44d37190"
+  integrity sha1-/a4UtvcjL2UBl0mwQ0pBCkTTcZA=
+  dependencies:
+    "@bit/lodash.lodash.internal._clone-array-buffer" "4.17.11"
+    "@bit/lodash.lodash.internal._clone-data-view" "4.17.11"
+    "@bit/lodash.lodash.internal._clone-reg-exp" "4.17.11"
+    "@bit/lodash.lodash.internal._clone-symbol" "4.17.11"
+    "@bit/lodash.lodash.internal._clone-typed-array" "4.17.11"
+
+"@bit/lodash.lodash.internal._init-clone-object@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._init-clone-object/-/lodash.lodash.internal._init-clone-object-4.17.11.tgz#1a46be198fc9c6985ca6136420f9238235a542f4"
+  integrity sha1-Gka+GY/JxphcphNkIPkjgjWlQvQ=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-create" "4.17.11"
+    "@bit/lodash.lodash.internal._get-prototype" "4.17.11"
+    "@bit/lodash.lodash.internal._is-prototype" "4.17.11"
+
 "@bit/lodash.lodash.internal._is-index@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._is-index/-/lodash.lodash.internal._is-index-4.17.11.tgz#09848aca10f2f45410d4dd763a987375fd3563db"
@@ -1912,6 +2236,11 @@
   integrity sha1-ErghmyPJuh9hGW9hFYA7hamf1wg=
   dependencies:
     "@bit/lodash.lodash.internal._core-js-data" "4.17.11"
+
+"@bit/lodash.lodash.internal._is-prototype@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._is-prototype/-/lodash.lodash.internal._is-prototype-4.17.11.tgz#88046c4e0ceb952b5be824debf177e698ded6327"
+  integrity sha1-iARsTgzrlStb6CTevxd+aY3tYyc=
 
 "@bit/lodash.lodash.internal._list-cache-clear@4.17.11":
   version "4.17.11"
@@ -2027,10 +2356,42 @@
   dependencies:
     "@bit/lodash.lodash.internal._get-native" "4.17.11"
 
+"@bit/lodash.lodash.internal._native-keys-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._native-keys-in/-/lodash.lodash.internal._native-keys-in-4.17.11.tgz#31e9e9d2bda170bb78a8adad02927a5aaac521ec"
+  integrity sha1-Menp0r2hcLt4qK2tApJ6WqrFIew=
+
+"@bit/lodash.lodash.internal._native-keys@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._native-keys/-/lodash.lodash.internal._native-keys-4.17.11.tgz#ee7e691482e097c2fa32aa9e2e19a728f488cf76"
+  integrity sha1-7n5pFILgl8L6MqqeLhmnKPSIz3Y=
+  dependencies:
+    "@bit/lodash.lodash.internal._over-arg" "4.17.11"
+
+"@bit/lodash.lodash.internal._node-util@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._node-util/-/lodash.lodash.internal._node-util-4.17.11.tgz#558a117426fad7bc8ee195e9527c1e547b5dbb11"
+  integrity sha1-VYoRdCb617yO4ZXpUnweVHtduxE=
+  dependencies:
+    "@bit/lodash.lodash.internal._free-global" "4.17.11"
+
 "@bit/lodash.lodash.internal._object-to-string@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.internal._object-to-string/-/lodash.lodash.internal._object-to-string-4.17.11.tgz#defb43b7e67f99316e503fff1d289ded2ede0805"
   integrity sha1-3vtDt+Z/mTFuUD//HSid7S7eCAU=
+
+"@bit/lodash.lodash.internal._over-arg@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._over-arg/-/lodash.lodash.internal._over-arg-4.17.11.tgz#21400130aecf3f00fcd0259f5f7a57088c48f045"
+  integrity sha1-IUABMK7PPwD80CWfX3pXCIxI8EU=
+
+"@bit/lodash.lodash.internal._promise@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._promise/-/lodash.lodash.internal._promise-4.17.11.tgz#c7cbea4d502ea16c570d8ee0ba0d4e238c6fe71f"
+  integrity sha1-x8vqTVAuoWxXDY7gug1OI4xv5x8=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-native" "4.17.11"
+    "@bit/lodash.lodash.internal._root" "4.17.11"
 
 "@bit/lodash.lodash.internal._root@4.17.11":
   version "4.17.11"
@@ -2038,6 +2399,57 @@
   integrity sha1-2hKq0bT8Y59B/1rlRh18av8265Q=
   dependencies:
     "@bit/lodash.lodash.internal._free-global" "4.17.11"
+
+"@bit/lodash.lodash.internal._set@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._set/-/lodash.lodash.internal._set-4.17.11.tgz#021995932b461bd470f32393814b4692333f48ea"
+  integrity sha1-AhmVkytGG9Rw8yOTgUtGkjM/SOo=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-native" "4.17.11"
+    "@bit/lodash.lodash.internal._root" "4.17.11"
+
+"@bit/lodash.lodash.internal._stack-clear@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._stack-clear/-/lodash.lodash.internal._stack-clear-4.17.11.tgz#a37723aa991923c4309c02499da8f0eb0dc73983"
+  integrity sha1-o3cjqpkZI8QwnAJJnajw6w3HOYM=
+  dependencies:
+    "@bit/lodash.lodash.internal._list-cache" "4.17.11"
+
+"@bit/lodash.lodash.internal._stack-delete@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._stack-delete/-/lodash.lodash.internal._stack-delete-4.17.11.tgz#bc9ae85da04023e480af43df09af025708372e2c"
+  integrity sha1-vJroXaBAI+SAr0PfCa8CVwg3Liw=
+
+"@bit/lodash.lodash.internal._stack-get@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._stack-get/-/lodash.lodash.internal._stack-get-4.17.11.tgz#c7a8f660e80088ff9c3e2214b2aa420c5f75db41"
+  integrity sha1-x6j2YOgAiP+cPiIUsqpCDF9120E=
+
+"@bit/lodash.lodash.internal._stack-has@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._stack-has/-/lodash.lodash.internal._stack-has-4.17.11.tgz#8e2f6576daa7aea669126f641e5911bd001e1388"
+  integrity sha1-ji9ldtqnrqZpEm9kHlkRvQAeE4g=
+
+"@bit/lodash.lodash.internal._stack-set@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._stack-set/-/lodash.lodash.internal._stack-set-4.17.11.tgz#bf04f039540fe9e8fcce01b1013dfae9f2db83be"
+  integrity sha1-vwTwOVQP6ej8zgGxAT366fLbg74=
+  dependencies:
+    "@bit/lodash.lodash.internal._list-cache" "4.17.11"
+    "@bit/lodash.lodash.internal._map" "4.17.11"
+    "@bit/lodash.lodash.internal._map-cache" "4.17.11"
+
+"@bit/lodash.lodash.internal._stack@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._stack/-/lodash.lodash.internal._stack-4.17.11.tgz#667a92e25f1de2b580cc98d0fad77ca4eafad1f5"
+  integrity sha1-ZnqS4l8d4rWAzJjQ+td8pOr60fU=
+  dependencies:
+    "@bit/lodash.lodash.internal._list-cache" "4.17.11"
+    "@bit/lodash.lodash.internal._stack-clear" "4.17.11"
+    "@bit/lodash.lodash.internal._stack-delete" "4.17.11"
+    "@bit/lodash.lodash.internal._stack-get" "4.17.11"
+    "@bit/lodash.lodash.internal._stack-has" "4.17.11"
+    "@bit/lodash.lodash.internal._stack-set" "4.17.11"
 
 "@bit/lodash.lodash.internal._string-to-path@4.17.11":
   version "4.17.11"
@@ -2065,6 +2477,21 @@
   resolved "https://node.bit.dev/lodash.lodash.internal._to-source/-/lodash.lodash.internal._to-source-4.17.11.tgz#5079f701d0dbcfe857c82b042d957d20469a9a28"
   integrity sha1-UHn3AdDbz+hXyCsELZV9IEaamig=
 
+"@bit/lodash.lodash.internal._uint8-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._uint8-array/-/lodash.lodash.internal._uint8-array-4.17.11.tgz#13904ea3d0d3045535313fae0f918bce992d5da5"
+  integrity sha1-E5BOo9DTBFU1MT+uD5GLzpktXaU=
+  dependencies:
+    "@bit/lodash.lodash.internal._root" "4.17.11"
+
+"@bit/lodash.lodash.internal._weak-map@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.internal._weak-map/-/lodash.lodash.internal._weak-map-4.17.11.tgz#d5d54e8926eb6e4216fd1b1fd36e6eff5168221f"
+  integrity sha1-1dVOiSbrbkIW/Rsf025u/1FoIh8=
+  dependencies:
+    "@bit/lodash.lodash.internal._get-native" "4.17.11"
+    "@bit/lodash.lodash.internal._root" "4.17.11"
+
 "@bit/lodash.lodash.is-arguments@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.is-arguments/-/lodash.lodash.is-arguments-4.17.11.tgz#35305605651c7100b50d06b73b3fb612b970f365"
@@ -2073,10 +2500,26 @@
     "@bit/lodash.lodash.internal._base-is-arguments" "4.17.11"
     "@bit/lodash.lodash.is-object-like" "4.17.11"
 
+"@bit/lodash.lodash.is-array-like@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.is-array-like/-/lodash.lodash.is-array-like-4.17.11.tgz#5aa92dc8ab43a3d0673cd0d6d66ef284088f266a"
+  integrity sha1-WqktyKtDo9BnPNDW1m7yhAiPJmo=
+  dependencies:
+    "@bit/lodash.lodash.is-function" "4.17.11"
+    "@bit/lodash.lodash.is-length" "4.17.11"
+
 "@bit/lodash.lodash.is-array@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.is-array/-/lodash.lodash.is-array-4.17.11.tgz#52a8437f2d76812ba6ac1c55b01b04b6dce764a9"
   integrity sha1-UqhDfy12gSumrBxVsBsEttznZKk=
+
+"@bit/lodash.lodash.is-buffer@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.is-buffer/-/lodash.lodash.is-buffer-4.17.11.tgz#32b663f2167f18abaac77454d513bae91f9a3f3a"
+  integrity sha1-MrZj8hZ/GKuqx3RU1RO66R+aPzo=
+  dependencies:
+    "@bit/lodash.lodash.internal._root" "4.17.11"
+    "@bit/lodash.lodash.stub-false" "4.17.11"
 
 "@bit/lodash.lodash.is-function@4.17.11":
   version "4.17.11"
@@ -2091,6 +2534,15 @@
   resolved "https://node.bit.dev/lodash.lodash.is-length/-/lodash.lodash.is-length-4.17.11.tgz#c410346c4e48402985caed6118caaf6f03a16b3f"
   integrity sha1-xBA0bE5IQCmFyu1hGMqvbwOhaz8=
 
+"@bit/lodash.lodash.is-map@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.is-map/-/lodash.lodash.is-map-4.17.11.tgz#8a7ffa5dbdd8c59dc09f2ea3c8995c4703770d9e"
+  integrity sha1-in/6Xb3YxZ3Any6jyJlcRwN3DZ4=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-is-map" "4.17.11"
+    "@bit/lodash.lodash.internal._base-unary" "4.17.11"
+    "@bit/lodash.lodash.internal._node-util" "4.17.11"
+
 "@bit/lodash.lodash.is-object-like@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.is-object-like/-/lodash.lodash.is-object-like-4.17.11.tgz#5afca94883f92dae4e4fea7afc38fbf809ce7685"
@@ -2101,6 +2553,15 @@
   resolved "https://node.bit.dev/lodash.lodash.is-object/-/lodash.lodash.is-object-4.17.11.tgz#c78353f4a6aef9638de0be90e75493723b138ae4"
   integrity sha1-x4NT9Kau+WON4L6Q51STcjsTiuQ=
 
+"@bit/lodash.lodash.is-set@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.is-set/-/lodash.lodash.is-set-4.17.11.tgz#85cf6fc1f17f4a23dcb26f777e7698539689399c"
+  integrity sha1-hc9vwfF/SiPcsm93fnaYU5aJOZw=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-is-set" "4.17.11"
+    "@bit/lodash.lodash.internal._base-unary" "4.17.11"
+    "@bit/lodash.lodash.internal._node-util" "4.17.11"
+
 "@bit/lodash.lodash.is-symbol@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.is-symbol/-/lodash.lodash.is-symbol-4.17.11.tgz#74d093c388a15f2736b3d54854660447c353427f"
@@ -2109,12 +2570,49 @@
     "@bit/lodash.lodash.internal._base-get-tag" "4.17.11"
     "@bit/lodash.lodash.is-object-like" "4.17.11"
 
+"@bit/lodash.lodash.is-typed-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.is-typed-array/-/lodash.lodash.is-typed-array-4.17.11.tgz#4f2d302e7773323787d898f94c685ca6d6b7d4fd"
+  integrity sha1-Ty0wLndzMjeH2Jj5TGhcpta31P0=
+  dependencies:
+    "@bit/lodash.lodash.internal._base-is-typed-array" "4.17.11"
+    "@bit/lodash.lodash.internal._base-unary" "4.17.11"
+    "@bit/lodash.lodash.internal._node-util" "4.17.11"
+
+"@bit/lodash.lodash.keys-in@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.keys-in/-/lodash.lodash.keys-in-4.17.11.tgz#cf91d29ef80e75244ca3fe32f24fa7621a9b8bad"
+  integrity sha1-z5HSnvgOdSRMo/4y8k+nYhqbi60=
+  dependencies:
+    "@bit/lodash.lodash.internal._array-like-keys" "4.17.11"
+    "@bit/lodash.lodash.internal._base-keys-in" "4.17.11"
+    "@bit/lodash.lodash.is-array-like" "4.17.11"
+
+"@bit/lodash.lodash.keys@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.keys/-/lodash.lodash.keys-4.17.11.tgz#25d866bee467f4e6622279c513c82c2cdb42885d"
+  integrity sha1-JdhmvuRn9OZiInnFE8gsLNtCiF0=
+  dependencies:
+    "@bit/lodash.lodash.internal._array-like-keys" "4.17.11"
+    "@bit/lodash.lodash.internal._base-keys" "4.17.11"
+    "@bit/lodash.lodash.is-array-like" "4.17.11"
+
 "@bit/lodash.lodash.memoize@4.17.11":
   version "4.17.11"
   resolved "https://node.bit.dev/lodash.lodash.memoize/-/lodash.lodash.memoize-4.17.11.tgz#583017d36b2e78aafa76d58f512c449eee4b0e3f"
   integrity sha1-WDAX02sueKr6dtWPUSxEnu5LDj8=
   dependencies:
     "@bit/lodash.lodash.internal._map-cache" "4.17.11"
+
+"@bit/lodash.lodash.stub-array@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.stub-array/-/lodash.lodash.stub-array-4.17.11.tgz#fc6ae44fd67ec4554dad8b7fbfd0874255562cef"
+  integrity sha1-/GrkT9Z+xFVNrYt/v9CHQlVWLO8=
+
+"@bit/lodash.lodash.stub-false@4.17.11":
+  version "4.17.11"
+  resolved "https://node.bit.dev/lodash.lodash.stub-false/-/lodash.lodash.stub-false-4.17.11.tgz#e812622a46ad57b372da1ef56ff32675d7f24a6d"
+  integrity sha1-6BJiKkatV7Ny2h71b/MmddfySm0=
 
 "@bit/lodash.lodash.to-string@4.17.11":
   version "4.17.11"
@@ -11306,6 +11804,13 @@ react-error-overlay@^6.0.6:
   version "6.0.6"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.6.tgz#ac4d9dc4c1b5c536c2c312bf66aa2b09bfa384e2"
   integrity sha512-Yzpno3enVzSrSCnnljmr4b/2KUQSMZaPuqmS26t9k4nW7uwJk6STWmH9heNjPuvqUTO3jOSPkHoKgO4+Dw7uIw==
+
+react-icons@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-3.9.0.tgz#89a00f20a0e02e6bfd899977eaf46eb4624239d5"
+  integrity sha512-gKbYKR+4QsD3PmIHLAM9TDDpnaTsr3XZeK1NTAb6WQQ+gxEdJ0xuCgLq0pxXdS7Utg2AIpcVhM1ut/jlDhcyNg==
+  dependencies:
+    camelcase "^5.0.0"
 
 react-is@^16.3.2:
   version "16.12.0"

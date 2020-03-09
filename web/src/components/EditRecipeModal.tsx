@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
+import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
 
 
@@ -13,15 +13,15 @@ interface Props extends ModalInterface {
     options: {
         type: ModalCategory
     }
-    recipe: Recipe | null | undefined
+    recipe: Recipe | null
 }
 
 interface ModalContent { title: string, actionButton: string, body: any }
 
-export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
     const [isEditing, setIsEditing] = useState(false)
     const { type } = options
-    const [addRecipe] = useAddRecipeMutation()
+    const [updateRecipe] = useUpdateRecipeByIdMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
 
@@ -70,23 +70,6 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     //     return content
     // }
 
-    const addRecipeFromDiscover = () => {
-        if (!recipe)
-            throw new Error('recipe from discover not found')
-
-        const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
-        // remove properties not needed by mutation
-        delete formattedRecipe.id
-        delete formattedRecipe.__typename
-        console.log('adding recipe');
-
-        addRecipe({
-            variables: {
-                recipe: formattedRecipe
-            }
-        })
-    }
-
     const editRecipe = () => {
         // grab details from recipe
         // make graphql query to request them
@@ -94,18 +77,18 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
 
     const handleSave = (category: ModalCategory) => {
         // switch case to handle the different saving/updating options
-        switch (category) {
-            case ModalCategory.NewDiscover:
+        // switch (category) {
+        //     case ModalCategory.NewDiscover:
 
-                // add from discover
-                addRecipeFromDiscover()
-                break
-            case ModalCategory.Edit:
-                editRecipe()
-                break
-        }
+        //         // add from discover
+        //         addRecipeFromDiscover()
+        //         break
+        // case ModalCategory.Edit:
+        // break
+        // }
         // edit existing recipe
 
+        editRecipe()
         handleClose()
     }
 
@@ -124,8 +107,9 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         </Fragment>
     )
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
+    // const handleSubmit = async (e: any) => {
+    const handleSubmit = async () => {
+        // e.preventDefault()
         console.log('submit edit');
 
         if (!isCreateRecipeValid()) {
@@ -134,19 +118,18 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         }
         const recipe = { ...inputs, userId: user!.me!.id }
         console.log(recipe);
-        const response = await addRecipe({
-            variables: { recipe }
+        const response = await updateRecipe({
+            variables: { input: recipe }
         })
 
         console.log(response);
-
-        resetForm()
         handleClose()
     }
 
-    const displayEditContent = (recipe: Recipe | null | undefined) => (
+    const displayEditContent = (recipe: Recipe | null) => (
         recipe ?
-            <Form onSubmit={handleSubmit}>
+            // <Form onSubmit={handleSubmit}>
+            <Form>
                 <Form.Group controlId="title">
                     <Form.Label>Title</Form.Label>
                     <Form.Control type="text" name="title" value={inputs.title} onChange={handleChange} />
@@ -171,9 +154,9 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                     <Form.Label>Summary</Form.Label>
                     <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
                 </Form.Group>
-                <Button variant="secondary" type="submit">
+                {/* <Button variant="secondary" type="submit">
                     Edit Recipe
-            </Button>
+            </Button> */}
             </Form>
             :
             null
@@ -195,15 +178,11 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             </Modal.Header>
             <Modal.Body>
                 {
-                    isEditing ? displayEditContent(recipe) :
-                        recipe && displayViewContent(recipe)
+                    displayEditContent(recipe)
                 }
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={() => handleSave(type)}>
-                    {`${renderText(type)} Recipe`}
-                </Button>
-                <Button variant="primary" onClick={() => setIsEditing(true)}>
+                <Button variant="primary" onClick={() => handleSubmit()}>
                     {`Edit Recipe`}
                 </Button>
             </Modal.Footer>
