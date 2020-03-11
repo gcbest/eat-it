@@ -7,6 +7,8 @@ import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
+import cloneDeep from '@bit/lodash.lodash.clone-deep';
+import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 
 
 interface Props extends ModalInterface {
@@ -116,11 +118,18 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             console.log('fill out the mandatory fields');
             return
         }
-        const recipe = { ...inputs, userId: user!.me!.id }
-        console.log(recipe);
+        const updatedRecipe = { ...inputs, id: recipe!.id, userId: user!.me!.id }
+        console.log(updatedRecipe);
         const response = await updateRecipe({
-            variables: { input: recipe }
-        })
+            variables: { input: updatedRecipe },
+            update(cache, { data}) {
+                console.log(data!.updateRecipeById);
+                
+                // cloning to prevent any issues with not being able to update cache
+                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data!.updateRecipeById } })
+            }
+            })
 
         console.log(response);
         handleClose()

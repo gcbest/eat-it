@@ -8,6 +8,9 @@ import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
+import { ADD_RECIPE, GET_ME_LOCAL } from 'graphql/queriesAndMutations';
+import { useMutation } from '@apollo/react-hooks';
+import cloneDeep from '@bit/lodash.lodash.clone-deep';
 
 
 interface Props extends ModalInterface {
@@ -18,7 +21,7 @@ interface Props extends ModalInterface {
 
 export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
     // const [createNewRecipe] = useCreateNewRecipeMutation()
-    const [addRecipe] = useAddRecipeMutation()
+    const [addRecipe] = useMutation(ADD_RECIPE)
 
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { header } = options
@@ -50,7 +53,12 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
         const recipe = { ...inputs, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
         console.log(recipe);
         const response = await addRecipe({
-            variables: { recipe }
+            variables: { recipe },
+            update(cache, { data: { addRecipe } }) {
+                // cloning to prevent any issues with not being able to update cache
+                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                cache.writeQuery({ query: GET_ME_LOCAL, data: { me: addRecipe } })
+            }
         })
 
         console.log(response);

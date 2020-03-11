@@ -22,7 +22,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
         } else {
             updateInputs({
                 ...inputs,
-                [e.target.name]: e.target.value
+                [e.target.name]: isNaN(parseFloat(e.target.value)) ? e.target.value : parseFloat(e.target.value) // convert '1' to 1.0 but leave text alone
             })
         }
     }

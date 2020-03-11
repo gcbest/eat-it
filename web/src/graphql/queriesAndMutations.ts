@@ -29,3 +29,18 @@ query meLocal {
     }
 }
 `
+
+export const ADD_RECIPE = gql`
+mutation AddRecipe($recipe: AddRecipeInput!) {
+    addRecipe(input: $recipe) {
+        id
+        email
+        recipes {
+            id
+            title
+            image
+            mealType
+        }
+    }
+}
+`

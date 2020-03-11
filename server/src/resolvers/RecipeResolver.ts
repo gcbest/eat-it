@@ -41,6 +41,30 @@ class AddRecipeInput implements Partial<Recipe> {
     userId: number
 }
 
+@InputType()
+class EditRecipeInput implements Partial<Recipe> {
+    @Field()
+    id: number
+    @Field()
+    title: string
+    @Field()
+    readyInMinutes: number
+    @Field()
+    servings: number
+    @Field()
+    image: string
+    @Field()
+    summary: string
+    @Field()
+    sourceUrl: string
+    @Field()
+    analyzedInstructions: string
+    @Field()
+    mealType: number
+    @Field()
+    userId: number
+}
+
 
 @Resolver()
 export class RecipeResolver {
@@ -98,20 +122,28 @@ export class RecipeResolver {
         }
     }
 
-    @Mutation(() => Boolean)
+    @Mutation(() => User)
     @UseMiddleware(isAuth)
-    async updateRecipeById(@Arg("input") input: AddRecipeInput): Promise<Boolean> {
+    async updateRecipeById(@Arg("input") input: EditRecipeInput): Promise<User | undefined> {
         try {
+            const {userId} = input
+            delete input.userId
+            let user = await User.findOne({ where: { id: userId }})
+            const updatedRecipe = { ...input, user: user! }
+
+            // let recipeToUpdate = Recipe.findOne({where: {id: }})
             await getConnection()
                 .createQueryBuilder()
                 .update(Recipe)
-                .set(input)
-                .where("id = :id", { id: input.userId })
+                .set(updatedRecipe)
+                .where("id = :id", { id: input.id })
                 .execute();
-            return true
+
+            const updatedUser = await User.findOne({ where: { id: userId }, relations: ["recipes"] })
+            return updatedUser
         } catch (error) {
             console.error(error);
-            return false
+            return undefined
         }
     }
 

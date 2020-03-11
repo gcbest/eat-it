@@ -10,5 +10,14 @@ input AddRecipeInput  {
     }
 
 mutation AddRecipe($recipe: AddRecipeInput!) {
-    addRecipe(input: $recipe)
+    addRecipe(input: $recipe) {
+        id
+        email
+        recipes {
+            id
+            title
+            image
+            mealType
+        }
+    }
 }

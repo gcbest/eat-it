@@ -79,10 +79,16 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId }) => {
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const handleClose = () => setShow(false);
+    const handleCloseEdit = () => setShowEdit(false);
     const handleShow = async () => {
         getRecipeById({ variables: { id } })
         setShow(true)
     }
+    const handleShowEdit = async () => {
+        getRecipeById({ variables: { id } })
+        setShowEdit(true)
+    }
+
 
     const { data: notData, loading, error } = useMeLocalQuery();
 
@@ -105,12 +111,12 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId }) => {
         }
 
         {data && data.getRecipeById ?
-            <EditRecipeModal show={showEdit} handleClose={handleClose} options={{ type: ModalCategory.Edit }} recipe={data && data.getRecipeById} /> :
+            <EditRecipeModal show={showEdit} handleClose={handleCloseEdit} options={{ type: ModalCategory.Edit }} recipe={data && data.getRecipeById} /> :
             null
         }
 
 
 
-        <span onClick={handleShow}><img src={image} alt={title} /> {title} </span><FaEdit onClick={() => { setShowEdit(true) }} /> <FaTrashAlt onClick={handleDelete} />
+        <span onClick={handleShow}><img src={image} alt={title} /> {title} </span><FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
     </ListGroup.Item>)
 }

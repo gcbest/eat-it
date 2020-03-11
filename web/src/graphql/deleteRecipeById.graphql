@@ -1,3 +1,12 @@
 mutation DeleteRecipeById($recipeId: Float!, $userId: Float!) {
-    deleteRecipeById(recipeId: $recipeId, userId: $userId)
+    deleteRecipeById(recipeId: $recipeId, userId: $userId) {
+        id
+        email
+        recipes {
+            id
+            title
+            image
+            mealType
+        }
+    }
 }
