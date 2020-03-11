@@ -69,21 +69,12 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId }) => {
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
     const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
         variables: { recipeId: id, userId },
-        // update(cache, {data: {me: {recipes}}}) {
         update(cache, { data: { deleteRecipeById } }) {
-            console.log(deleteRecipeById);
-            // data.deleteRecipeById.recipes
-            // const data = _.cloneDeep(proxy.readQuery({ query }));
-
+            // cloning to prevent any issues with not being able to update cache
             const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-            console.log(me);
-
             cache.writeQuery({ query: GET_ME_LOCAL, data: { me: deleteRecipeById } })
-            const me2: User | null = cache.readQuery({ query: GET_ME_LOCAL })
-            console.log(me2);
         }
     })
-    // const [deleteRecipeById] = useDeleteRecipeByIdMutation()
 
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);

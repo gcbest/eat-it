@@ -2,6 +2,9 @@ import React from "react";
 import { useMeLocalQuery } from "../generated/graphql";
 import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
 import { MealsArea } from "components/MealsArea";
+import { User } from "lib/interfaces";
+
+export const ProfileContext = React.createContext<any>(undefined)
 
 export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   // TODO: createProfileQuery - get user with relations - https://typeorm.io/#/many-to-one-one-to-many-relations
@@ -28,7 +31,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
 
-  return (<div><MealsArea recipesSlim={data.me.recipes} userId={data.me.id} /></div>)
+  return (<div><ProfileContext.Provider value={data.me}><MealsArea recipesSlim={data.me.recipes} userId={data.me.id} /></ProfileContext.Provider></div>)
 };
 
 // TODOs:

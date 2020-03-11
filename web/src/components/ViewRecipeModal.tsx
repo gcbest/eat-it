@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useContext } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -7,11 +7,16 @@ import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
+import { useMutation } from '@apollo/react-hooks';
+import { DELETE_RECIPE_BY_ID, GET_ME_LOCAL } from '../graphql/queriesAndMutations'
+import { ProfileContext } from 'pages/Profile';
+import cloneDeep from '@bit/lodash.lodash.clone-deep'
+
 
 
 interface Props extends ModalInterface {
     options: {
-        type: ModalCategory
+        type: ModalCategory,
     }
     recipe: Recipe | null | undefined
 }
@@ -19,11 +24,21 @@ interface Props extends ModalInterface {
 interface ModalContent { title: string, actionButton: string, body: any }
 
 export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+    const me = useContext(ProfileContext)
     const [isEditing, setIsEditing] = useState(false)
     const { type } = options
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
-    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+
+    const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
+        variables: { recipeId: id, userId: me.id },
+        update(cache, { data: { deleteRecipeById } }) {
+            // cloning to prevent any issues with not being able to update cache
+            const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+            cache.writeQuery({ query: GET_ME_LOCAL, data: { me: deleteRecipeById } })
+        }
+    })
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title,
@@ -106,6 +121,11 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         }
         // edit existing recipe
 
+        handleClose()
+    }
+
+    const deleteRecipe = () => {
+        deleteRecipeById()
         handleClose()
     }
 
@@ -200,6 +220,9 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 }
             </Modal.Body>
             <Modal.Footer>
+                <Button variant="danger" onClick={deleteRecipe}>
+                    Delete
+                </Button>
                 <Button variant="secondary" onClick={() => handleSave(type)}>
                     {`${renderText(type)} Recipe`}
                 </Button>

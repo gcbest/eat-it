@@ -35,7 +35,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
         const results: RecipeSlim[] = recipesSlim.filter(rs => searchTerm === '' || rs.title.toLowerCase().trim().includes(searchTerm.toLowerCase()))
         // setRecipes(results)
         setSearchResults(results)
-    }, [searchTerm])
+    }, [searchTerm, recipesSlim])
 
     const handleAddNew = () => {
         handleShow()
