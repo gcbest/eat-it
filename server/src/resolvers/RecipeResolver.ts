@@ -142,7 +142,7 @@ export class RecipeResolver {
             const updatedUser = await User.findOne({ where: { id: userId }, relations: ["recipes"] })
             return updatedUser
         } catch (error) {
-            console.error(error);
+            console.error('error message:', error);
             return undefined
         }
     }

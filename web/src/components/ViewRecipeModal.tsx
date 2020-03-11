@@ -30,6 +30,8 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    console.log(recipe);
+    
 
     const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
         variables: { recipeId: id, userId: me.id },
@@ -136,7 +138,7 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 <img src={image} alt={title} />}
             <h3>{title}</h3>
             <p>
-                <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
+                <span>Ready in: <strong>{recipe.readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
             </p>
 
 

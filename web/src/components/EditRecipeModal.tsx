@@ -5,10 +5,10 @@ import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation } from 'generated/graphql';
+import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
 import cloneDeep from '@bit/lodash.lodash.clone-deep';
-import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
+import { GET_ME_LOCAL, GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations';
 
 
 interface Props extends ModalInterface {
@@ -26,6 +26,8 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     const [updateRecipe] = useUpdateRecipeByIdMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    console.log(recipe);
+    
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title,
@@ -118,16 +120,15 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             console.log('fill out the mandatory fields');
             return
         }
-        const updatedRecipe = { ...inputs, id: recipe!.id, userId: user!.me!.id }
+        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, userId: user!.me!.id }
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
-            update(cache, { data}) {
-                console.log(data!.updateRecipeById);
+            update(cache, {data}) {
+                const getRecipeById: any = cloneDeep(cache.readQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id} }))
+                console.log(getRecipeById);
                 
-                // cloning to prevent any issues with not being able to update cache
-                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data!.updateRecipeById } })
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, data: {getRecipeById: {...updatedRecipe, __typename: "Recipe"}} })
             }
             })
 
