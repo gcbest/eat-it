@@ -51,3 +51,8 @@ export interface User {
     email: string
     recipes: [Recipe]
 }
+
+export interface Tag {
+    id: number;
+    name :string;
+}

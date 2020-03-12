@@ -83,10 +83,8 @@ query meLocal {
                 query: GET_ME_LOCAL,
                 data: { me: { ...me, recipes: addRecipe.recipes } }
             })
-            const me2: User | null = cache.readQuery({ query: GET_ME_LOCAL })
-            console.log(me2);
-
-
+            // const me2: User | null = cache.readQuery({ query: GET_ME_LOCAL })
+            // console.log(me2);
         }
     })
 

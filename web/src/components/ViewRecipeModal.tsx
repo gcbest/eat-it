@@ -11,6 +11,8 @@ import { useMutation } from '@apollo/react-hooks';
 import { DELETE_RECIPE_BY_ID, GET_ME_LOCAL } from '../graphql/queriesAndMutations'
 import { ProfileContext } from 'pages/Profile';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
+import ReactTags, {Tag} from 'react-tag-autocomplete'
+import './ViewRecipeModal.css'
 
 
 
@@ -26,6 +28,25 @@ interface ModalContent { title: string, actionButton: string, body: any }
 export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
     const me = useContext(ProfileContext)
     const [isEditing, setIsEditing] = useState(false)
+    //REACT TAGS
+    /////////////////////////////////// 
+    const [tags, setTags] = useState<Tag[]>([{ id: 1, name: "Apples" },{ id: 2, name: "Pears" }])
+    const [suggestions, setSuggestions] = useState([{ id: 3, name: "Bananas" },
+    { id: 4, name: "Mangos" },
+    { id: 5, name: "Lemons" },
+    { id: 6, name: "Apricots" }])
+
+    const handleDelete = (indexToRmv: number) => {
+        const updatedTags = tags.filter((t, index) => !(index === indexToRmv))
+        setTags(updatedTags)
+    }
+
+    const handleAddition = (tag: Tag) => {
+        const updatedTags = [...tags, tag]
+        setTags(updatedTags)
+    }
+
+    /////////////////////////////////
     const { type } = options
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
@@ -222,6 +243,15 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 }
             </Modal.Body>
             <Modal.Footer>
+                <div>
+                <ReactTags
+                        tags={tags}
+                        suggestions={suggestions}
+                        handleDelete={handleDelete}
+                        handleAddition={handleAddition}
+                        />
+                
+                </div>
                 <Button variant="danger" onClick={deleteRecipe}>
                     Delete
                 </Button>
