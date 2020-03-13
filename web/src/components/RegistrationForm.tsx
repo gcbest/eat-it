@@ -5,6 +5,8 @@ import Alert from 'react-bootstrap/Alert';
 import { Redirect } from 'react-router-dom';
 import { useRegisterMutation } from "../generated/graphql";
 import useForm from 'lib/useForm';
+import { getKeyByValue } from 'lib/utils';
+import { Diet } from 'lib/enums';
 
 
 export const RegistrationForm: React.FC = () => {
@@ -38,13 +40,20 @@ export const RegistrationForm: React.FC = () => {
         }
 
         console.log("form submitted");
-        const { email, password, exerciseLevel, diets } = inputs;
+        const { email, password, exerciseLevel, diets } = inputs
+        const defaultTags = 'high-protein, vegan,'
+        const getDietNamesStr = (dietsArr: string[]): string => dietsArr.map(diet => getKeyByValue(Diet, parseInt(diet))!.toLowerCase()).join(',')
+        const dietsArr = diets.split(',').map((d: string) => parseInt(d)) // e.g. [1,4]
+        const selectedDiets = getDietNamesStr(dietsArr) // e.g. 'keto, pescatarian' 
+        
+        debugger;
         const response = await register({
             variables: {
                 email,
                 password,
                 exerciseLevel: parseInt(exerciseLevel),
-                diets
+                diets,
+                tags: `${defaultTags}${selectedDiets}`
             }
         });
         console.log(response);

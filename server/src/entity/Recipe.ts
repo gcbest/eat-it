@@ -47,6 +47,10 @@ export class Recipe extends BaseEntity {
   @Column("text")
   analyzedInstructions: string;
 
+  @Field()
+  @Column("text")
+  tags: string;
+
   @Field(() => Int)
   @Column()
   mealType: number;

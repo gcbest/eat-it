@@ -20,6 +20,7 @@ query meLocal {
     me {
         id
         email
+        tags
         recipes {
             id
             title
@@ -35,6 +36,7 @@ query meLocal {
     me @client {
         id
         email
+        tags
         recipes {
             id
             title

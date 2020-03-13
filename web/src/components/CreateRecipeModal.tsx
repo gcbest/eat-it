@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -11,6 +11,7 @@ import { getEnumNames } from 'lib/utils';
 import { ADD_RECIPE, GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import { useMutation } from '@apollo/react-hooks';
 import cloneDeep from '@bit/lodash.lodash.clone-deep';
+import ReactTags, {Tag} from 'react-tag-autocomplete'
 
 
 interface Props extends ModalInterface {
@@ -36,6 +37,26 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
         analyzedInstructions: '',
     });
 
+
+    //REACT TAGS
+    /////////////////////////////////// 
+    const [tags, setTags] = useState<Tag[]>([{ id: 1, name: "Apples" },{ id: 2, name: "Pears" }])
+    const [suggestions, setSuggestions] = useState([{ id: 3, name: "Bananas" },
+    { id: 4, name: "Mangos" },
+    { id: 5, name: "Lemons" },
+    { id: 6, name: "Apricots" }])
+
+    const handleDelete = (indexToRmv: number) => {
+        const updatedTags = tags.filter((t, index) => !(index === indexToRmv))
+        setTags(updatedTags)
+    }
+
+    const handleAddition = (tag: Tag) => {
+        const updatedTags = [...tags, tag]
+        setTags(updatedTags)
+    }
+
+    /////////////////////////////////
 
     if (loadingLocal)
         console.log('loading local');
@@ -103,6 +124,18 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
                         Create Recipe
                     </Button>
                 </Form>
+                <div>
+                <ReactTags
+                        tags={tags}
+                        suggestions={suggestions}
+                        handleDelete={handleDelete}
+                        handleAddition={handleAddition}
+                        allowNew={true}
+                        allowBackspace={false}
+                        />
+                
+
+                </div>
             </Modal.Body>
             <Modal.Footer>
 

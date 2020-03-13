@@ -18,6 +18,7 @@ export interface Recipe {
     sourceUrl: string;
     // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
+    tags?: string;
     mealType: number;
 }
 
@@ -50,9 +51,4 @@ export interface User {
     id: number
     email: string
     recipes: [Recipe]
-}
-
-export interface Tag {
-    id: number;
-    name :string;
 }

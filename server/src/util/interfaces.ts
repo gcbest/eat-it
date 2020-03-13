@@ -9,6 +9,11 @@
 //     }>;
 // }
 
+export interface Tag {
+    id: number;
+    name: string;
+}
+
 export interface RecipeInterface {
     id: number;
     title: string;
@@ -19,5 +24,6 @@ export interface RecipeInterface {
     sourceUrl: string;
     // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
+    tags?: Tag;
     mealType: number
 }

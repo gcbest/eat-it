@@ -13,6 +13,13 @@ export enum MealCategory {
     Other
 }
 
+export enum Diet {
+    Carnivore = 1,
+    Mediterranean,
+    Pescatarian,
+    Vegetarian,
+    Vegan
+}
 
 
 

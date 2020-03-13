@@ -66,6 +66,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationRegisterArgs = {
+  tags: Scalars['String'],
   diets: Scalars['String'],
   exerciseLevel: Scalars['Float'],
   password: Scalars['String'],
@@ -120,6 +121,7 @@ export type Recipe = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  tags: Scalars['String'],
   mealType: Scalars['Int'],
 };
 
@@ -132,6 +134,7 @@ export type RecipeInput = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  tags: Scalars['String'],
   mealType: Scalars['Int'],
 };
 
@@ -141,6 +144,7 @@ export type User = {
   email: Scalars['String'],
   exerciseLevel: Scalars['Float'],
   diets: Scalars['String'],
+  tags: Scalars['String'],
   recipes: Array<Recipe>,
 };
 
@@ -260,7 +264,7 @@ export type MeLocalQuery = (
   { __typename?: 'Query' }
   & { me: Maybe<(
     { __typename?: 'user' }
-    & Pick<User, 'id' | 'email'>
+    & Pick<User, 'id' | 'email' | 'tags'>
     & { recipes: Array<(
       { __typename?: 'Recipe' }
       & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
@@ -286,7 +290,8 @@ export type RegisterMutationVariables = {
   email: Scalars['String'],
   password: Scalars['String'],
   exerciseLevel: Scalars['Float'],
-  diets: Scalars['String']
+  diets: Scalars['String'],
+  tags: Scalars['String']
 };
 
 
@@ -489,6 +494,7 @@ export const MeLocalDocument = gql`
   me @client {
     id
     email
+    tags
     recipes {
       id
       title
@@ -533,8 +539,8 @@ export const RandomRecipesDocument = gql`
 export type RandomRecipesQueryHookResult = ReturnType<typeof useRandomRecipesQuery>;
 export type RandomRecipesQueryResult = ApolloReactCommon.QueryResult<RandomRecipesQuery, RandomRecipesQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $password: String!, $exerciseLevel: Float!, $diets: String!) {
-  register(email: $email, password: $password, exerciseLevel: $exerciseLevel, diets: $diets)
+    mutation Register($email: String!, $password: String!, $exerciseLevel: Float!, $diets: String!, $tags: String!) {
+  register(email: $email, password: $password, exerciseLevel: $exerciseLevel, diets: $diets, tags: $tags)
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;

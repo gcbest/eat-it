@@ -9,6 +9,7 @@ import {
   InputType,
 } from "type-graphql";
 import { Recipe } from './Recipe';
+// import { Tag } from "../util/interfaces";
 
 @ObjectType('user')
 @InputType()
@@ -32,6 +33,24 @@ export class User extends BaseEntity {
   @Field()
   @Column("text")
   diets: string;
+
+  // @Field()
+  // @Column("text")
+  // tags: string; // all tags user has used on recipes
+
+  // @Field()
+  // @Column({
+  //     type: 'jsonb',
+  //     array: true,
+  //     default: () => [],
+  //     nullable: true,
+  // })
+  @Column({type: 'jsonb'})
+  tags: Array<{id: number, name: string}>
+  // tags: Tag[]
+  // // @Column("simple-json")
+  // // tags: {id: number, name: string}
+
 
   @Column("int", { default: 0 })
   tokenVersion: number;

@@ -249,6 +249,8 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                         suggestions={suggestions}
                         handleDelete={handleDelete}
                         handleAddition={handleAddition}
+                        allowNew={true}
+                        allowBackspace={false}
                         />
                 
                 </div>

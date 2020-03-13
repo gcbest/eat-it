@@ -1,13 +1,14 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
+import { useMeLocalQuery, useAddRecipeMutation, useMeQuery, useMeLocalLazyQuery } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
 import { useMutation } from '@apollo/react-hooks';
+import ReactTags, {Tag} from 'react-tag-autocomplete'
 import gql from 'graphql-tag';
 
 
@@ -26,6 +27,39 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType = 1 } = recipe!
+
+    //REACT TAGS
+    /////////////////////////////////// 
+    const [tags, setTags] = useState<Tag[]>([{ id: 1, name: "Apples" },{ id: 2, name: "Pears" }])
+    const [suggestions, setSuggestions] = useState([{ id: 3, name: "Bananas" },
+    { id: 4, name: "Mangos" },
+    { id: 5, name: "Lemons" },
+    { id: 6, name: "Apricots" }])
+
+    const handleDelete = (indexToRmv: number) => {
+        const updatedTags = tags.filter((t, index) => !(index === indexToRmv))
+        setTags(updatedTags)
+    }
+
+    const handleAddition = (tag: Tag) => {
+        const updatedTags = [...tags, tag]
+        setTags(updatedTags)
+    }
+
+    const createTag = (tagName: string): Tag => {id: tagName}
+
+    const {data, loading} = useMeLocalQuery()
+
+    useEffect(() => {
+        // get me from context
+        
+        //add 
+        if(data && data.me && data.me.tags)
+        setSuggestions(data.me.tags)
+
+    }, [])
+
+    /////////////////////////////////
 
     const ADD_RECIPE = gql`
         mutation AddRecipe($recipe: AddRecipeInput!) {
@@ -143,7 +177,8 @@ query meLocal {
             throw new Error('need a meal type')
 
 
-        const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
+        const tagsStrFormat = tags.map(t => t.name.toLowerCase()).join(',')
+        const formattedRecipe: AddRecipeInput = { ...recipe, tags: tagsStrFormat, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.__typename
@@ -275,6 +310,16 @@ query meLocal {
                 }
             </Modal.Body>
             <Modal.Footer>
+                <div>       
+                    <ReactTags
+                            tags={tags}
+                            suggestions={suggestions}
+                            handleDelete={handleDelete}
+                            handleAddition={handleAddition}
+                            allowNew={true}
+                            allowBackspace={false}
+                            />
+                </div>
                 <Button variant="secondary" onClick={() => handleSave()}>
                     {`Add Recipe`}
                 </Button>
