@@ -40,16 +40,17 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
 
     //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([{ id: 1, name: "Apples" },{ id: 2, name: "Pears" }])
-    const [suggestions, setSuggestions] = useState([{ id: 3, name: "Bananas" },
-    { id: 4, name: "Mangos" },
-    { id: 5, name: "Lemons" },
-    { id: 6, name: "Apricots" }])
+    const [tags, setTags] = useState<Tag[]>([{ id: '1', name: "Apples" },{ id: '2', name: "Pears" }])
+    const [suggestions, setSuggestions] = useState<Tag[]>([{ id: '3', name: "Bananas" },
+    { id: '4', name: "Mangos" },
+    { id: '5', name: "Lemons" },
+    { id: '6', name: "Apricots" }])
 
     const handleDelete = (indexToRmv: number) => {
-        const updatedTags = tags.filter((t, index) => !(index === indexToRmv))
+        const updatedTags = tags.filter((_:any, index: number) => !(index === indexToRmv))
         setTags(updatedTags)
     }
+
 
     const handleAddition = (tag: Tag) => {
         const updatedTags = [...tags, tag]

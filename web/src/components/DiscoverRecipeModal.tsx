@@ -30,14 +30,14 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
 
     //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([{ id: 1, name: "Apples" },{ id: 2, name: "Pears" }])
-    const [suggestions, setSuggestions] = useState([{ id: 3, name: "Bananas" },
-    { id: 4, name: "Mangos" },
-    { id: 5, name: "Lemons" },
-    { id: 6, name: "Apricots" }])
+    const [tags, setTags] = useState<Tag[]>([{ id: '1', name: "Apples" },{ id: '2', name: "Pears" }])
+    const [suggestions, setSuggestions] = useState([{ id: '3', name: "Bananas" },
+    { id: '4', name: "Mangos" },
+    { id: '5', name: "Lemons" },
+    { id: '6', name: "Apricots" }])
 
     const handleDelete = (indexToRmv: number) => {
-        const updatedTags = tags.filter((t, index) => !(index === indexToRmv))
+        const updatedTags = tags.filter((_:any, index: number) => !(index === indexToRmv))
         setTags(updatedTags)
     }
 
@@ -46,18 +46,18 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
         setTags(updatedTags)
     }
 
-    const createTag = (tagName: string): Tag => {id: tagName}
+    // const createTag = (tagName: string): Tag => {id: tagName}
 
-    const {data, loading} = useMeLocalQuery()
+    // const {data, loading} = useMeLocalQuery()
 
-    useEffect(() => {
-        // get me from context
+    // useEffect(() => {
+    //     // get me from context
         
-        //add 
-        if(data && data.me && data.me.tags)
-        setSuggestions(data.me.tags)
+    //     //add 
+    //     if(data && data.me && data.me.tags)
+    //     setSuggestions(data.me.tags)
 
-    }, [])
+    // }, [])
 
     /////////////////////////////////
 

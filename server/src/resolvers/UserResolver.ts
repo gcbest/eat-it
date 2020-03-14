@@ -8,6 +8,7 @@ import {
   Ctx,
   UseMiddleware,
   Int,
+  // InputType,
   // ArgsType
 } from "type-graphql";
 import { hash, compare } from "bcryptjs";
@@ -20,7 +21,7 @@ import { getConnection } from "typeorm";
 import { verify } from "jsonwebtoken";
 // import { Tag } from "src/util/interfaces";
 // import { Recipe } from "../entity/Recipe";
-
+import {TagInput} from '../entity/User'
 
 @ObjectType()
 class LoginResponse {
@@ -32,13 +33,14 @@ class LoginResponse {
   // recipes: Recipe[];
 }
 
-@ObjectType()
-class Tag {
-  @Field()
-  id: number;
-  @Field()
-  name: string
-}
+// @ObjectType()
+// @InputType()
+// class Tag {
+//   @Field()
+//   id: number;
+//   @Field()
+//   name: string
+// }
 
 // type Dude = {
 //   id: number,
@@ -155,7 +157,7 @@ export class UserResolver {
     @Arg("password") password: string,
     @Arg("exerciseLevel") exerciseLevel: number,
     @Arg("diets") diets: string,
-    @Arg("tags") tags: [Tag],
+    @Arg("tags", ()=>[TagInput]) tags: [TagInput],
   ) {
     const hashedPassword = await hash(password, 12);
 

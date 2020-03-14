@@ -2,7 +2,10 @@ query meLocal {
     me @client {
         id
         email
-        tags
+        tags {
+            id
+            name
+        }
         recipes {
             id
             title

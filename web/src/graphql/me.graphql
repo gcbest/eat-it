@@ -2,6 +2,10 @@ query Me {
   me {
     id
     email
+    tags {
+      id
+      name
+    }
     recipes {
       id
       title

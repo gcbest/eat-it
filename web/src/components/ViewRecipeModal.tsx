@@ -30,11 +30,11 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     const [isEditing, setIsEditing] = useState(false)
     //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([{ id: 1, name: "Apples" },{ id: 2, name: "Pears" }])
-    const [suggestions, setSuggestions] = useState([{ id: 3, name: "Bananas" },
-    { id: 4, name: "Mangos" },
-    { id: 5, name: "Lemons" },
-    { id: 6, name: "Apricots" }])
+    const [tags, setTags] = useState<Tag[]>([{ id: '1', name: "Apples" },{ id: '2', name: "Pears" }])
+    const [suggestions, setSuggestions] = useState([{ id: '3', name: "Bananas" },
+    { id: '4', name: "Mangos" },
+    { id: '5', name: "Lemons" },
+    { id: '6', name: "Apricots" }])
 
     const handleDelete = (indexToRmv: number) => {
         const updatedTags = tags.filter((t, index) => !(index === indexToRmv))

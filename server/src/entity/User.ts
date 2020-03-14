@@ -11,6 +11,17 @@ import {
 import { Recipe } from './Recipe';
 // import { Tag } from "../util/interfaces";
 
+@ObjectType()
+@InputType('Tag')
+export class TagInput {
+  @Field()
+  id: string;
+  @Field()
+  name: string;
+  // @Field()
+  // disabled?: boolean;
+}
+
 @ObjectType('user')
 @InputType()
 @Entity('users')
@@ -34,7 +45,7 @@ export class User extends BaseEntity {
   @Column("text")
   diets: string;
 
-  // @Field()
+  @Field(()=>[TagInput])
   // @Column("text")
   // tags: string; // all tags user has used on recipes
 
@@ -46,8 +57,8 @@ export class User extends BaseEntity {
   //     nullable: true,
   // })
   @Column({type: 'jsonb'})
-  tags: Array<{id: number, name: string}>
-  // tags: Tag[]
+  // tags: Array<{id: number, name: string}>
+  tags: TagInput[]
   // // @Column("simple-json")
   // // tags: {id: number, name: string}
 

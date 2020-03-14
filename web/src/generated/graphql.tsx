@@ -66,7 +66,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationRegisterArgs = {
-  tags: Scalars['String'],
+  tags: Array<Tag>,
   diets: Scalars['String'],
   exerciseLevel: Scalars['Float'],
   password: Scalars['String'],
@@ -138,13 +138,24 @@ export type RecipeInput = {
   mealType: Scalars['Int'],
 };
 
+export type Tag = {
+  id: Scalars['String'],
+  name: Scalars['String'],
+};
+
+export type TagInput = {
+   __typename?: 'TagInput',
+  id: Scalars['String'],
+  name: Scalars['String'],
+};
+
 export type User = {
    __typename?: 'user',
   id: Scalars['Int'],
   email: Scalars['String'],
   exerciseLevel: Scalars['Float'],
   diets: Scalars['String'],
-  tags: Scalars['String'],
+  tags: Array<TagInput>,
   recipes: Array<Recipe>,
 };
 
@@ -226,7 +237,10 @@ export type LoginMutation = (
     & { user: (
       { __typename?: 'user' }
       & Pick<User, 'id' | 'email'>
-      & { recipes: Array<(
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )>, recipes: Array<(
         { __typename?: 'Recipe' }
         & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
       )> }
@@ -250,7 +264,10 @@ export type MeQuery = (
   & { me: Maybe<(
     { __typename?: 'user' }
     & Pick<User, 'id' | 'email'>
-    & { recipes: Array<(
+    & { tags: Array<(
+      { __typename?: 'TagInput' }
+      & Pick<TagInput, 'id' | 'name'>
+    )>, recipes: Array<(
       { __typename?: 'Recipe' }
       & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
     )> }
@@ -264,8 +281,11 @@ export type MeLocalQuery = (
   { __typename?: 'Query' }
   & { me: Maybe<(
     { __typename?: 'user' }
-    & Pick<User, 'id' | 'email' | 'tags'>
-    & { recipes: Array<(
+    & Pick<User, 'id' | 'email'>
+    & { tags: Array<(
+      { __typename?: 'TagInput' }
+      & Pick<TagInput, 'id' | 'name'>
+    )>, recipes: Array<(
       { __typename?: 'Recipe' }
       & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
     )> }
@@ -291,7 +311,7 @@ export type RegisterMutationVariables = {
   password: Scalars['String'],
   exerciseLevel: Scalars['Float'],
   diets: Scalars['String'],
-  tags: Scalars['String']
+  tags: Array<Tag>
 };
 
 
@@ -434,6 +454,10 @@ export const LoginDocument = gql`
     user {
       id
       email
+      tags {
+        id
+        name
+      }
       recipes {
         id
         title
@@ -470,6 +494,10 @@ export const MeDocument = gql`
   me {
     id
     email
+    tags {
+      id
+      name
+    }
     recipes {
       id
       title
@@ -494,7 +522,10 @@ export const MeLocalDocument = gql`
   me @client {
     id
     email
-    tags
+    tags {
+      id
+      name
+    }
     recipes {
       id
       title
@@ -539,7 +570,7 @@ export const RandomRecipesDocument = gql`
 export type RandomRecipesQueryHookResult = ReturnType<typeof useRandomRecipesQuery>;
 export type RandomRecipesQueryResult = ApolloReactCommon.QueryResult<RandomRecipesQuery, RandomRecipesQueryVariables>;
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $password: String!, $exerciseLevel: Float!, $diets: String!, $tags: String!) {
+    mutation Register($email: String!, $password: String!, $exerciseLevel: Float!, $diets: String!, $tags: [Tag!]!) {
   register(email: $email, password: $password, exerciseLevel: $exerciseLevel, diets: $diets, tags: $tags)
 }
     `;
