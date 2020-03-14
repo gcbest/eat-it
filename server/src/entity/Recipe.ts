@@ -8,7 +8,7 @@ import {
   Int,
   InputType
 } from "type-graphql";
-import { User } from "./User";
+import { User, TagInput } from "./User";
 
 
 @ObjectType()
@@ -47,9 +47,9 @@ export class Recipe extends BaseEntity {
   @Column("text")
   analyzedInstructions: string;
 
-  @Field()
-  @Column("text")
-  tags: string;
+  @Field(()=>[TagInput])
+  @Column({type: 'jsonb', nullable: true})
+  tags: TagInput[]
 
   @Field(() => Int)
   @Column()

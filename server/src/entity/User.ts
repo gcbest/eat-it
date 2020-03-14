@@ -45,10 +45,9 @@ export class User extends BaseEntity {
   @Column("text")
   diets: string;
 
-  @Field(()=>[TagInput])
   // @Column("text")
   // tags: string; // all tags user has used on recipes
-
+  
   // @Field()
   // @Column({
   //     type: 'jsonb',
@@ -56,9 +55,10 @@ export class User extends BaseEntity {
   //     default: () => [],
   //     nullable: true,
   // })
+  @Field(()=>[TagInput])
   @Column({type: 'jsonb'})
-  // tags: Array<{id: number, name: string}>
   tags: TagInput[]
+  // tags: Array<{id: number, name: string}>
   // // @Column("simple-json")
   // // tags: {id: number, name: string}
 

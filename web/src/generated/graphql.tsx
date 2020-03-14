@@ -20,6 +20,7 @@ export type AddRecipeInput = {
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
   mealType: Scalars['Float'],
+  tags: Array<Tag>,
   userId: Scalars['Float'],
 };
 
@@ -121,7 +122,7 @@ export type Recipe = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
-  tags: Scalars['String'],
+  tags: Array<TagInput>,
   mealType: Scalars['Int'],
 };
 
@@ -134,7 +135,7 @@ export type RecipeInput = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
-  tags: Scalars['String'],
+  tags: Array<Tag>,
   mealType: Scalars['Int'],
 };
 
@@ -212,6 +213,10 @@ export type GetRecipeByIdQuery = (
   & { getRecipeById: (
     { __typename?: 'Recipe' }
     & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions' | 'mealType'>
+    & { tags: Array<(
+      { __typename?: 'TagInput' }
+      & Pick<TagInput, 'id' | 'name'>
+    )> }
   ) }
 );
 
@@ -419,6 +424,10 @@ export const GetRecipeByIdDocument = gql`
     sourceUrl
     analyzedInstructions
     mealType
+    tags {
+      id
+      name
+    }
   }
 }
     `;

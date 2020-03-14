@@ -30,11 +30,8 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
 
     //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([{ id: '1', name: "Apples" },{ id: '2', name: "Pears" }])
-    const [suggestions, setSuggestions] = useState([{ id: '3', name: "Bananas" },
-    { id: '4', name: "Mangos" },
-    { id: '5', name: "Lemons" },
-    { id: '6', name: "Apricots" }])
+    const [tags, setTags] = useState<Tag[]>([])
+    const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
         const updatedTags = tags.filter((_:any, index: number) => !(index === indexToRmv))
@@ -58,6 +55,11 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     //     setSuggestions(data.me.tags)
 
     // }, [])
+
+    useEffect(() => {
+        if(user && user.me && user.me.tags) 
+            setSuggestions(user.me.tags)
+    }, [])
 
     /////////////////////////////////
 
@@ -177,8 +179,11 @@ query meLocal {
             throw new Error('need a meal type')
 
 
-        const tagsStrFormat = tags.map(t => t.name.toLowerCase()).join(',')
-        const formattedRecipe: AddRecipeInput = { ...recipe, tags: tagsStrFormat, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
+        const tagsFormatted = tags.map((t: any) => {
+            delete t.__typename
+            return t
+        })
+        const formattedRecipe: AddRecipeInput = { ...recipe, tags: tagsFormatted, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.__typename

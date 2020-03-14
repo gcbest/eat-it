@@ -12,7 +12,7 @@ import {
     //  Int
 } from 'type-graphql';
 import { Recipe } from '../entity/Recipe';
-import { User } from '../entity/User';
+import { User, TagInput } from '../entity/User';
 import { isAuth } from '../isAuth';
 // import { MyContext } from "../MyContext";
 import { spoonacular } from '../util/util'
@@ -37,12 +37,14 @@ class AddRecipeInput implements Partial<Recipe> {
     analyzedInstructions: string
     @Field()
     mealType: number
+    @Field(() => [TagInput])
+    tags: TagInput[]
     @Field()
     userId: number
 }
 
 @InputType()
-class EditRecipeInput implements Partial<Recipe> {
+class EditRecipeInput implements Partial<Recipe> { //TODO: check if can implement AddRecipeInput
     @Field()
     id: number
     @Field()

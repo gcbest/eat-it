@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useContext } from 'react'
+import React, { Fragment, useState, useContext, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -30,11 +30,13 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     const [isEditing, setIsEditing] = useState(false)
     //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([{ id: '1', name: "Apples" },{ id: '2', name: "Pears" }])
-    const [suggestions, setSuggestions] = useState([{ id: '3', name: "Bananas" },
-    { id: '4', name: "Mangos" },
-    { id: '5', name: "Lemons" },
-    { id: '6', name: "Apricots" }])
+    const [tags, setTags] = useState<Tag[]>([])
+    const [suggestions, setSuggestions] = useState<Tag[]>([])
+
+    useEffect(() => {
+        if(recipe && recipe.tags)
+            setTags(recipe.tags)
+    }, [])
 
     const handleDelete = (indexToRmv: number) => {
         const updatedTags = tags.filter((t, index) => !(index === indexToRmv))
@@ -112,7 +114,7 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         if (!recipe)
             throw new Error('recipe from discover not found')
 
-        const formattedRecipe: AddRecipeInput = { ...recipe, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
+        const formattedRecipe: AddRecipeInput = { ...recipe, tags, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.__typename

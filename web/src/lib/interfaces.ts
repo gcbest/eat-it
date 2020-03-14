@@ -1,3 +1,5 @@
+import { Tag } from "generated/graphql";
+
 export interface Instructions {
     name: string;
     steps: Array<{
@@ -18,7 +20,7 @@ export interface Recipe {
     sourceUrl: string;
     // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
-    tags?: string;
+    tags: Tag[];
     mealType: number;
 }
 

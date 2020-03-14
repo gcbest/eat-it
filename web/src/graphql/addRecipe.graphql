@@ -1,14 +1,3 @@
-input AddRecipeInput  {
-        title: string
-        # readyInMinutes: number
-        # servings: number
-        # image: string
-        # summary: string
-        # sourceUrl: string
-        # analyzedInstructions: string
-        userId: number
-    }
-
 mutation AddRecipe($recipe: AddRecipeInput!) {
     addRecipe(input: $recipe) {
         id
