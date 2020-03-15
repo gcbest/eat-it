@@ -34,6 +34,7 @@ export type EditRecipeInput = {
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
   mealType: Scalars['Float'],
+  tags: Array<Tag>,
   userId: Scalars['Float'],
 };
 

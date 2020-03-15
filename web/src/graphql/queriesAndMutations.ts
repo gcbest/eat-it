@@ -74,5 +74,9 @@ query GetRecipeById($id: Float!) {
         sourceUrl
         analyzedInstructions
         mealType
+        tags {
+            id
+            name
+        }
     }
 }`

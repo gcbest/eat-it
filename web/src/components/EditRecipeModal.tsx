@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -9,6 +9,8 @@ import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation, Edi
 import { getEnumNames } from 'lib/utils';
 import cloneDeep from '@bit/lodash.lodash.clone-deep';
 import { GET_ME_LOCAL, GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations';
+import ReactTags, { Tag } from 'react-tag-autocomplete';
+import nanoid from 'nanoid';
 
 
 interface Props extends ModalInterface {
@@ -25,7 +27,7 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     const { type } = options
     const [updateRecipe] = useUpdateRecipeByIdMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
-    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, tags: defaultTags, mealType } = recipe!
     console.log(recipe);
     
 
@@ -39,6 +41,32 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         analyzedInstructions,
         mealType
     });
+
+    //REACT TAGS
+    /////////////////////////////////// 
+    // const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
+
+    // const defaultTags = createTags(dishTypes)
+    const [tags, setTags] = useState<Tag[]>(defaultTags)
+    const [suggestions, setSuggestions] = useState<Tag[]>([])
+
+    const handleDelete = (indexToRmv: number) => {
+        const updatedTags = tags.filter((_:any, index: number) => !(index === indexToRmv))
+        setTags(updatedTags)
+    }
+
+    const handleAddition = (tag: Tag) => {
+        tag = {...tag, id: nanoid(8)}
+        const updatedTags = [...tags, tag]
+        setTags(updatedTags)
+    }
+
+    
+        useEffect(() => {
+            if(user && user.me && user.me.tags) 
+                setSuggestions(user.me.tags)
+        }, [])
+    /////////////////////////////////// 
 
     if (loadingLocal)
         console.log('loading local');
@@ -120,14 +148,19 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             console.log('fill out the mandatory fields');
             return
         }
-        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, userId: user!.me!.id }
+
+        const formattedTags = tags.map((t: any) => {
+            delete t.__typename
+            return t
+        })
+        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags: formattedTags, userId: user!.me!.id }
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache, {data}) {
                 const getRecipeById: any = cloneDeep(cache.readQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id} }))
                 console.log(getRecipeById);
-                
+                debugger;
                 cache.writeQuery({ query: GET_RECIPE_BY_ID, data: {getRecipeById: {...updatedRecipe, __typename: "Recipe"}} })
             }
             })
@@ -167,6 +200,16 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 {/* <Button variant="secondary" type="submit">
                     Edit Recipe
             </Button> */}
+            <div>       
+                    <ReactTags
+                            tags={tags}
+                            suggestions={suggestions}
+                            handleDelete={handleDelete}
+                            handleAddition={handleAddition}
+                            allowNew={true}
+                            allowBackspace={false}
+                            />
+                </div>
             </Form>
             :
             null

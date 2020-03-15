@@ -12,6 +12,7 @@ import { ADD_RECIPE, GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import { useMutation } from '@apollo/react-hooks';
 import cloneDeep from '@bit/lodash.lodash.clone-deep';
 import ReactTags, {Tag} from 'react-tag-autocomplete'
+import nanoid from 'nanoid';
 
 
 interface Props extends ModalInterface {
@@ -53,6 +54,7 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
 
 
     const handleAddition = (tag: Tag) => {
+        tag = {...tag, id: nanoid(8)}
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }

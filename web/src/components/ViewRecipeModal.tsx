@@ -13,6 +13,7 @@ import { ProfileContext } from 'pages/Profile';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import ReactTags, {Tag} from 'react-tag-autocomplete'
 import './ViewRecipeModal.css'
+import nanoid from 'nanoid';
 
 
 
@@ -44,6 +45,7 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     }
 
     const handleAddition = (tag: Tag) => {
+        tag = {...tag, id: nanoid(8)}
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }

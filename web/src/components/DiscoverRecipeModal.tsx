@@ -34,7 +34,6 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
 
     const defaultTags = createTags(dishTypes)
-    debugger;
     const [tags, setTags] = useState<Tag[]>(defaultTags)
     const [suggestions, setSuggestions] = useState<Tag[]>([])
 
@@ -44,10 +43,16 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     }
 
     const handleAddition = (tag: Tag) => {
+        tag = {...tag, id: nanoid(8)}
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }
 
+    
+        useEffect(() => {
+            if(user && user.me && user.me.tags) 
+                setSuggestions(user.me.tags)
+        }, [])
 
     // const {data, loading} = useMeLocalQuery()
 
@@ -59,11 +64,6 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     //     setSuggestions(data.me.tags)
 
     // }, [])
-
-    useEffect(() => {
-        if(user && user.me && user.me.tags) 
-            setSuggestions(user.me.tags)
-    }, [])
 
     /////////////////////////////////
 
@@ -114,7 +114,6 @@ query meLocal {
 
     const [addRecipeMutation] = useMutation(ADD_RECIPE, {
         update(cache, { data: { addRecipe } }) {
-            debugger;
             console.log(addRecipe);
 
             const { me }: any = cache.readQuery({ query: GET_ME_LOCAL })

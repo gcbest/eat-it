@@ -63,6 +63,8 @@ class EditRecipeInput implements Partial<Recipe> { //TODO: check if can implemen
     analyzedInstructions: string
     @Field()
     mealType: number
+    @Field(() => [TagInput])
+    tags: TagInput[]
     @Field()
     userId: number
 }
