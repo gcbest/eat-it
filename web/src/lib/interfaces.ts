@@ -22,6 +22,7 @@ export interface Recipe {
     analyzedInstructions: string;
     tags: Tag[];
     mealType: number;
+    dishTypes?: string[]
 }
 
 export interface RecipeSlim {

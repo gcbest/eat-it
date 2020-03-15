@@ -10,6 +10,7 @@ import { getEnumNames } from 'lib/utils';
 import { useMutation } from '@apollo/react-hooks';
 import ReactTags, {Tag} from 'react-tag-autocomplete'
 import gql from 'graphql-tag';
+import nanoid from 'nanoid';
 
 
 interface Props extends ModalInterface {
@@ -26,11 +27,15 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     const { type } = options
     const [addRecipe] = useAddRecipeMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
-    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType = 1 } = recipe!
+    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, dishTypes = [], mealType = 1 } = recipe!
 
     //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([])
+    const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
+
+    const defaultTags = createTags(dishTypes)
+    debugger;
+    const [tags, setTags] = useState<Tag[]>(defaultTags)
     const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
@@ -43,7 +48,6 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
         setTags(updatedTags)
     }
 
-    // const createTag = (tagName: string): Tag => {id: tagName}
 
     // const {data, loading} = useMeLocalQuery()
 
@@ -187,6 +191,7 @@ query meLocal {
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.__typename
+        delete formattedRecipe.dishTypes
         console.log('adding recipe');
 
         // addRecipe({

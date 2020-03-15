@@ -43,11 +43,11 @@ export const RegistrationForm: React.FC = () => {
 
         console.log("form submitted");
         const { email, password, exerciseLevel, diets } = inputs
-        const defaultTags: Tag[] = [{id: nanoid(10), name: 'high-protein'}, {id: nanoid(10), name: 'vegan'}]
+        const defaultTags: Tag[] = [{id: nanoid(8), name: 'high-protein'}, {id: nanoid(8), name: 'vegan'}]
         // e.g. (['keto', 'pescatarian']) => [{id: 123, name: 'keto'}, {id: 456, name: 'pescatarian'}]
         const convertDietTypesToTags = (dietsArr: number[]): Tag[] => dietsArr.map(dietNum => {
             const dietName = getKeyByValue(Diet, dietNum)!.toLowerCase()
-            return {id: nanoid(10), name: dietName}
+            return {id: nanoid(8), name: dietName}
         })
         // convert string values of diet types to ints
         const dietsArr: number[] = diets.split(',').map((d: string) => parseInt(d)) // e.g. (['1', '4']) => [1,4]

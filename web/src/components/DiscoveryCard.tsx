@@ -15,7 +15,7 @@ interface Props<T> {
 }
 
 export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
-    const { title, readyInMinutes, servings, image, summary, analyzedInstructions, sourceUrl } = recipe
+    const { title, readyInMinutes, servings, image, summary, analyzedInstructions, dishTypes, sourceUrl } = recipe
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);

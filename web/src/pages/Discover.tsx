@@ -32,6 +32,7 @@ export const Discover: React.FC = () => {
             summary
             sourceUrl
             analyzedInstructions
+            dishTypes
         }
         }
     `);

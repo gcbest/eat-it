@@ -122,6 +122,7 @@ export type Recipe = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  dishTypes: Array<Scalars['String']>,
   tags: Array<TagInput>,
   mealType: Scalars['Int'],
 };
@@ -135,6 +136,7 @@ export type RecipeInput = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  dishTypes: Array<Scalars['String']>,
   tags: Array<Tag>,
   mealType: Scalars['Int'],
 };
@@ -163,7 +165,6 @@ export type User = {
 export type AddRecipeMutationVariables = {
   recipe: AddRecipeInput
 };
-
 
 export type AddRecipeMutation = (
   { __typename?: 'Mutation' }
@@ -307,7 +308,7 @@ export type RandomRecipesQuery = (
   { __typename?: 'Query' }
   & { randomRecipes: Array<(
     { __typename?: 'Recipe' }
-    & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions'>
+    & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions' | 'dishTypes'>
   )> }
 );
 
@@ -565,6 +566,7 @@ export const RandomRecipesDocument = gql`
     summary
     sourceUrl
     analyzedInstructions
+    dishTypes
   }
 }
     `;

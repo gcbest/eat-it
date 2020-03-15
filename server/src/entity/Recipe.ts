@@ -47,6 +47,9 @@ export class Recipe extends BaseEntity {
   @Column("text")
   analyzedInstructions: string;
 
+  @Field(()=> [String])
+  dishTypes: string[];
+
   @Field(()=>[TagInput])
   @Column({type: 'jsonb', nullable: true})
   tags: TagInput[]
