@@ -152,8 +152,10 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     }
 
     const deleteRecipe = () => {
-        deleteRecipeById()
-        handleClose()
+        if (window.confirm('Are you sure you want to delete?')) {
+            deleteRecipeById()
+            handleClose()
+        }
     }
 
     const displayViewContent = (recipe: Recipe) => (
