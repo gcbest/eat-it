@@ -39,25 +39,30 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
     });
 
 
-    //REACT TAGS
+   //REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([{ id: '1', name: "Apples" },{ id: '2', name: "Pears" }])
-    const [suggestions, setSuggestions] = useState<Tag[]>([{ id: '3', name: "Bananas" },
-    { id: '4', name: "Mangos" },
-    { id: '5', name: "Lemons" },
-    { id: '6', name: "Apricots" }])
+    const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
+
+    // const defaultTags = createTags(dishTypes)
+    const [tags, setTags] = useState<Tag[]>([])
+    const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
         const updatedTags = tags.filter((_:any, index: number) => !(index === indexToRmv))
         setTags(updatedTags)
     }
 
-
     const handleAddition = (tag: Tag) => {
         tag = {...tag, id: nanoid(8)}
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }
+
+    
+        useEffect(() => {
+            if(user && user.me && user.me.tags) 
+                setSuggestions(user.me.tags)
+        }, [])
 
     /////////////////////////////////
 
@@ -74,7 +79,7 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
             console.log('fill out the mandatory fields');
             return
         }
-        const recipe = { ...inputs, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
+        const recipe = { ...inputs, tags, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
         console.log(recipe);
         const response = await addRecipe({
             variables: { recipe },
