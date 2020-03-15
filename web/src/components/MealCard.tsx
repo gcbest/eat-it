@@ -7,6 +7,7 @@ import { RecipeSlim } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory } from 'lib/enums';
 import { CreateRecipeModal } from './CreateRecipeModal';
+import { Tag } from 'react-tag-autocomplete';
 
 interface Props {
     header: string
@@ -28,11 +29,15 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
         setSearchTerm(e.target.value)
     }
 
-
-
     useEffect(() => {
 
-        const results: RecipeSlim[] = recipesSlim.filter(rs => searchTerm === '' || rs.title.toLowerCase().trim().includes(searchTerm.toLowerCase()))
+        const getTagNames = (tags: Tag[]): string[] => tags.map(t => t.name)
+        // check if filter results match
+        const results: RecipeSlim[] = recipesSlim.filter(rs => {
+            return searchTerm === '' || 
+            rs.title.toLowerCase().trim().includes(searchTerm.toLowerCase()) || 
+            getTagNames(rs.tags).join(' ').trim().includes(searchTerm.toLowerCase())
+        })
         // setRecipes(results)
         setSearchResults(results)
     }, [searchTerm, recipesSlim])
@@ -56,7 +61,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
                 </Card.Title>
                 <ListGroup>
                     {searchResults &&
-                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} id={rcpSlm.id} userId={userId} />)}
+                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} id={rcpSlm.id} userId={userId} tags={rcpSlm.tags} />)}
                 </ListGroup>
             </Card.Body>
             <Card.Footer>

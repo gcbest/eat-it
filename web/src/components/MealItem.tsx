@@ -9,6 +9,8 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
+import { Tag } from 'react-tag-autocomplete';
+import { RecipeTag } from './RecipeTag';
 
 
 
@@ -17,6 +19,7 @@ interface Props {
     title: string
     id: number
     userId: number
+    tags: Tag[]
 }
 
 const DELETE_RECIPE_BY_ID = gql`
@@ -64,7 +67,7 @@ query Me {
 }
 `
 
-export const MealItem: React.FC<Props> = ({ image, title, id, userId }) => {
+export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) => {
     // TODO: add useGetRecipeByIdQuery
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
     const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
@@ -118,5 +121,9 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId }) => {
 
 
         <span onClick={handleShow}><img src={image} alt={title} /> {title} </span><FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
+        <div>
+            {tags && tags.map(t => <RecipeTag text={t.name} />)
+            }
+        </div>
     </ListGroup.Item>)
 }

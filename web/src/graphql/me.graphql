@@ -11,6 +11,10 @@ query Me {
       title
       image
       mealType
+      tags {
+        id
+        name
+      }
     }
   }
 }

@@ -11,6 +11,10 @@ query meLocal {
             title
             image
             mealType
+            tags {
+                id
+                name
+            }
         }
     }
 }

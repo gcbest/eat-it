@@ -30,6 +30,7 @@ export interface RecipeSlim {
     title: string
     image: string
     mealType: number
+    tags: Tag[]
 }
 
 export interface CustomToggleInterface {

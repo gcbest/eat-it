@@ -166,6 +166,7 @@ export type AddRecipeMutationVariables = {
   recipe: AddRecipeInput
 };
 
+
 export type AddRecipeMutation = (
   { __typename?: 'Mutation' }
   & { addRecipe: Maybe<(
@@ -249,6 +250,10 @@ export type LoginMutation = (
       )>, recipes: Array<(
         { __typename?: 'Recipe' }
         & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+        & { tags: Array<(
+          { __typename?: 'TagInput' }
+          & Pick<TagInput, 'id' | 'name'>
+        )> }
       )> }
     ) }
   ) }
@@ -276,6 +281,10 @@ export type MeQuery = (
     )>, recipes: Array<(
       { __typename?: 'Recipe' }
       & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )> }
     )> }
   )> }
 );
@@ -294,6 +303,10 @@ export type MeLocalQuery = (
     )>, recipes: Array<(
       { __typename?: 'Recipe' }
       & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )> }
     )> }
   )> }
 );
@@ -473,6 +486,10 @@ export const LoginDocument = gql`
         title
         image
         mealType
+        tags {
+          id
+          name
+        }
       }
     }
   }
@@ -513,6 +530,10 @@ export const MeDocument = gql`
       title
       image
       mealType
+      tags {
+        id
+        name
+      }
     }
   }
 }
@@ -541,6 +562,10 @@ export const MeLocalDocument = gql`
       title
       image
       mealType
+      tags {
+        id
+        name
+      }
     }
   }
 }
