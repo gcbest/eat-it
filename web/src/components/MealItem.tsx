@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, useContext, useEffect } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { ViewRecipeModal } from './ViewRecipeModal'
 import { EditRecipeModal } from './EditRecipeModal'
@@ -11,6 +11,7 @@ import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import { Tag } from 'react-tag-autocomplete';
 import { RecipeTag } from './RecipeTag';
+import { ProfileContext } from 'pages/Profile';
 
 
 
@@ -69,6 +70,7 @@ query Me {
 
 export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) => {
     // TODO: add useGetRecipeByIdQuery
+    // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
     const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
         variables: { recipeId: id, userId },
@@ -83,14 +85,18 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) =>
     const [showEdit, setShowEdit] = useState(false);
     const handleClose = () => setShow(false);
     const handleCloseEdit = () => setShowEdit(false);
-    const handleShow = async () => {
+    const handleShow = () => {
         getRecipeById({ variables: { id } })
         setShow(true)
     }
-    const handleShowEdit = async () => {
+    const handleShowEdit = () => {
         getRecipeById({ variables: { id } })
         setShowEdit(true)
     }
+
+    // useEffect(() => {
+    //     setShow(showRecipe)
+    // }, [showRecipe])
 
 
     const { data: notData, loading, error } = useMeLocalQuery();
@@ -109,7 +115,7 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) =>
     return (<ListGroup.Item>
         {/* only mount view modal when ready to open a recipe */}
         {data && data.getRecipeById ?
-            <ViewRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.Edit }} recipe={data && data.getRecipeById} /> :
+            <ViewRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.View }} recipe={data && data.getRecipeById} /> :
             null
         }
 

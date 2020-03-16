@@ -35,7 +35,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
         // check if filter results match
         const results: RecipeSlim[] = recipesSlim.filter(rs => {
             return searchTerm === '' || 
-            rs.title.toLowerCase().trim().includes(searchTerm.toLowerCase()) || 
+            rs.title.trim().toLowerCase().includes(searchTerm.toLowerCase()) || 
             getTagNames(rs.tags).join(' ').trim().includes(searchTerm.toLowerCase())
         })
         // setRecipes(results)

@@ -1,7 +1,8 @@
 export enum ModalCategory {
     NewDiscover = 1,
     NewCreate,
-    Edit
+    Edit,
+    View
 }
 
 export enum MealCategory {

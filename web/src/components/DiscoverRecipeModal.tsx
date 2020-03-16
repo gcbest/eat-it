@@ -154,7 +154,10 @@ query meLocal {
                 return 'Create'
             case ModalCategory.Edit:
                 return 'Edit'
+            default:
+                return 'Save'
         }
+        return 'Save'
     }
 
     // const renderContent = (category: ModalCategory): ModalContent => {

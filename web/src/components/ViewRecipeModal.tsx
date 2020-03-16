@@ -84,17 +84,20 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     if (user)
         console.log(user);
 
-    const renderText = (category: ModalCategory): string => {
-        // let text = {title: '', actionButton: ''}
-        switch (category) {
-            case ModalCategory.NewDiscover:
-                return 'Save'
-            case ModalCategory.NewCreate:
-                return 'Create'
-            case ModalCategory.Edit:
-                return 'Edit'
+        const renderText = (category: ModalCategory): string => {
+            // let text = {title: '', actionButton: ''}
+            switch (category) {
+                case ModalCategory.NewDiscover:
+                    return 'Save'
+                case ModalCategory.NewCreate:
+                    return 'Create'
+                case ModalCategory.Edit:
+                    return 'Edit'
+                default:
+                    return 'Save'
+            }
+            return 'Save'
         }
-    }
 
     // const renderContent = (category: ModalCategory): ModalContent => {
     //     let content: ModalContent = { title: '', actionButton: '', body: undefined }
