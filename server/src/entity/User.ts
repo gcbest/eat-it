@@ -19,6 +19,8 @@ export class TagInput {
   @Field()
   name: string;
   // @Field()
+  // __typename: string;
+  // @Field()
   // disabled?: boolean;
 }
 

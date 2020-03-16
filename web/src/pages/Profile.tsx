@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { useMeLocalQuery, useGetRecipeByIdLazyQuery } from "../generated/graphql";
 import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
 import { MealsArea } from "components/MealsArea";
-// import { User } from "lib/interfaces";
 import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
-import debounce from 'lodash.debounce';
 import { ApolloConsumer } from "@apollo/react-hooks";
 import { ModalCategory } from "lib/enums";
 import { ViewRecipeModal } from "components/ViewRecipeModal";
@@ -17,30 +15,17 @@ import Button from "react-bootstrap/Button";
 export const ProfileContext = React.createContext<any>(undefined)
 
 export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
-  // TODO: createProfileQuery - get user with relations - https://typeorm.io/#/many-to-one-one-to-many-relations
-  // const users = await userRepository.find({ relations: ["photos"] });
-
   const { data, loading, error } = useMeLocalQuery();
   const [search, setSearch] = useState([])
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [showRecipe, setShowRecipe] = useState(false)
   const [items, setItems] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
-
   const [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
-
-
-
-
-
-  // const [load]
-  // const {me: {recipes}} = data
 
   if (loading)
     return <div>loading...</div>;
 
-    // TODO: put onto context
-    // const handleShowRecipe = (id: number, setShow: (val: boolean) => void) => {
     const handleShowRecipe = (id: number) => {
         getRecipeById({ variables: { id } })
         setShowRecipe(true)

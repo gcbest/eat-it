@@ -211,9 +211,16 @@ export type DeleteRecipeByIdMutation = (
   & { deleteRecipeById: (
     { __typename?: 'user' }
     & Pick<User, 'id' | 'email'>
-    & { recipes: Array<(
+    & { tags: Array<(
+      { __typename?: 'TagInput' }
+      & Pick<TagInput, 'id' | 'name'>
+    )>, recipes: Array<(
       { __typename?: 'Recipe' }
-      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )> }
     )> }
   ) }
 );
@@ -455,11 +462,20 @@ export const DeleteRecipeByIdDocument = gql`
   deleteRecipeById(recipeId: $recipeId, userId: $userId) {
     id
     email
+    tags {
+      id
+      name
+    }
     recipes {
       id
       title
       image
       mealType
+      isStarred
+      tags {
+        id
+        name
+      }
     }
   }
 }

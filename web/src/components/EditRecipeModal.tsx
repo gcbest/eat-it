@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
-import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
+import { Recipe, ModalInterface, User, AddRecipeInput, RecipeSlim } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
@@ -152,22 +152,24 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             return
         }
 
-        const formattedTags = tags.map((t: any) => {
-            delete t.__typename
-            return t
-        })
+        // const formattedTags = tags.map((t: any) => {
+        //     delete t.__typename
+        //     return t
+        // })
         debugger;
-        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags: formattedTags, userId: user!.me!.id, isStarred: recipe!.isStarred }
+        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags, userId: user!.me!.id, isStarred: recipe!.isStarred }
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache, {data}) {
                 const getRecipeById: any = cloneDeep(cache.readQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id} }))
-                console.log(getRecipeById);
-                debugger;
-                cache.writeQuery({ query: GET_RECIPE_BY_ID, data: {getRecipeById: {...updatedRecipe, __typename: "Recipe"}} })
+                // debugger;
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, data: {getRecipeById: {...updatedRecipe}} })
                 // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                // cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data!.updateRecipeById } })
+                // me.recipes = me.recipes.map((r: RecipeSlim) => {
+                //     return r.id ===  updatedRecipe.id ? updatedRecipe : r
+                // })
+                // cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
             }
             })
 

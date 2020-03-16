@@ -13,7 +13,7 @@ import jwtDecode from "jwt-decode"
 import { resolvers, typeDefs } from './resolvers'
 import './assets/css/bootswatch.min.css'
 
-const cache = new InMemoryCache({})
+const cache = new InMemoryCache({addTypename: false})
 
 const requestLink = new ApolloLink(
   (operation, forward) =>

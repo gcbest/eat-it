@@ -36,12 +36,20 @@ query meLocal {
     me @client {
         id
         email
-        tags
+        tags {
+            id
+            name
+        }
         recipes {
             id
             title
             image
             mealType
+            isStarred
+            tags {
+                id
+                name
+            }
         }
     }
 }

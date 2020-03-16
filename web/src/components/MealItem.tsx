@@ -19,21 +19,6 @@ interface Props<T> {
     rcpSlm: T
 }
 
-const DELETE_RECIPE_BY_ID = gql`
-mutation DeleteRecipeById($recipeId: Float!, $userId: Float!) {
-    deleteRecipeById(recipeId: $recipeId, userId: $userId) {
-        id
-        email
-        recipes {
-            id
-            title
-            image
-            mealType
-        }
-    }
-}
-`
-
 const GET_ME_LOCAL = gql`
 query meLocal {
     me @client {
@@ -69,14 +54,30 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, i
     // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
     const {me} = useContext(ProfileContext)
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
-    const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
-        variables: { recipeId: id, userId },
-        update(cache, { data: { deleteRecipeById } }) {
-            // cloning to prevent any issues with not being able to update cache
-            const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-            cache.writeQuery({ query: GET_ME_LOCAL, data: { me: deleteRecipeById } })
-        }
-    })
+    // const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
+    //     variables: { recipeId: id, userId },
+    //     update(cache, { data: { deleteRecipeById } }) {
+    //         // cloning to prevent any issues with not being able to update cache
+    //         const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+    //         cache.writeQuery({ query: GET_ME_LOCAL, data: { me: deleteRecipeById } })
+    //     }
+    // })
+
+    const [deleteRecipeById] = useDeleteRecipeByIdMutation({
+            variables: { recipeId: id, userId: userId! },
+            update(cache, { data }) {
+                if(!data)
+                    return
+                
+                const {deleteRecipeById} = data 
+                // cloning to prevent any issues with not being able to update cache
+                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                me.recipes = [...deleteRecipeById.recipes]
+                cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
+            }
+        })
+
+
     const [toggleStar] = useToggleRecipeStarMutation()
 
 
