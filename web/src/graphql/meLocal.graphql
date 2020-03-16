@@ -11,6 +11,7 @@ query meLocal {
             title
             image
             mealType
+            isStarred
             tags {
                 id
                 name

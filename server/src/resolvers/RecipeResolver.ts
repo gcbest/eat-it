@@ -37,6 +37,8 @@ class AddRecipeInput implements Partial<Recipe> {
     analyzedInstructions: string
     @Field()
     mealType: number
+    @Field()
+    isStarred: boolean
     @Field(() => [TagInput])
     tags: TagInput[]
     @Field()
@@ -63,6 +65,8 @@ class EditRecipeInput implements Partial<Recipe> { //TODO: check if can implemen
     analyzedInstructions: string
     @Field()
     mealType: number
+    @Field()
+    isStarred: boolean
     @Field(() => [TagInput])
     tags: TagInput[]
     @Field()
@@ -145,6 +149,30 @@ export class RecipeResolver {
 
             const updatedUser = await User.findOne({ where: { id: userId }, relations: ["recipes"] })
             return updatedUser
+        } catch (error) {
+            console.error('error message:', error);
+            return undefined
+        }
+    }
+
+    @Mutation(() => User)
+    @UseMiddleware(isAuth)
+    async toggleRecipeStar(
+        @Arg("userId") userId: number, 
+        @Arg("recipeId") recipeId: number, 
+        @Arg("isStarred") isStarred: boolean): Promise<User | undefined> {
+        try {
+
+            await getConnection()
+                .createQueryBuilder()
+                .update(Recipe)
+                .set({isStarred})
+                .where("id = :id", { id: recipeId })
+                .execute();
+
+            const updatedUser = await User.findOne({ where: { id: userId }, relations: ["recipes"] })
+
+            return updatedUser;
         } catch (error) {
             console.error('error message:', error);
             return undefined

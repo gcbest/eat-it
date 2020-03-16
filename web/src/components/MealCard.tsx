@@ -61,7 +61,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
                 </Card.Title>
                 <ListGroup>
                     {searchResults &&
-                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} image={rcpSlm.image} title={rcpSlm.title} id={rcpSlm.id} userId={userId} tags={rcpSlm.tags} />)}
+                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} />)}
                 </ListGroup>
             </Card.Body>
             <Card.Footer>

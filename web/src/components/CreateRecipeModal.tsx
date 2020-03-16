@@ -79,7 +79,7 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
             console.log('fill out the mandatory fields');
             return
         }
-        const recipe = { ...inputs, tags, userId: user!.me!.id, mealType: parseFloat(MealCategory[header]) }
+        const recipe = { ...inputs, tags, userId: user!.me!.id, isStarred: false, mealType: parseFloat(MealCategory[header]) }
         console.log(recipe);
         const response = await addRecipe({
             variables: { recipe },

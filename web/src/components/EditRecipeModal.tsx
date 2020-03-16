@@ -156,7 +156,8 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             delete t.__typename
             return t
         })
-        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags: formattedTags, userId: user!.me!.id }
+        debugger;
+        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags: formattedTags, userId: user!.me!.id, isStarred: recipe!.isStarred }
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
@@ -165,6 +166,8 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 console.log(getRecipeById);
                 debugger;
                 cache.writeQuery({ query: GET_RECIPE_BY_ID, data: {getRecipeById: {...updatedRecipe, __typename: "Recipe"}} })
+                // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                // cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data!.updateRecipeById } })
             }
             })
 

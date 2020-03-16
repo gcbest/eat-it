@@ -189,7 +189,7 @@ query meLocal {
             delete t.__typename
             return t
         })
-        const formattedRecipe: AddRecipeInput = { ...recipe, tags: tagsFormatted, userId: user!.me!.id, mealType: parseFloat(inputs.mealType) }
+        const formattedRecipe: AddRecipeInput = { ...recipe, tags: tagsFormatted, userId: user!.me!.id, isStarred: false, mealType: parseFloat(inputs.mealType) }
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.__typename

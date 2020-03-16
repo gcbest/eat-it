@@ -10,6 +10,8 @@ import { ApolloConsumer } from "@apollo/react-hooks";
 import { ModalCategory } from "lib/enums";
 import { ViewRecipeModal } from "components/ViewRecipeModal";
 import { RecipeSlim } from "lib/interfaces";
+import { FaStar, FaRegStar } from "react-icons/fa";
+import Button from "react-bootstrap/Button";
 
 
 export const ProfileContext = React.createContext<any>(undefined)
@@ -23,6 +25,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [showRecipe, setShowRecipe] = useState(false)
   const [items, setItems] = useState<RecipeSlim[]>([])
+  const [onlyShowStarred, setOnlyShowStarred] = useState(false)
 
   const [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
 
@@ -51,6 +54,11 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     
     return handleShowRecipe(item.id) 
   }
+
+  const handleStarToggle = () => {
+    setOnlyShowStarred(!onlyShowStarred)
+  }
+  
 
     const onSearchChange = (e: any) => {
       console.log('Searching...');
@@ -82,7 +90,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
 
   return (<div>
-    <ProfileContext.Provider value={{me: data.me, showRecipe, setShowRecipe}}>
+    <ProfileContext.Provider value={{me: data.me}}>
     <SearchStyles>
         <Downshift onChange={displayRecipe} itemToString={(item: any) => (item === null ? '' : item.title)}>
           {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }) => (
@@ -123,22 +131,18 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
           )}
         </Downshift>
       </SearchStyles>
+      <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar/></span> : <span>Show All <FaRegStar/></span>}</Button>
       {recipeData && recipeData.getRecipeById ?
             <ViewRecipeModal show={showRecipe} handleClose={handleCloseRecipe} options={{ type: ModalCategory.View }} recipe={recipeData && recipeData.getRecipeById} /> :
             null
         }
-      <MealsArea recipesSlim={data.me.recipes} userId={data.me.id} />
+      <MealsArea recipesSlim={data.me.recipes} userId={data.me.id} onlyShowStarred={onlyShowStarred}/>
 
     </ProfileContext.Provider>
     </div>)
 };
 
 // TODOs:
-// Add tags to a recipe
-// Use downshift just for general search
-// include add button for new meal
-// include delete button
-// include update to add tags, edit etc
 // can choose a random meal from your saved list
 
 // Create CRUD app

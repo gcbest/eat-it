@@ -7,9 +7,10 @@ import { getEnumNames, getKeyByValue } from 'lib/utils'
 interface Props {
     recipesSlim: RecipeSlim[] | undefined
     userId: number
+    onlyShowStarred: boolean
 }
 
-export const MealsArea: React.FC<Props> = ({ recipesSlim, userId }) => {
+export const MealsArea: React.FC<Props> = ({ recipesSlim, userId, onlyShowStarred }) => {
 
 
     // create an object w/ {Breakfast: [], Lunch: [], ...}
@@ -23,7 +24,15 @@ export const MealsArea: React.FC<Props> = ({ recipesSlim, userId }) => {
     // push each recipe into designated meal object {Breakfast: [{title: 'eggs & bacon'}]}
     recipesSlim.forEach(rcpSlm => {
         const mealName = getKeyByValue(MealCategory, rcpSlm.mealType)
-        sortedMeals[mealName!].push(rcpSlm)
+
+        if(onlyShowStarred) {
+            if(rcpSlm.isStarred)
+                sortedMeals[mealName!].push(rcpSlm)
+        } 
+        else {
+            sortedMeals[mealName!].push(rcpSlm)
+        }
+            
     })
 
     return (

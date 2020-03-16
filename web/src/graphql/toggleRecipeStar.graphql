@@ -1,0 +1,21 @@
+mutation ToggleRecipeStar($userId: Float!, $recipeId: Float!, $isStarred: Boolean!) {
+    toggleRecipeStar(userId: $userId, recipeId: $recipeId, isStarred: $isStarred) {
+        id
+    email
+    tags {
+      id
+      name
+    }
+    recipes {
+      id
+      title
+      image
+      mealType
+      isStarred
+      tags {
+        id
+        name
+      }
+    }
+    }
+}

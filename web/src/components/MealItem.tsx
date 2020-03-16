@@ -3,24 +3,20 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import { ViewRecipeModal } from './ViewRecipeModal'
 import { EditRecipeModal } from './EditRecipeModal'
 import { ModalCategory } from 'lib/enums';
-import { Recipe, User } from 'lib/interfaces';
-import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useMeLocalQuery } from 'generated/graphql';
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { Recipe, User, RecipeSlim } from 'lib/interfaces';
+import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useMeLocalQuery, useUpdateRecipeByIdMutation, useToggleRecipeStarMutation } from 'generated/graphql';
+import { FaEdit, FaTrashAlt, FaRegStar, FaStar } from "react-icons/fa";
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import { Tag } from 'react-tag-autocomplete';
 import { RecipeTag } from './RecipeTag';
-import { ProfileContext } from 'pages/Profile';
+import { ProfileContext, Profile } from 'pages/Profile';
 
 
 
-interface Props {
-    image: string
-    title: string
-    id: number
-    userId: number
-    tags: Tag[]
+interface Props<T> {
+    rcpSlm: T
 }
 
 const DELETE_RECIPE_BY_ID = gql`
@@ -68,9 +64,10 @@ query Me {
 }
 `
 
-export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) => {
+export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, id, userId, tags, isStarred }}) => {
     // TODO: add useGetRecipeByIdQuery
     // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
+    const {me} = useContext(ProfileContext)
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
     const [deleteRecipeById] = useMutation(DELETE_RECIPE_BY_ID, {
         variables: { recipeId: id, userId },
@@ -80,6 +77,8 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) =>
             cache.writeQuery({ query: GET_ME_LOCAL, data: { me: deleteRecipeById } })
         }
     })
+    const [toggleStar] = useToggleRecipeStarMutation()
+
 
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -94,12 +93,25 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) =>
         setShowEdit(true)
     }
 
-    // useEffect(() => {
-    //     setShow(showRecipe)
-    // }, [showRecipe])
-
-
     const { data: notData, loading, error } = useMeLocalQuery();
+
+    const handleStarToggle = () => {
+        const starred  = !isStarred
+        toggleStar({
+            variables: {
+                userId: me.id,
+                recipeId: id, 
+                isStarred: starred
+            },
+            update(cache, { data }) {
+                console.log(data);
+                
+                // cloning to prevent any issues with not being able to update cache
+                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                cache.writeQuery({ query: GET_ME_LOCAL, data: { me: toggleStar } })
+            }
+        })
+    }
 
     const handleDelete = () => {
 
@@ -126,10 +138,13 @@ export const MealItem: React.FC<Props> = ({ image, title, id, userId, tags }) =>
 
 
 
-        <span onClick={handleShow}><img src={image} alt={title} /> {title} </span><FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
+        <span onClick={handleShow}><img src={image} alt={title} /> {title} </span>
+        <FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
+        <span style={{marginLeft: "3rem"}}>
+            {isStarred ? <FaStar onClick={handleStarToggle}/> : <FaRegStar onClick={handleStarToggle}/>}
+        </span>
         <div>
-            {tags && tags.map(t => <RecipeTag text={t.name} />)
-            }
+            {tags && tags.map(t => <RecipeTag key={t.id} text={t.name} />)}
         </div>
     </ListGroup.Item>)
 }

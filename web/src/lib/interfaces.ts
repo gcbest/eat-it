@@ -22,6 +22,7 @@ export interface Recipe {
     analyzedInstructions: string;
     tags: Tag[];
     mealType: number;
+    isStarred: boolean
     dishTypes?: string[]
 }
 
@@ -30,7 +31,9 @@ export interface RecipeSlim {
     title: string
     image: string
     mealType: number
+    isStarred: boolean
     tags: Tag[]
+    userId?: number
 }
 
 export interface CustomToggleInterface {

@@ -13,6 +13,7 @@ mutation Login($email: String!, $password: String!) {
         title
         image
         mealType
+        isStarred
         tags {
           id
           name

@@ -20,6 +20,7 @@ export type AddRecipeInput = {
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
   mealType: Scalars['Float'],
+  isStarred: Scalars['Boolean'],
   tags: Array<Tag>,
   userId: Scalars['Float'],
 };
@@ -34,6 +35,7 @@ export type EditRecipeInput = {
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
   mealType: Scalars['Float'],
+  isStarred: Scalars['Boolean'],
   tags: Array<Tag>,
   userId: Scalars['Float'],
 };
@@ -52,6 +54,7 @@ export type Mutation = {
   register: Scalars['Boolean'],
   addRecipe?: Maybe<User>,
   updateRecipeById: User,
+  toggleRecipeStar: User,
   deleteRecipeById: User,
 };
 
@@ -83,6 +86,13 @@ export type MutationAddRecipeArgs = {
 
 export type MutationUpdateRecipeByIdArgs = {
   input: EditRecipeInput
+};
+
+
+export type MutationToggleRecipeStarArgs = {
+  isStarred: Scalars['Boolean'],
+  recipeId: Scalars['Float'],
+  userId: Scalars['Float']
 };
 
 
@@ -123,6 +133,7 @@ export type Recipe = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  isStarred: Scalars['Boolean'],
   dishTypes: Array<Scalars['String']>,
   tags: Array<TagInput>,
   mealType: Scalars['Int'],
@@ -137,6 +148,7 @@ export type RecipeInput = {
   summary: Scalars['String'],
   sourceUrl: Scalars['String'],
   analyzedInstructions: Scalars['String'],
+  isStarred: Scalars['Boolean'],
   dishTypes: Array<Scalars['String']>,
   tags: Array<Tag>,
   mealType: Scalars['Int'],
@@ -215,7 +227,7 @@ export type GetRecipeByIdQuery = (
   { __typename?: 'Query' }
   & { getRecipeById: (
     { __typename?: 'Recipe' }
-    & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions' | 'mealType'>
+    & Pick<Recipe, 'id' | 'title' | 'readyInMinutes' | 'servings' | 'image' | 'summary' | 'sourceUrl' | 'analyzedInstructions' | 'mealType' | 'isStarred'>
     & { tags: Array<(
       { __typename?: 'TagInput' }
       & Pick<TagInput, 'id' | 'name'>
@@ -250,7 +262,7 @@ export type LoginMutation = (
         & Pick<TagInput, 'id' | 'name'>
       )>, recipes: Array<(
         { __typename?: 'Recipe' }
-        & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+        & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
         & { tags: Array<(
           { __typename?: 'TagInput' }
           & Pick<TagInput, 'id' | 'name'>
@@ -281,7 +293,7 @@ export type MeQuery = (
       & Pick<TagInput, 'id' | 'name'>
     )>, recipes: Array<(
       { __typename?: 'Recipe' }
-      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
       & { tags: Array<(
         { __typename?: 'TagInput' }
         & Pick<TagInput, 'id' | 'name'>
@@ -303,7 +315,7 @@ export type MeLocalQuery = (
       & Pick<TagInput, 'id' | 'name'>
     )>, recipes: Array<(
       { __typename?: 'Recipe' }
-      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
       & { tags: Array<(
         { __typename?: 'TagInput' }
         & Pick<TagInput, 'id' | 'name'>
@@ -340,6 +352,32 @@ export type RegisterMutation = (
   & Pick<Mutation, 'register'>
 );
 
+export type ToggleRecipeStarMutationVariables = {
+  userId: Scalars['Float'],
+  recipeId: Scalars['Float'],
+  isStarred: Scalars['Boolean']
+};
+
+
+export type ToggleRecipeStarMutation = (
+  { __typename?: 'Mutation' }
+  & { toggleRecipeStar: (
+    { __typename?: 'user' }
+    & Pick<User, 'id' | 'email'>
+    & { tags: Array<(
+      { __typename?: 'TagInput' }
+      & Pick<TagInput, 'id' | 'name'>
+    )>, recipes: Array<(
+      { __typename?: 'Recipe' }
+      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )> }
+    )> }
+  ) }
+);
+
 export type UpdateRecipeByIdMutationVariables = {
   input: EditRecipeInput
 };
@@ -350,9 +388,16 @@ export type UpdateRecipeByIdMutation = (
   & { updateRecipeById: (
     { __typename?: 'user' }
     & Pick<User, 'id' | 'email'>
-    & { recipes: Array<(
+    & { tags: Array<(
+      { __typename?: 'TagInput' }
+      & Pick<TagInput, 'id' | 'name'>
+    )>, recipes: Array<(
       { __typename?: 'Recipe' }
-      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )> }
     )> }
   ) }
 );
@@ -439,6 +484,7 @@ export const GetRecipeByIdDocument = gql`
     sourceUrl
     analyzedInstructions
     mealType
+    isStarred
     tags {
       id
       name
@@ -487,6 +533,7 @@ export const LoginDocument = gql`
         title
         image
         mealType
+        isStarred
         tags {
           id
           name
@@ -531,6 +578,7 @@ export const MeDocument = gql`
       title
       image
       mealType
+      isStarred
       tags {
         id
         name
@@ -563,6 +611,7 @@ export const MeLocalDocument = gql`
       title
       image
       mealType
+      isStarred
       tags {
         id
         name
@@ -619,16 +668,56 @@ export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMuta
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
-export const UpdateRecipeByIdDocument = gql`
-    mutation UpdateRecipeById($input: EditRecipeInput!) {
-  updateRecipeById(input: $input) {
+export const ToggleRecipeStarDocument = gql`
+    mutation ToggleRecipeStar($userId: Float!, $recipeId: Float!, $isStarred: Boolean!) {
+  toggleRecipeStar(userId: $userId, recipeId: $recipeId, isStarred: $isStarred) {
     id
     email
+    tags {
+      id
+      name
+    }
     recipes {
       id
       title
       image
       mealType
+      isStarred
+      tags {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export type ToggleRecipeStarMutationFn = ApolloReactCommon.MutationFunction<ToggleRecipeStarMutation, ToggleRecipeStarMutationVariables>;
+
+    export function useToggleRecipeStarMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToggleRecipeStarMutation, ToggleRecipeStarMutationVariables>) {
+      return ApolloReactHooks.useMutation<ToggleRecipeStarMutation, ToggleRecipeStarMutationVariables>(ToggleRecipeStarDocument, baseOptions);
+    }
+export type ToggleRecipeStarMutationHookResult = ReturnType<typeof useToggleRecipeStarMutation>;
+export type ToggleRecipeStarMutationResult = ApolloReactCommon.MutationResult<ToggleRecipeStarMutation>;
+export type ToggleRecipeStarMutationOptions = ApolloReactCommon.BaseMutationOptions<ToggleRecipeStarMutation, ToggleRecipeStarMutationVariables>;
+export const UpdateRecipeByIdDocument = gql`
+    mutation UpdateRecipeById($input: EditRecipeInput!) {
+  updateRecipeById(input: $input) {
+    id
+    email
+    tags {
+      id
+      name
+    }
+    recipes {
+      id
+      title
+      image
+      mealType
+      isStarred
+      tags {
+        id
+        name
+      }
     }
   }
 }
