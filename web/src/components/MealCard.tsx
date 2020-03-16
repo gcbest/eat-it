@@ -38,7 +38,6 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
             rs.title.trim().toLowerCase().includes(searchTerm.toLowerCase()) || 
             getTagNames(rs.tags).join(' ').trim().includes(searchTerm.toLowerCase())
         })
-        // setRecipes(results)
         setSearchResults(results)
     }, [searchTerm, recipesSlim])
 

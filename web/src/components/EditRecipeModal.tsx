@@ -161,15 +161,17 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
-            update(cache, {data}) {
-                const getRecipeById: any = cloneDeep(cache.readQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id} }))
-                // debugger;
-                cache.writeQuery({ query: GET_RECIPE_BY_ID, data: {getRecipeById: {...updatedRecipe}} })
-                // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                // me.recipes = me.recipes.map((r: RecipeSlim) => {
-                //     return r.id ===  updatedRecipe.id ? updatedRecipe : r
-                // })
-                // cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
+            async update(cache, {data}) {
+                let getRecipeById: any = cloneDeep(cache.readQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id} }))
+                debugger
+                // getRecipeById = {...updatedRecipe}
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id}, data: {getRecipeById: {...updatedRecipe}} })
+                
+                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                me.recipes = me.recipes.map((r: RecipeSlim) => {
+                    return r.id ===  updatedRecipe.id ? updatedRecipe : r
+                })
+                cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
             }
             })
 
