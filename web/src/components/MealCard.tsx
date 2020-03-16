@@ -12,10 +12,9 @@ import { Tag } from 'react-tag-autocomplete';
 interface Props {
     header: string
     recipesSlim: RecipeSlim[]
-    userId: number
 }
 
-export const MealCard: React.FC<Props> = ({ header, recipesSlim, userId }) => {
+export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

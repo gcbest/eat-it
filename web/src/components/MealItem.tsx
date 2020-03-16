@@ -49,8 +49,9 @@ query Me {
 }
 `
 
-export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, id, userId, tags, isStarred }}) => {
+export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, id, tags, isStarred }}) => {
     // TODO: add useGetRecipeByIdQuery
+    
     // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
     const {me} = useContext(ProfileContext)
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
@@ -64,7 +65,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, i
     // })
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
-            variables: { recipeId: id, userId: userId! },
+            variables: { recipeId: id, userId: me.id },
             update(cache, { data }) {
                 if(!data)
                     return

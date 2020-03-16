@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMeLocalQuery, useGetRecipeByIdLazyQuery } from "../generated/graphql";
 import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
-import { MealsArea } from "components/MealsArea";
+import { MealsArea, MemoizedMealsArea } from "components/MealsArea";
 import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
 import { ApolloConsumer } from "@apollo/react-hooks";
@@ -132,7 +132,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
             <ViewRecipeModal show={showRecipe} handleClose={handleCloseRecipe} options={{ type: ModalCategory.View }} recipe={recipeData && recipeData.getRecipeById} /> :
             null
         }
-      <MealsArea recipesSlim={data.me.recipes} userId={data.me.id} onlyShowStarred={onlyShowStarred}/>
+      <MemoizedMealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred}/>
 
     </ProfileContext.Provider>
     </div>)

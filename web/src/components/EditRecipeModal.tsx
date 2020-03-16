@@ -152,28 +152,18 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             return
         }
 
-        // const formattedTags = tags.map((t: any) => {
-        //     delete t.__typename
-        //     return t
-        // })
-        debugger;
         const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags, userId: user!.me!.id, isStarred: recipe!.isStarred }
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
-            async update(cache, {data}) {
-                let getRecipeById: any = cloneDeep(cache.readQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id} }))
-                debugger
-                // getRecipeById = {...updatedRecipe}
+            update(cache) {
                 cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: {id: recipe!.id}, data: {getRecipeById: {...updatedRecipe}} })
-                
+                // update recipes on me object
                 const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                me.recipes = me.recipes.map((r: RecipeSlim) => {
-                    return r.id ===  updatedRecipe.id ? updatedRecipe : r
-                })
+                me.recipes = me.recipes.map((r: RecipeSlim) => r.id ===  updatedRecipe.id ? updatedRecipe : r)
                 cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
             }
-            })
+        })
 
         console.log(response);
         handleClose()

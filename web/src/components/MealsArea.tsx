@@ -6,11 +6,10 @@ import { getEnumNames, getKeyByValue } from 'lib/utils'
 
 interface Props {
     recipesSlim: RecipeSlim[] | undefined
-    userId: number
     onlyShowStarred: boolean
 }
 
-export const MealsArea: React.FC<Props> = ({ recipesSlim, userId, onlyShowStarred }) => {
+export const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
 
 
     // create an object w/ {Breakfast: [], Lunch: [], ...}
@@ -40,8 +39,10 @@ export const MealsArea: React.FC<Props> = ({ recipesSlim, userId, onlyShowStarre
             {/* create a new meal card for each meal */}
             {getEnumNames(MealCategory).map(mealName => {
                 const recipesForThisMeal = sortedMeals[mealName]
-                return <MealCard key={mealName} header={mealName} recipesSlim={recipesForThisMeal} userId={userId} />
+                return <MealCard key={mealName} header={mealName} recipesSlim={recipesForThisMeal} />
             })}
         </div>
     )
 }
+
+export const MemoizedMealsArea = React.memo(MealsArea)
