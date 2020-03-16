@@ -45,35 +45,27 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   const handleCloseRecipe = () => setShowRecipe(false);
 
-  const displayRecipe = (item: any) => {
-    handleShowRecipe(item.id)
+  const displayRecipe = (item: RecipeSlim | null) => {
+    if(!item)
+      return
+    
+    return handleShowRecipe(item.id) 
   }
 
-    const onSearchChange = debounce(async (e, client) => {
+    const onSearchChange = (e: any) => {
       console.log('Searching...');
       // turn loading on
       setLoadingSearch(true)
 
-      // displayRecipe()
-      // filter based on user
+      // filter
       if(data && data.me && data.me.recipes) {
         const filteredItems = data.me.recipes.filter(recipe => {
           return recipe.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
         })
         setItems(filteredItems)
       }
-
-      // Manually query apollo client
-      // const res = await client.query({
-      //   query: SEARCH_ITEMS_QUERY,
-      //   variables: { searchTerm: e.target.value },
-      // });
-      // this.setState({
-      //   items: res.data.items,
-      //   loading: false,
-      // });
       setLoadingSearch(false)
-    }, 350);
+    }
   // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
   if (error) {
@@ -105,7 +97,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
                       className: loadingSearch ? 'loading' : '',
                       onChange: (e) => {
                         e.persist();
-                        onSearchChange(e, client);
+                        onSearchChange(e);
                       },
                     })}
                   />
