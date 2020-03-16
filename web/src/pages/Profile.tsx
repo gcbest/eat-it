@@ -58,6 +58,16 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const handleStarToggle = () => {
     setOnlyShowStarred(!onlyShowStarred)
   }
+
+  const handleGetAnyRecipe = () => {
+    if(data && data.me && data.me.recipes) {
+      const recipesArr = data.me.recipes
+      const randomlySelectedRecipe = recipesArr[Math.floor(Math.random()*recipesArr.length)]
+      handleShowRecipe(randomlySelectedRecipe.id)
+    }
+    console.error('No recipes found on user to randomly select one');
+    
+  }
   
 
     const onSearchChange = (e: any) => {
@@ -132,6 +142,7 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
         </Downshift>
       </SearchStyles>
       <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar/></span> : <span>Show All <FaRegStar/></span>}</Button>
+      <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
       {recipeData && recipeData.getRecipeById ?
             <ViewRecipeModal show={showRecipe} handleClose={handleCloseRecipe} options={{ type: ModalCategory.View }} recipe={recipeData && recipeData.getRecipeById} /> :
             null
