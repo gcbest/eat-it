@@ -13,7 +13,19 @@ import jwtDecode from "jwt-decode"
 import { resolvers, typeDefs } from './resolvers'
 import './assets/css/bootswatch.min.css'
 
-const cache = new InMemoryCache({addTypename: false})
+const cache = new InMemoryCache()
+
+const cleanTypeName = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    const omitTypename = (key: any, value: any) => (key === '__typename' ? undefined : value);
+    operation.variables = JSON.parse(JSON.stringify(operation.variables), omitTypename);
+  }
+  return forward(operation).map((data) => {
+    return data;
+  });
+});
+
+
 
 const requestLink = new ApolloLink(
   (operation, forward) =>
@@ -85,6 +97,7 @@ const client = new ApolloClient({
       console.log(graphQLErrors)
       console.log(networkError)
     }),
+    cleanTypeName,
     requestLink,
     new HttpLink({
       uri: "http://localhost:4000/graphql",

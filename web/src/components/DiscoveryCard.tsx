@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
@@ -6,7 +6,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 // import { ModalContext } from '../pages/Discover'
 import { ModalCategory } from '../lib/enums'
-import { DiscoverRecipeModal } from 'components/DiscoverRecipeModal'
+import DiscoverRecipeModal from 'components/DiscoverRecipeModal'
 
 import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
 import { createMarkup } from 'lib/utils'
@@ -16,7 +16,7 @@ interface Props<T> {
 }
 
 export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
-    const { title, readyInMinutes, servings, image, summary, analyzedInstructions, dishTypes, sourceUrl } = recipe
+    const { title, readyInMinutes, servings, image, summary, analyzedInstructions, sourceUrl } = recipe
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -65,7 +65,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                     </Accordion>
                     : null
                 }
-                <a href={sourceUrl} target="_blank"><Button variant="primary" style={{ marginTop: '3rem' }}>View Recipe</Button></a>
+                <a href={sourceUrl} target="_blank" rel="noopener noreferrer"><Button variant="primary" style={{ marginTop: '3rem' }}>View Recipe</Button></a>
                 <Button variant="secondary" style={{ margin: '3rem' }} onClick={handleShow}>Add Recipe</Button>
             </Card.Body>
         </Card >

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMeLocalQuery, useGetRecipeByIdLazyQuery } from "../generated/graphql";
+import { useMeLocalQuery, useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
 import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
 import { MealsArea, MemoizedMealsArea } from "components/MealsArea";
 import Downshift, { resetIdCounter } from 'downshift';
@@ -15,7 +15,7 @@ import Button from "react-bootstrap/Button";
 export const ProfileContext = React.createContext<any>(undefined)
 
 export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
-  const { data, loading, error } = useMeLocalQuery();
+  const { data, loading, error } = useMeQuery();
   const [search, setSearch] = useState([])
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [showRecipe, setShowRecipe] = useState(false)

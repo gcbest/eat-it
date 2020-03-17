@@ -1,16 +1,18 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useContext } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation, useMeQuery, useMeLocalLazyQuery } from 'generated/graphql';
-import { getEnumNames } from 'lib/utils';
+import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
+import { getEnumNames, createMarkup } from 'lib/utils';
 import { useMutation } from '@apollo/react-hooks';
 import ReactTags, {Tag} from 'react-tag-autocomplete'
 import gql from 'graphql-tag';
 import nanoid from 'nanoid';
+import { DiscoverContext } from 'pages/Discover';
+import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 
 
 interface Props extends ModalInterface {
@@ -20,13 +22,14 @@ interface Props extends ModalInterface {
     recipe: Recipe | null | undefined
 }
 
-interface ModalContent { title: string, actionButton: string, body: any }
+// interface ModalContent { title: string, actionButton: string, body: any }
 
-export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
-    const [isEditing, setIsEditing] = useState(false)
-    const { type } = options
+const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+    // const [isEditing, setIsEditing] = useState(false)
+    const user = useContext(DiscoverContext)
+
     const [addRecipe] = useAddRecipeMutation()
-    const { data: user, loading: loadingLocal } = useMeLocalQuery()
+    const { type } = options
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, dishTypes = [], mealType = 1 } = recipe!
 
     //REACT TAGS
@@ -49,84 +52,12 @@ export const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe
     }
 
     
-        useEffect(() => {
-            if(user && user.me && user.me.tags) 
-                setSuggestions(user.me.tags)
-        }, [])
-
-    // const {data, loading} = useMeLocalQuery()
-
-    // useEffect(() => {
-    //     // get me from context
-        
-    //     //add 
-    //     if(data && data.me && data.me.tags)
-    //     setSuggestions(data.me.tags)
-
-    // }, [])
+    useEffect(() => {
+        if(user && user.me && user.me.tags) 
+            setSuggestions(user.me.tags)
+    }, [])
 
     /////////////////////////////////
-
-    const ADD_RECIPE = gql`
-        mutation AddRecipe($recipe: AddRecipeInput!) {
-        addRecipe(input: $recipe) {
-            id
-            email
-            recipes {
-                id
-                title
-                image
-                mealType
-                }
-            }
-        }
-    `
-
-    const GET_ME = gql`
-query Me {
-  me {
-    id
-    email
-    recipes {
-      id
-      title
-      image
-      mealType
-    }
-  }
-}
-`
-
-    const GET_ME_LOCAL = gql`
-query meLocal {
-    me @client {
-        id
-        email
-        recipes {
-            id
-            title
-            image
-            mealType
-        }
-    }
-}
-`
-
-    const [addRecipeMutation] = useMutation(ADD_RECIPE, {
-        update(cache, { data: { addRecipe } }) {
-            console.log(addRecipe);
-
-            const { me }: any = cache.readQuery({ query: GET_ME_LOCAL })
-
-            cache.writeQuery({
-                query: GET_ME_LOCAL,
-                data: { me: { ...me, recipes: addRecipe.recipes } }
-            })
-            // const me2: User | null = cache.readQuery({ query: GET_ME_LOCAL })
-            // console.log(me2);
-        }
-    })
-
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title,
@@ -139,8 +70,8 @@ query meLocal {
         mealType
     });
 
-    if (loadingLocal)
-        console.log('loading local');
+    // if (loadingLocal)
+    //     console.log('loading local');
 
     if (user)
         console.log(user);
@@ -180,31 +111,36 @@ query meLocal {
         if (!recipe)
             throw new Error('recipe from discover not found')
 
-        console.log(`mealType: ${inputs.mealType}`);
         if (!inputs.mealType)
             throw new Error('need a meal type')
 
+        const formattedRecipe: AddRecipeInput = { 
+            ...recipe,
+             tags,
+             userId: user!.me!.id,
+             isStarred: false,
+             mealType: parseFloat(inputs.mealType) 
+        }
 
-        // const tagsFormatted = tags.map((t: any) => {
-        //     delete t.__typename
-        //     return t
-        // })
-        const formattedRecipe: AddRecipeInput = { ...recipe, tags, userId: user!.me!.id, isStarred: false, mealType: parseFloat(inputs.mealType) }
         // remove properties not needed by mutation
         delete formattedRecipe.id
-        delete formattedRecipe.__typename
         delete formattedRecipe.dishTypes
         console.log('adding recipe');
 
-        // addRecipe({
-        //     variables: {
-        //         recipe: formattedRecipe
-        //     }
-        // })
-
-        addRecipeMutation({
+        addRecipe({
             variables: {
                 recipe: formattedRecipe
+            },
+            update(cache, { data }) {
+                console.log(data);
+                
+                const { me }: any = cache.readQuery({ query: GET_ME_LOCAL })
+                if(data && data.addRecipe) {
+                    cache.writeQuery({
+                        query: GET_ME_LOCAL,
+                        data: { me: { ...me, recipes: data.addRecipe.recipes } }
+                    })
+                }
             }
         })
     }
@@ -241,9 +177,7 @@ query meLocal {
             <p>
                 <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
             </p>
-
-
-            <p>{summary}</p>
+            {<p dangerouslySetInnerHTML={createMarkup(summary)}></p>}
         </Fragment>
     )
 
@@ -339,3 +273,5 @@ query meLocal {
         </Modal>
     )
 }
+
+export default React.memo(DiscoverRecipeModal)

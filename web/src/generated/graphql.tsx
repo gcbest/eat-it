@@ -187,7 +187,11 @@ export type AddRecipeMutation = (
     & Pick<User, 'id' | 'email'>
     & { recipes: Array<(
       { __typename?: 'Recipe' }
-      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType'>
+      & Pick<Recipe, 'id' | 'title' | 'image' | 'mealType' | 'isStarred'>
+      & { tags: Array<(
+        { __typename?: 'TagInput' }
+        & Pick<TagInput, 'id' | 'name'>
+      )> }
     )> }
   )> }
 );
@@ -430,6 +434,11 @@ export const AddRecipeDocument = gql`
       title
       image
       mealType
+      isStarred
+      tags {
+        id
+        name
+      }
     }
   }
 }

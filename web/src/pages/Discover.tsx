@@ -14,12 +14,14 @@ import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { ModalInterface } from '../lib/interfaces'
 import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQuery } from 'generated/graphql';
 
-// const UserContext = 
+export const DiscoverContext = React.createContext<any>(undefined)
 
 export const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
 
     const [hasSearched, setHasSearched] = useState(false)
+    const { data: user, loading: loadingLocal } = useMeLocalQuery()
+
 
     const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
@@ -818,9 +820,11 @@ export const Discover: React.FC = () => {
     // }]
 
     return (
-        <Container>
-            <Row>
-                <Col>
+        // <Container>
+        //     <Row>
+        //         <Col>
+        <DiscoverContext.Provider value={{me: user ? user.me : null}}>
+
                     <InputGroup className="mb-3">
                         <FormControl
                             type="input"
@@ -828,18 +832,19 @@ export const Discover: React.FC = () => {
                             aria-label="Recipient's username"
                             aria-describedby="basic-addon2"
                             ref={queryRef as any} // react-bootstrap TS bug
-                        />
+                            />
                         <InputGroup.Append>
                             <Button variant="outline-secondary" onClick={handleSearch}>Discover</Button>
                         </InputGroup.Append>
                     </InputGroup> {
                         loading ?
-                            <SpinnerComponent /> :
-                            <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
+                        <SpinnerComponent /> :
+                        <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
                     }
-                </Col>
-            </Row>
-        </Container>
+        </DiscoverContext.Provider>
+        //         </Col>
+        //     </Row>
+        // </Container>
     )
 }
 

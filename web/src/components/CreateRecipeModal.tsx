@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -8,11 +8,12 @@ import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
-import { ADD_RECIPE, GET_ME_LOCAL } from 'graphql/queriesAndMutations';
+import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import { useMutation } from '@apollo/react-hooks';
 import cloneDeep from '@bit/lodash.lodash.clone-deep';
 import ReactTags, {Tag} from 'react-tag-autocomplete'
 import nanoid from 'nanoid';
+import { ProfileContext } from 'pages/Profile';
 
 
 interface Props extends ModalInterface {
@@ -22,10 +23,11 @@ interface Props extends ModalInterface {
 }
 
 export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
-    // const [createNewRecipe] = useCreateNewRecipeMutation()
-    const [addRecipe] = useMutation(ADD_RECIPE)
+    const [addRecipe] = useAddRecipeMutation()
+    
 
-    const { data: user, loading: loadingLocal } = useMeLocalQuery()
+    // const { data: user, loading: loadingLocal } = useMeLocalQuery()
+    const user = useContext(ProfileContext)
     const { header } = options
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
@@ -41,7 +43,7 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
 
    //REACT TAGS
     /////////////////////////////////// 
-    const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
+    // const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
 
     // const defaultTags = createTags(dishTypes)
     const [tags, setTags] = useState<Tag[]>([])
@@ -66,8 +68,8 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
 
     /////////////////////////////////
 
-    if (loadingLocal)
-        console.log('loading local');
+    // if (loadingLocal)
+    //     console.log('loading local');
 
     if (user)
         console.log(user);
@@ -83,10 +85,11 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
         console.log(recipe);
         const response = await addRecipe({
             variables: { recipe },
-            update(cache, { data: { addRecipe } }) {
+            update(cache, { data }) {
                 // cloning to prevent any issues with not being able to update cache
                 const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                cache.writeQuery({ query: GET_ME_LOCAL, data: { me: addRecipe } })
+                if(data && data.addRecipe)
+                    cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data.addRecipe } })
             }
         })
 
