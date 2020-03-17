@@ -137,12 +137,3 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     </ProfileContext.Provider>
     </div>)
 };
-
-// TODOs:
-// can choose a random meal from your saved list
-
-// Create CRUD app
-// Able to hit spoonacular API and get search results or save a recipe URL
-// can add tags to each recipe to sort them
-// show lists of different bigger tags like breakfast, lunch, dinner, snack, dessert
-// able to filter all at same time

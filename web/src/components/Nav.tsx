@@ -46,4 +46,4 @@ export const NavComponent: React.FC<Props> = () => {
   )
 }
 
-export default NavComponent;
+export default React.memo(NavComponent);

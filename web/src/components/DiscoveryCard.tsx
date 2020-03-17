@@ -9,6 +9,7 @@ import { ModalCategory } from '../lib/enums'
 import { DiscoverRecipeModal } from 'components/DiscoverRecipeModal'
 
 import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
+import { createMarkup } from 'lib/utils'
 
 interface Props<T> {
     recipe: T;
@@ -28,8 +29,6 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
         return (<Button variant="secondary" onClick={decoratedOnClick}>{children}</Button>);
     }
-
-    const createMarkup = (markup: string): { __html: string } => ({ __html: markup })
 
     const convertToJSON = (stringifiedContent: string): Instructions => JSON.parse(stringifiedContent)
 

@@ -6,7 +6,7 @@ import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
-import { getEnumNames } from 'lib/utils';
+import { getEnumNames, createMarkup } from 'lib/utils';
 import { useMutation } from '@apollo/react-hooks';
 import { DELETE_RECIPE_BY_ID, GET_ME_LOCAL } from '../graphql/queriesAndMutations'
 import { ProfileContext } from 'pages/Profile';
@@ -170,9 +170,7 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
             <p>
                 <span>Ready in: <strong>{recipe.readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
             </p>
-
-
-            <p>{summary}</p>
+            {<p dangerouslySetInnerHTML={createMarkup(summary)}></p>}
         </Fragment>
     )
 
@@ -266,12 +264,12 @@ export const ViewRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
                 <Button variant="danger" onClick={deleteRecipe}>
                     Delete
                 </Button>
-                <Button variant="secondary" onClick={() => handleSave(type)}>
+                {/* <Button variant="secondary" onClick={() => handleSave(type)}>
                     {`${renderText(type)} Recipe`}
                 </Button>
                 <Button variant="primary" onClick={() => setIsEditing(true)}>
                     {`Edit Recipe`}
-                </Button>
+                </Button> */}
             </Modal.Footer>
         </Modal>
     )
