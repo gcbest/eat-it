@@ -22,7 +22,7 @@ interface Props extends ModalInterface {
     }
 }
 
-export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
+const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
     const [addRecipe] = useAddRecipeMutation()
     
 
@@ -154,3 +154,5 @@ export const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options 
         </Modal>
     )
 }
+
+export default React.memo(CreateRecipeModal)

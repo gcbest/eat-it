@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { RecipeSlim } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory } from 'lib/enums';
-import { CreateRecipeModal } from './CreateRecipeModal';
+import CreateRecipeModal from './CreateRecipeModal';
 import { Tag } from 'react-tag-autocomplete';
 
 interface Props {
