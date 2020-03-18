@@ -6,20 +6,21 @@ import Form from 'react-bootstrap/Form';
 import { RecipeSlim } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory } from 'lib/enums';
-import CreateRecipeModal from './CreateRecipeModal';
+// import CreateRecipeModal from './CreateRecipeModal';
 import { Tag } from 'react-tag-autocomplete';
 
 interface Props {
     header: string
     recipesSlim: RecipeSlim[]
+    handleShow: (header: string) => void
 }
 
-export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow }) => {
+    // const [show, setShow] = useState(false);
+    // const handleClose = () => setShow(false);
+    // // const handleShow = () => setShow(true);
 
-    const [recipes, setRecipes] = useState<RecipeSlim[]>([])
+    // const [recipes, setRecipes] = useState<RecipeSlim[]>([])
 
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState<RecipeSlim[]>([])
@@ -40,13 +41,12 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
         setSearchResults(results)
     }, [searchTerm, recipesSlim])
 
-    const handleAddNew = () => {
-        handleShow()
+    const handleAddNew = (header: string) => {
+        handleShow(header)
     }
 
     return (
-        <Card>
-            <CreateRecipeModal show={show} handleClose={handleClose} options={{ header }} />
+        <Card>            
             <Card.Header>{header}</Card.Header>
             <Card.Body>
                 <Card.Title>
@@ -63,7 +63,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
                 </ListGroup>
             </Card.Body>
             <Card.Footer>
-                <Button onClick={handleAddNew}>Add New</Button>
+                <Button onClick={() => handleAddNew(header)}>Add New</Button>
             </Card.Footer>
         </Card>
     )
