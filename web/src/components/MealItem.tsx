@@ -60,7 +60,7 @@ query Me {
 export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     const { image, title, id, tags, isStarred } = rcpSlm
     // const {setModalType, setRecipe, handleShow} = modalMethods
-    
+    const [modalType, setModalType] = useState<ModalCategory|undefined>(undefined)
     const {dispatch} = useContext(MealsAreaContext)
     // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
     const {me} = useContext(ProfileContext)
@@ -75,15 +75,8 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     // })
 
     useEffect(() => {
-        if(data && data.getRecipeById)
-            dispatch({
-                type: ModalCategory.View,
-                value: {
-                    header,
-                    recipe: data.getRecipeById,
-                }
-            })
-            // setRecipe(data.getRecipeById)
+        if(modalType)
+            handleShowModal(modalType)
     }, [data && data.getRecipeById])
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
@@ -104,17 +97,30 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     const [toggleStar] = useToggleRecipeStarMutation()
 
 
-    const [show, setShow] = useState(false);
-    const [showEdit, setShowEdit] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleCloseEdit = () => setShowEdit(false);
-    const handleViewModal = () => {
+    // const [show, setShow] = useState(false);
+    // const [showEdit, setShowEdit] = useState(false);
+    // const handleClose = () => setShow(false);
+    // const handleCloseEdit = () => setShowEdit(false);
+    const handleShowModal = (modalType: ModalCategory) => {
+        setModalType(modalType) // so that we know if View or Edit was selected
         getRecipeById({ variables: { id } })
+        showModal(modalType)
     }
-    const handleShowEdit = () => {
-        getRecipeById({ variables: { id } })
-        setShowEdit(true)
+
+    const showModal = (type: ModalCategory) => {
+        if(data && data.getRecipeById)
+            dispatch({
+                type,
+                value: {
+                    header,
+                    recipe: data.getRecipeById,
+                }
+            })
     }
+    // const handleShowEdit = () => {
+    //     getRecipeById({ variables: { id } })
+    //     setShowEdit(true)
+    // }
 
     const { data: notData, loading, error } = useMeLocalQuery();
 
@@ -161,8 +167,8 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
 
 
 
-        <span onClick={handleViewModal}><img src={image} alt={title} /> {title} </span>
-        <FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
+        <span onClick={() => handleShowModal(ModalCategory.View)}><img src={image} alt={title} /> {title} </span>
+        <FaEdit onClick={() => handleShowModal(ModalCategory.Edit)} /> <FaTrashAlt onClick={handleDelete} />
         <span style={{marginLeft: "3rem"}}>
             {isStarred ? <FaStar onClick={handleStarToggle}/> : <FaRegStar onClick={handleStarToggle}/>}
         </span>

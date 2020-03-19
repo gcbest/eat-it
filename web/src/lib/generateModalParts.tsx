@@ -190,7 +190,7 @@ const ViewRecipeFooter: React.FC<Props<ModalInterface>> = ({params, me}) => {
     )
 }
 
-export const useGenerateModalParts = (type: ModalCategory, params: ModalInterface, me: User, handleClose?: () => void,) => {
+export const useGenerateModalParts = (type: ModalCategory, params: ModalInterface, me: User, handleClose?: () => void) => {
     let ModalHeader: React.ReactElement | null = null
     let ModalBody: React.ReactElement | null = null
     let ModalFooter: React.ReactElement | null = null
@@ -202,9 +202,9 @@ export const useGenerateModalParts = (type: ModalCategory, params: ModalInterfac
             ModalFooter = <CreateRecipeFooter params={params}/>
             break
         case ModalCategory.View:
-            ModalHeader = ViewRecipeHeader({params})
-            ModalBody = ViewRecipeBody({params})
-            ModalFooter = ViewRecipeFooter({params, me})
+            ModalHeader = <ViewRecipeHeader params={params}/>
+            ModalBody = <ViewRecipeBody params={params}/>
+            ModalFooter = <ViewRecipeFooter params={params} me={me}/>
             break
         case ModalCategory.Edit:
             // ModalHeader = 

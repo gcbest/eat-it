@@ -85,9 +85,10 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
         <div>
 
             {/* <CreateRecipeModal show={show} handleClose={handleClose} options={{ header }} /> */}
-            <MainModal params={params} handleClose={handleClose} me={me}/>
-            <MealsAreaContext.Provider value={{dispatch}}>
 
+            {params.show && <MainModal params={params} handleClose={handleClose} me={me}/>}
+            
+            <MealsAreaContext.Provider value={{dispatch}}>
             {/* create a new meal card for each meal of the day */}
             {getEnumNames(MealCategory).map(mealName => {
                 const recipesForThisMeal = sortedMeals[mealName]
