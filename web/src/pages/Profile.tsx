@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useMeLocalQuery, useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
 import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
-import { MealsArea, MemoizedMealsArea } from "components/MealsArea";
+import MealsArea from "components/MealsArea";
 import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
 import { ApolloConsumer } from "@apollo/react-hooks";

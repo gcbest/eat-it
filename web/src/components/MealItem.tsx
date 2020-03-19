@@ -17,6 +17,12 @@ import { ProfileContext, Profile } from 'pages/Profile';
 
 interface Props<T> {
     rcpSlm: T
+    modalMethods: {
+        setModalType: (modalType: ModalCategory) => void
+        handleShow: (header: string) => void
+        setRecipe: (recipe: Recipe) => void
+    }
+    header: string
 }
 
 const GET_ME_LOCAL = gql`
@@ -49,7 +55,10 @@ query Me {
 }
 `
 
-export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, id, tags, isStarred }}) => {
+export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, modalMethods, header}) => {
+    const { image, title, id, tags, isStarred } = rcpSlm
+    const {setModalType, setRecipe, handleShow} = modalMethods
+    
     // TODO: add useGetRecipeByIdQuery
     
     // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
@@ -63,6 +72,11 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, i
     //         cache.writeQuery({ query: GET_ME_LOCAL, data: { me: deleteRecipeById } })
     //     }
     // })
+
+    useEffect(() => {
+        if(data && data.getRecipeById)
+            setRecipe(data.getRecipeById)
+    }, [data])
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
             variables: { recipeId: id, userId: me.id },
@@ -86,9 +100,9 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, i
     const [showEdit, setShowEdit] = useState(false);
     const handleClose = () => setShow(false);
     const handleCloseEdit = () => setShowEdit(false);
-    const handleShow = () => {
+    const showViewModal = () => {
         getRecipeById({ variables: { id } })
-        setShow(true)
+        handleShow(header)
     }
     const handleShowEdit = () => {
         getRecipeById({ variables: { id } })
@@ -128,7 +142,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, i
 
     return (<ListGroup.Item>
         {/* only mount view modal when ready to open a recipe */}
-        {data && data.getRecipeById ?
+        {/* {data && data.getRecipeById ?
             <ViewRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.View }} recipe={data && data.getRecipeById} /> :
             null
         }
@@ -136,11 +150,11 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm: { image, title, i
         {data && data.getRecipeById ?
             <EditRecipeModal show={showEdit} handleClose={handleCloseEdit} options={{ type: ModalCategory.Edit }} recipe={data && data.getRecipeById} /> :
             null
-        }
+        } */}
 
 
 
-        <span onClick={handleShow}><img src={image} alt={title} /> {title} </span>
+        <span onClick={showViewModal}><img src={image} alt={title} /> {title} </span>
         <FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
         <span style={{marginLeft: "3rem"}}>
             {isStarred ? <FaStar onClick={handleStarToggle}/> : <FaRegStar onClick={handleStarToggle}/>}

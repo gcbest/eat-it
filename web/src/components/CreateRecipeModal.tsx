@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
+import { useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import { useMutation } from '@apollo/react-hooks';
@@ -16,20 +16,21 @@ import nanoid from 'nanoid';
 import { ProfileContext } from 'pages/Profile';
 
 
-interface Props extends ModalInterface {
-    options: {
-        header: string | any
-    }
+// interface Props extends ModalInterface {
+//     options: {
+//         header: string | any
+//     }
+// }
+
+interface Props<T>{
+    params: T
 }
 
-const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
-    const [addRecipe] = useAddRecipeMutation()
-    
-
-    // const { data: user, loading: loadingLocal } = useMeLocalQuery()
+const CreateRecipeModal: React.FC<Props<ModalInterface>> = ({params}) => {
     const user = useContext(ProfileContext)
-    const { header } = options
-
+    const { show, handleClose } = params
+    const {header}: any = params // using any so that it can be use to find MealCategory enum value
+    
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title: '',
         readyInMinutes: 0,
@@ -39,6 +40,7 @@ const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
         sourceUrl: '',
         analyzedInstructions: '',
     });
+    const [addRecipe] = useAddRecipeMutation()
 
 
    //REACT TAGS
@@ -61,10 +63,10 @@ const CreateRecipeModal: React.FC<Props> = ({ show, handleClose, options }) => {
     }
 
     
-        useEffect(() => {
-            if(user && user.me && user.me.tags) 
-                setSuggestions(user.me.tags)
-        }, [])
+    useEffect(() => {
+        if(user && user.me && user.me.tags) 
+            setSuggestions(user.me.tags)
+    }, [])
 
     /////////////////////////////////
 

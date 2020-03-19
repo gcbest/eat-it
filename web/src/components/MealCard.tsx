@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form';
-import { RecipeSlim } from 'lib/interfaces';
+import { RecipeSlim, Recipe } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory } from 'lib/enums';
 // import CreateRecipeModal from './CreateRecipeModal';
@@ -13,9 +13,11 @@ interface Props {
     header: string
     recipesSlim: RecipeSlim[]
     handleShow: (header: string) => void
+    setModalType: (modalType: ModalCategory) => void
+    setRecipe: (recipe: Recipe) => void
 }
 
-export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow }) => {
+export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow, setModalType, setRecipe }) => {
     // const [show, setShow] = useState(false);
     // const handleClose = () => setShow(false);
     // // const handleShow = () => setShow(true);
@@ -41,8 +43,15 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow }) =
         setSearchResults(results)
     }, [searchTerm, recipesSlim])
 
-    const handleAddNew = (header: string) => {
+    const showCreateModal = () => {
+        setModalType(ModalCategory.Create)
         handleShow(header)
+    }
+
+    const modalMethods = {
+        setModalType,
+        handleShow,
+        setRecipe
     }
 
     return (
@@ -59,11 +68,11 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow }) =
                 </Card.Title>
                 <ListGroup>
                     {searchResults &&
-                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} />)}
+                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} modalMethods={modalMethods} header={header} />)}
                 </ListGroup>
             </Card.Body>
             <Card.Footer>
-                <Button onClick={() => handleAddNew(header)}>Add New</Button>
+                <Button onClick={showCreateModal}>Add New</Button>
             </Card.Footer>
         </Card>
     )

@@ -15,21 +15,27 @@ import { DiscoverContext } from 'pages/Discover';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 
 
-interface Props extends ModalInterface {
-    options: {
-        type: ModalCategory
-    }
-    recipe: Recipe | null | undefined
+// interface Props extends ModalInterface {
+//     options: {
+//         type: ModalCategory
+//     }
+//     recipe: Recipe | null | undefined
+// }
+
+interface Props<T>{
+    params: T
 }
 
 // interface ModalContent { title: string, actionButton: string, body: any }
 
-const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+// const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params }) => {
     // const [isEditing, setIsEditing] = useState(false)
+    const { show, handleClose, recipe, type } = params
     const user = useContext(DiscoverContext)
 
     const [addRecipe] = useAddRecipeMutation()
-    const { type } = options
+    // const { type } = options
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, dishTypes = [], mealType = 1 } = recipe!
 
     //REACT TAGS
@@ -79,9 +85,9 @@ const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, optio
     const renderText = (category: ModalCategory): string => {
         // let text = {title: '', actionButton: ''}
         switch (category) {
-            case ModalCategory.NewDiscover:
+            case ModalCategory.Discover:
                 return 'Save'
-            case ModalCategory.NewCreate:
+            case ModalCategory.Create:
                 return 'Create'
             case ModalCategory.Edit:
                 return 'Edit'
@@ -94,12 +100,12 @@ const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, optio
     // const renderContent = (category: ModalCategory): ModalContent => {
     //     let content: ModalContent = { title: '', actionButton: '', body: undefined }
     //     switch (category) {
-    //         case ModalCategory.NewDiscover:
+    //         case ModalCategory.Discover:
     //             content.title = 'Save this recipe'
     //             content.actionButton = 'Save recipe'
-    //             content.body = generateNewCreateBody()
+    //             content.body = generateCreateBody()
     //             break
-    //         case ModalCategory.NewCreate:
+    //         case ModalCategory.Create:
     //             content.title = 'Add this recipe'
     //             break
     //         case ModalCategory.Edit:
@@ -153,7 +159,7 @@ const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, optio
     const handleSave = () => {
         // switch case to handle the different saving/updating options
         // switch (category) {
-        //     case ModalCategory.NewDiscover:
+        //     case ModalCategory.Discover:
 
         //         // add from discover
         //         addRecipeFromDiscover()
@@ -240,7 +246,7 @@ const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, optio
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title>
+                {/* <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title> */}
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect2">
                         <Form.Label>Example multiple select</Form.Label>

@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, User, AddRecipeInput, RecipeSlim } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation, useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql';
+import { useMeLocalQuery, useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
 import cloneDeep from '@bit/lodash.lodash.clone-deep';
 import { GET_ME_LOCAL, GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations';
@@ -13,18 +13,23 @@ import ReactTags, { Tag } from 'react-tag-autocomplete';
 import nanoid from 'nanoid';
 
 
-interface Props extends ModalInterface {
-    options: {
-        type: ModalCategory
-    }
-    recipe: Recipe | null
+// interface Props extends ModalInterface {
+//     options: {
+//         type: ModalCategory
+//     }
+//     // recipe: Recipe | null
+// }
+
+interface Props<T>{
+    params: T
 }
 
-interface ModalContent { title: string, actionButton: string, body: any }
+// interface ModalContent { title: string, actionButton: string, body: any }
 
-export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
+export const EditRecipeModal: React.FC<Props<ModalInterface>> = ({params}) => {
+    const { show, handleClose, recipe, type } = params
     const [isEditing, setIsEditing] = useState(false)
-    const { type } = options
+    // const { type } = options
     const [updateRecipe] = useUpdateRecipeByIdMutation()
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, tags: defaultTags, mealType } = recipe!
@@ -77,9 +82,9 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
         const renderText = (category: ModalCategory): string => {
             // let text = {title: '', actionButton: ''}
             switch (category) {
-                case ModalCategory.NewDiscover:
+                case ModalCategory.Discover:
                     return 'Save'
-                case ModalCategory.NewCreate:
+                case ModalCategory.Create:
                     return 'Create'
                 case ModalCategory.Edit:
                     return 'Edit'
@@ -92,12 +97,12 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     // const renderContent = (category: ModalCategory): ModalContent => {
     //     let content: ModalContent = { title: '', actionButton: '', body: undefined }
     //     switch (category) {
-    //         case ModalCategory.NewDiscover:
+    //         case ModalCategory.Discover:
     //             content.title = 'Save this recipe'
     //             content.actionButton = 'Save recipe'
-    //             content.body = generateNewCreateBody()
+    //             content.body = generateCreateBody()
     //             break
-    //         case ModalCategory.NewCreate:
+    //         case ModalCategory.Create:
     //             content.title = 'Add this recipe'
     //             break
     //         case ModalCategory.Edit:
@@ -113,7 +118,7 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
     const handleSave = (category: ModalCategory) => {
         // switch case to handle the different saving/updating options
         // switch (category) {
-        //     case ModalCategory.NewDiscover:
+        //     case ModalCategory.Discover:
 
         //         // add from discover
         //         addRecipeFromDiscover()
@@ -217,28 +222,29 @@ export const EditRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, op
 
 
     return (
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title>
-                <Form>
-                    <Form.Group controlId="exampleForm.ControlSelect2">
-                        <Form.Label>Example multiple select</Form.Label>
-                        <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
-                            {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
-                        </Form.Control>
-                    </Form.Group>
-                </Form>
-            </Modal.Header>
-            <Modal.Body>
-                {
-                    displayEditContent(recipe)
-                }
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={() => handleSubmit()}>
-                    {`Edit Recipe`}
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <div>hello</div>
+        // <Modal show={show} onHide={handleClose}>
+        //     <Modal.Header closeButton>
+        //         <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title>
+        //         <Form>
+        //             <Form.Group controlId="exampleForm.ControlSelect2">
+        //                 <Form.Label>Example multiple select</Form.Label>
+        //                 <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
+        //                     {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
+        //                 </Form.Control>
+        //             </Form.Group>
+        //         </Form>
+        //     </Modal.Header>
+        //     <Modal.Body>
+        //         {
+        //             displayEditContent(recipe)
+        //         }
+        //     </Modal.Body>
+        //     <Modal.Footer>
+        //         <Button variant="primary" onClick={() => handleSubmit()}>
+        //             {`Edit Recipe`}
+        //         </Button>
+        //     </Modal.Footer>
+        // </Modal>
     )
 }

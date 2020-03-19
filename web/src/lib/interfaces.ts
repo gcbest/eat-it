@@ -1,4 +1,5 @@
 import { Tag } from "generated/graphql";
+import { ModalCategory } from "./enums";
 
 export interface Instructions {
     name: string;
@@ -43,8 +44,11 @@ export interface CustomToggleInterface {
 
 export interface ModalInterface {
     show: boolean
-    handleShow?: (recipe: Recipe) => void
     handleClose: () => void
+    type?: ModalCategory
+    recipe?: Recipe
+    header?: string
+    // handleShow?: (recipe: Recipe) => void
 }
 
 export interface AddRecipeInput extends Recipe {
@@ -57,5 +61,5 @@ export interface AddRecipeInput extends Recipe {
 export interface User {
     id: number
     email: string
-    recipes: [Recipe]
+    recipes: [Recipe] | [RecipeSlim]
 }

@@ -34,7 +34,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
 
     return (
         <Card style={{ width: '18rem' }}>
-            <DiscoverRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.NewDiscover }} recipe={recipe} />
+            {/* <DiscoverRecipeModal show={show} handleClose={handleClose} options={{ type: ModalCategory.Discover }} recipe={recipe} /> */}
 
             <Card.Img variant="top" src={image} />
             <Card.Body style={{ maxHeight: '8rem', overflowY: "scroll" }}>
