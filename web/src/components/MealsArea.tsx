@@ -30,6 +30,7 @@ const reducer = (state: ModalInterface, action: ReducerAction) => {
         case ModalCategory.View:
             return {...state, modalType: ModalCategory.View, ...value}
         case ModalCategory.Edit:
+            
             return {...state, modalType: ModalCategory.Edit, ...value}
         case CLOSE_MODAL:
             return initialState
@@ -87,7 +88,7 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
             {/* <CreateRecipeModal show={show} handleClose={handleClose} options={{ header }} /> */}
 
             {params.show && <MainModal params={params} handleClose={handleClose} me={me}/>}
-            
+
             <MealsAreaContext.Provider value={{dispatch}}>
             {/* create a new meal card for each meal of the day */}
             {getEnumNames(MealCategory).map(mealName => {

@@ -1,26 +1,49 @@
 import React, { Fragment } from 'react'
-import { ModalInterface, User } from './interfaces'
+import { ModalInterface, User, RecipeSlim } from './interfaces'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { getEnumNames, createMarkup } from './utils'
 import { MealCategory, ModalCategory } from './enums'
 import useForm from './useForm'
 import Badge from 'react-bootstrap/Badge'
-import { useDeleteRecipeByIdMutation, useAddRecipeMutation } from 'generated/graphql'
-import { GET_ME_LOCAL } from 'graphql/queriesAndMutations'
+import { useDeleteRecipeByIdMutation, useAddRecipeMutation, EditRecipeInput, useUpdateRecipeByIdMutation } from 'generated/graphql'
+import { GET_ME_LOCAL, GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations'
 import Button from 'react-bootstrap/Button'
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 
-interface Props<T>{
+interface Props<T> {
     params: T
     me?: User
     handleClose?: () => void
-
 }
 
-const EditRecipeHeader: React.FC<Props<ModalInterface>> = ({params}) => {
-    const { recipe, header } = params
+const EditRecipeHeader: React.FC<Props<ModalInterface>> = ({ params }) => {
+    const { recipe } = params
+    const { mealType } = recipe!
+
+    const { inputs, handleChange } = useForm({
+        mealType
+    });
+
+    return (
+        <Fragment>
+            <Modal.Title></Modal.Title>
+            <Form>
+                <Form.Group controlId="view-header">
+                    <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
+                        {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
+                    </Form.Control>
+                </Form.Group>
+            </Form>
+        </Fragment>
+    )
+}
+
+const EditRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose, me }) => {
+    const { recipe, tags } = params
     const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    const [updateRecipe] = useUpdateRecipeByIdMutation()
+
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title,
@@ -33,21 +56,77 @@ const EditRecipeHeader: React.FC<Props<ModalInterface>> = ({params}) => {
         mealType
     });
 
+    const handleSubmit = async () => {
+        // e.preventDefault()
+        console.log('submit edit');
+
+        if (!isCreateRecipeValid()) {
+            console.log('fill out all the mandatory fields');
+            return
+        }
+        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags, userId: me!.id, isStarred: recipe!.isStarred }
+        console.log(updatedRecipe);
+        const response = await updateRecipe({
+            variables: { input: updatedRecipe },
+            update(cache) {
+                const dataX: any = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }}) //, data: { getRecipeById: { ...updatedRecipe } } })
+                debugger
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: {...dataX.getRecipeById } } })
+                // update recipes on me object
+                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                me.recipes = me.recipes.map((r: RecipeSlim) => r.id === updatedRecipe.id ? updatedRecipe : r)
+                cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
+            }
+        })
+
+        console.log(response);
+        handleClose!()
+    }
+
     return (
-        <Modal.Header closeButton>
-                <Modal.Title></Modal.Title>
-                <Form>
-                    <Form.Group controlId="view-header">
-                        <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
-                            {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
-                        </Form.Control>
-                    </Form.Group>
-                </Form>
-            </Modal.Header>
+        <Form>
+            <Form.Group controlId="title">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" name="title" value={inputs.title} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="sourceUrl">
+                <Form.Label>Link to recipe</Form.Label>
+                <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="readyInMinutes">
+                <Form.Label>Prep + Cook Time</Form.Label>
+                <Form.Control type="number" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="servings">
+                <Form.Label># of Servings</Form.Label>
+                <Form.Control type="number" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="image">
+                <Form.Label>Image URL</Form.Label>
+                <Form.Control type="text" name="image" placeholder="" value={inputs.image} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Summary</Form.Label>
+                <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
+            </Form.Group>
+            <Button variant="primary" onClick={() => handleSubmit()}>
+                Edit Recipe
+            </Button>
+        </Form>
     )
 }
 
-const CreateRecipeHeader: React.FC<Props<ModalInterface>> = ({params}) => {
+const EditRecipeFooter: React.FC = () => {
+    return null
+}
+
+
+
+//TODO: FINISH EDIT RECIPE AND BREAK INTO OWN COMPONENTS EditModal etc
+
+
+
+const CreateRecipeHeader: React.FC<Props<ModalInterface>> = ({ params }) => {
     const { header } = params
 
     return (
@@ -55,10 +134,10 @@ const CreateRecipeHeader: React.FC<Props<ModalInterface>> = ({params}) => {
     )
 }
 
-const CreateRecipeBody: React.FC<Props<ModalInterface>> = ({params, handleClose, me}) => {
+const CreateRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose, me }) => {
     const { tags } = params
-    const {header}:any = params
-    
+    const { header }: any = params
+
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title: '',
         readyInMinutes: 0,
@@ -84,7 +163,7 @@ const CreateRecipeBody: React.FC<Props<ModalInterface>> = ({params, handleClose,
             update(cache, { data }) {
                 // cloning to prevent any issues with not being able to update cache
                 const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                if(data && data.addRecipe)
+                if (data && data.addRecipe)
                     cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data.addRecipe } })
             }
         })
@@ -96,58 +175,55 @@ const CreateRecipeBody: React.FC<Props<ModalInterface>> = ({params, handleClose,
     }
 
     return (
-        <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="title">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control type="text" name="title" placeholder="Tasty Miso Soup" value={inputs.title} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="sourceUrl">
-                        <Form.Label>Link to recipe</Form.Label>
-                        <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="readyInMinutes">
-                        <Form.Label>Prep + Cook Time</Form.Label>
-                        <Form.Control type="number" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="servings">
-                        <Form.Label># of Servings</Form.Label>
-                        <Form.Control type="number" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="image">
-                        <Form.Label>Image URL</Form.Label>
-                        <Form.Control type="text" name="image" placeholder="" value={inputs.image} onChange={handleChange} />
-                    </Form.Group>
-                    {/* EVENTUALLY ADD TAGS */}
-                    <Form.Group controlId="exampleForm.ControlTextarea1">
-                        <Form.Label>Summary</Form.Label>
-                        <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
-                    </Form.Group>
-                    <Button variant="secondary" type="submit">
-                        Create Recipe
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="title">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" name="title" placeholder="Tasty Miso Soup" value={inputs.title} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="sourceUrl">
+                <Form.Label>Link to recipe</Form.Label>
+                <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="readyInMinutes">
+                <Form.Label>Prep + Cook Time</Form.Label>
+                <Form.Control type="number" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="servings">
+                <Form.Label># of Servings</Form.Label>
+                <Form.Control type="number" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="image">
+                <Form.Label>Image URL</Form.Label>
+                <Form.Control type="text" name="image" placeholder="" value={inputs.image} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Summary</Form.Label>
+                <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
+            </Form.Group>
+            <Button variant="secondary" type="submit">
+                Create Recipe
                     </Button>
-                </Form>
-            </Modal.Body>
+        </Form>
     )
 }
 
-const CreateRecipeFooter: React.FC<Props<ModalInterface>> = ({params}) => {
+const CreateRecipeFooter: React.FC<Props<ModalInterface>> = ({ params }) => {
     return null
 }
 
 
-const ViewRecipeHeader: React.FC<Props<ModalInterface>> = ({params}) => {
+const ViewRecipeHeader: React.FC<Props<ModalInterface>> = ({ params }) => {
     const { recipe, header } = params
-    
+
     return (
         <Modal.Title>{recipe!.title} <Badge variant="secondary">{header}</Badge></Modal.Title>
     )
 }
 
-const ViewRecipeBody: React.FC<Props<ModalInterface>> = ({params}) => {
+const ViewRecipeBody: React.FC<Props<ModalInterface>> = ({ params }) => {
     const { recipe } = params
-    const {image, title, readyInMinutes, servings, summary} = recipe!
-    
+    const { image, title, readyInMinutes, servings, summary } = recipe!
+
     return (
         <Fragment>
             {image &&
@@ -161,17 +237,17 @@ const ViewRecipeBody: React.FC<Props<ModalInterface>> = ({params}) => {
     )
 }
 
-const ViewRecipeFooter: React.FC<Props<ModalInterface>> = ({params, me}) => {
+const ViewRecipeFooter: React.FC<Props<ModalInterface>> = ({ params, me }) => {
     const { recipe } = params
     const handleClose = () => null
-    const {id} = recipe!
-    
+    const { id } = recipe!
+
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
         variables: { recipeId: id!, userId: me!.id },
         update(cache, { data }) {
             // cloning to prevent any issues with not being able to update cache
             // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-            if(data)
+            if (data)
                 cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data.deleteRecipeById } })
         }
     })
@@ -182,7 +258,7 @@ const ViewRecipeFooter: React.FC<Props<ModalInterface>> = ({params, me}) => {
             handleClose()
         }
     }
-    
+
     return (
         <Button variant="danger" onClick={deleteRecipe}>
             Delete
@@ -195,26 +271,26 @@ export const useGenerateModalParts = (type: ModalCategory, params: ModalInterfac
     let ModalBody: React.ReactElement | null = null
     let ModalFooter: React.ReactElement | null = null
 
-    switch(type) {
+    switch (type) {
         case ModalCategory.Create:
-            ModalHeader = <CreateRecipeHeader params={params}/>
-            ModalBody = <CreateRecipeBody params={params} handleClose={handleClose} me={me}/>
-            ModalFooter = <CreateRecipeFooter params={params}/>
+            ModalHeader = <CreateRecipeHeader params={params} />
+            ModalBody = <CreateRecipeBody params={params} handleClose={handleClose} me={me} />
+            ModalFooter = <CreateRecipeFooter params={params} />
             break
         case ModalCategory.View:
-            ModalHeader = <ViewRecipeHeader params={params}/>
-            ModalBody = <ViewRecipeBody params={params}/>
-            ModalFooter = <ViewRecipeFooter params={params} me={me}/>
+            ModalHeader = <ViewRecipeHeader params={params} />
+            ModalBody = <ViewRecipeBody params={params} />
+            ModalFooter = <ViewRecipeFooter params={params} me={me} />
             break
         case ModalCategory.Edit:
-            // ModalHeader = 
-            // ModalBody = <EditRecipeModal params={params}/>
-            // ModalFooter = 
+            ModalHeader = <EditRecipeHeader params={params} />
+            ModalBody = <EditRecipeBody params={params} handleClose={handleClose} me={me}/>
+            ModalFooter = <EditRecipeFooter/>
             break
         default:
-            // ModalHeader = 
-            // ModalBody = <ViewRecipeModal params={params}/>
-            // ModalFooter = 
+        ModalHeader =null
+        ModalBody = null
+        ModalFooter =null
     }
 
     const getHeader = () => ModalHeader
@@ -223,7 +299,7 @@ export const useGenerateModalParts = (type: ModalCategory, params: ModalInterfac
 
     const getFooter = () => ModalFooter
 
-    return {getHeader, getBody, getFooter}
+    return { getHeader, getBody, getFooter }
 
 
 }

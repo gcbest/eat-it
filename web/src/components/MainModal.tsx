@@ -21,6 +21,7 @@ interface Props<T> {
 const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
     const { me } = useContext(ProfileContext)
     const { show, modalType, recipe } = params
+    
     const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, params, me, handleClose)
 
     // REACT TAGS
@@ -64,7 +65,7 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
                 </Modal.Body>
                 <Modal.Footer>
                     <div style={{ width: '100%' }}>
-                        {modalType === ModalCategory.View ?
+                        {modalType === ModalCategory.View ? // replace editable tags with display badges
                             tags && tags.map(t => <RecipeTag key={t.id} text={t.name} />)
                             :
                             <ReactTags
@@ -78,12 +79,6 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
                         }
                     </div>
                     {getFooter()}
-                    {/* <Button variant="secondary" onClick={() => handleSave(modalType)}>
-                        {`${renderText(modalType)} Recipe`}
-                    </Button>
-                    <Button variant="primary" onClick={() => setIsEditing(true)}>
-                        {`Edit Recipe`}
-                    </Button> */}
                 </Modal.Footer>
             </Modal>
         </div>

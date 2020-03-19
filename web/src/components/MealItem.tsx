@@ -108,11 +108,13 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     }
 
     const showModal = (type: ModalCategory) => {
+        
         if(data && data.getRecipeById)
             dispatch({
                 type,
                 value: {
                     header,
+                    tags,
                     recipe: data.getRecipeById,
                 }
             })
