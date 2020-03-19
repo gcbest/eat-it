@@ -44,11 +44,10 @@ export interface CustomToggleInterface {
 
 export interface ModalInterface {
     show: boolean
-    handleClose: () => void
-    type?: ModalCategory
+    modalType?: ModalCategory
     recipe?: Recipe
     header?: string
-    // handleShow?: (recipe: Recipe) => void
+    tags?: Tag[]
 }
 
 export interface AddRecipeInput extends Recipe {
@@ -62,4 +61,9 @@ export interface User {
     id: number
     email: string
     recipes: [Recipe] | [RecipeSlim]
+}
+
+export interface ReducerAction {
+    type: ModalCategory | string
+    value?: any
 }

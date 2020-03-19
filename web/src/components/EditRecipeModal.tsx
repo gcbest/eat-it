@@ -27,7 +27,9 @@ interface Props<T>{
 // interface ModalContent { title: string, actionButton: string, body: any }
 
 export const EditRecipeModal: React.FC<Props<ModalInterface>> = ({params}) => {
-    const { show, handleClose, recipe, type } = params
+    const { show, recipe } = params
+    const handleClose = () => null
+
     const [isEditing, setIsEditing] = useState(false)
     // const { type } = options
     const [updateRecipe] = useUpdateRecipeByIdMutation()

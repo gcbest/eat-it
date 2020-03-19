@@ -128,11 +128,12 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       </SearchStyles>
       <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar/></span> : <span>Show All <FaRegStar/></span>}</Button>
       <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
-      {recipeData && recipeData.getRecipeById ?
+      {/* {recipeData && recipeData.getRecipeById ?
             <ViewRecipeModal show={showRecipe} handleClose={handleCloseRecipe} options={{ type: ModalCategory.View }} recipe={recipeData && recipeData.getRecipeById} /> :
             null
-        }
-      <MemoizedMealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred}/>
+        } */}
+      <MealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred}/>
+
 
     </ProfileContext.Provider>
     </div>)

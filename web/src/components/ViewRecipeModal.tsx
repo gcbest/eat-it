@@ -31,10 +31,13 @@ interface Props<T>{
 }
 
 export const ViewRecipeModal: React.FC<Props<ModalInterface>> = ({params}) => {
-    const { show, handleClose, recipe } = params
+    const { show, recipe } = params
+    const handleClose = () => null
+
     const me = useContext(ProfileContext)
     const [isEditing, setIsEditing] = useState(false)
     //REACT TAGS
+
     /////////////////////////////////// 
     const [tags, setTags] = useState<Tag[]>([])
     const [suggestions, setSuggestions] = useState<Tag[]>([])
@@ -238,7 +241,7 @@ export const ViewRecipeModal: React.FC<Props<ModalInterface>> = ({params}) => {
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title>
+                <Modal.Title>{`This Recipe`}</Modal.Title>
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect2">
                         <Form.Label>Example multiple select</Form.Label>

@@ -28,7 +28,9 @@ interface Props<T>{
 
 const CreateRecipeModal: React.FC<Props<ModalInterface>> = ({params}) => {
     const user = useContext(ProfileContext)
-    const { show, handleClose } = params
+    const { show } = params
+    const handleClose = () => null
+    
     const {header}: any = params // using any so that it can be use to find MealCategory enum value
     
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({

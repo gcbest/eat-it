@@ -12,12 +12,13 @@ import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import { Tag } from 'react-tag-autocomplete';
 import { RecipeTag } from './RecipeTag';
 import { ProfileContext, Profile } from 'pages/Profile';
+import { MealsAreaContext } from './MealsArea';
 
 
 
 interface Props<T> {
     rcpSlm: T
-    modalMethods: {
+    modalMethods?: {
         setModalType: (modalType: ModalCategory) => void
         handleShow: (header: string) => void
         setRecipe: (recipe: Recipe) => void
@@ -55,12 +56,12 @@ query Me {
 }
 `
 
-export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, modalMethods, header}) => {
+// export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, modalMethods, header}) => {
+export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     const { image, title, id, tags, isStarred } = rcpSlm
-    const {setModalType, setRecipe, handleShow} = modalMethods
+    // const {setModalType, setRecipe, handleShow} = modalMethods
     
-    // TODO: add useGetRecipeByIdQuery
-    
+    const {dispatch} = useContext(MealsAreaContext)
     // const {me, showRecipe, setShowRecipe, handleShowRecipe, handleCloseRecipe} = useContext(ProfileContext)
     const {me} = useContext(ProfileContext)
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
@@ -75,8 +76,15 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, modalMethods, hea
 
     useEffect(() => {
         if(data && data.getRecipeById)
-            setRecipe(data.getRecipeById)
-    }, [data])
+            dispatch({
+                type: ModalCategory.View,
+                value: {
+                    header,
+                    recipe: data.getRecipeById,
+                }
+            })
+            // setRecipe(data.getRecipeById)
+    }, [data && data.getRecipeById])
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
             variables: { recipeId: id, userId: me.id },
@@ -100,9 +108,8 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, modalMethods, hea
     const [showEdit, setShowEdit] = useState(false);
     const handleClose = () => setShow(false);
     const handleCloseEdit = () => setShowEdit(false);
-    const showViewModal = () => {
+    const handleViewModal = () => {
         getRecipeById({ variables: { id } })
-        handleShow(header)
     }
     const handleShowEdit = () => {
         getRecipeById({ variables: { id } })
@@ -154,7 +161,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, modalMethods, hea
 
 
 
-        <span onClick={showViewModal}><img src={image} alt={title} /> {title} </span>
+        <span onClick={handleViewModal}><img src={image} alt={title} /> {title} </span>
         <FaEdit onClick={handleShowEdit} /> <FaTrashAlt onClick={handleDelete} />
         <span style={{marginLeft: "3rem"}}>
             {isStarred ? <FaStar onClick={handleStarToggle}/> : <FaRegStar onClick={handleStarToggle}/>}

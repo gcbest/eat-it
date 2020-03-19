@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useContext } from 'react'
 import nanoid from 'nanoid'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-import { ModalInterface } from 'lib/interfaces'
+import { ModalInterface, User } from 'lib/interfaces'
 import { ModalCategory } from 'lib/enums'
 import CreateRecipeModal from './CreateRecipeModal'
 import { ViewRecipeModal } from './ViewRecipeModal'
@@ -13,14 +13,14 @@ import { useGenerateModalParts } from 'lib/generateModalParts'
 
 interface Props<T>{
     params: T
+    me: User
+    handleClose: () => void
 }
 
-const MainModal:React.FC<Props<ModalInterface>> = ({params}) => {
+const MainModal:React.FC<Props<ModalInterface>> = ({params, handleClose}) => {
     const me = useContext(ProfileContext)
-    const {show, handleClose, type, recipe} = params
-    const {getHeader, getBody, getFooter } = useGenerateModalParts(type!, params, me)
-
-    
+    const {show, modalType, recipe} = params
+    const {getHeader, getBody, getFooter} = useGenerateModalParts(modalType!, params, me, handleClose)
 
     // REACT TAGS
     /////////////////////////////////// 
@@ -65,8 +65,8 @@ const MainModal:React.FC<Props<ModalInterface>> = ({params}) => {
                             />
                     </div>
                     {getFooter()}
-                    {/* <Button variant="secondary" onClick={() => handleSave(type)}>
-                        {`${renderText(type)} Recipe`}
+                    {/* <Button variant="secondary" onClick={() => handleSave(modalType)}>
+                        {`${renderText(modalType)} Recipe`}
                     </Button>
                     <Button variant="primary" onClick={() => setIsEditing(true)}>
                         {`Edit Recipe`}

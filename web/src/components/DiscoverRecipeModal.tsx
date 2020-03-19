@@ -30,14 +30,17 @@ interface Props<T>{
 
 // const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
 const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params }) => {
+    const handleClose = () => null
     // const [isEditing, setIsEditing] = useState(false)
-    const { show, handleClose, recipe, type } = params
+    const { show, recipe, modalType } = params
+
     const user = useContext(DiscoverContext)
 
     const [addRecipe] = useAddRecipeMutation()
     // const { type } = options
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, dishTypes = [], mealType = 1 } = recipe!
 
+    
     //REACT TAGS
     /////////////////////////////////// 
     const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
