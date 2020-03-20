@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { ModalInterface, User, RecipeSlim } from './interfaces'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -17,6 +17,7 @@ interface Props<T> {
     handleClose?: () => void
 }
 
+const EditRecipeContext = React.createContext<any>(undefined)
 const EditRecipeHeader: React.FC<Props<ModalInterface>> = ({ params }) => {
     const { recipe } = params
     const { mealType } = recipe!
@@ -27,7 +28,8 @@ const EditRecipeHeader: React.FC<Props<ModalInterface>> = ({ params }) => {
 
     return (
         <Fragment>
-            <Modal.Title></Modal.Title>
+            <EditRecipeContext.Provider value={mealType}>
+            <Modal.Title>Edit Recipe</Modal.Title>
             <Form>
                 <Form.Group controlId="view-header">
                     <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
@@ -35,15 +37,16 @@ const EditRecipeHeader: React.FC<Props<ModalInterface>> = ({ params }) => {
                     </Form.Control>
                 </Form.Group>
             </Form>
+            </EditRecipeContext.Provider>
         </Fragment>
     )
 }
 
 const EditRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose, me }) => {
     const { recipe, tags } = params
-    const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, mealType } = recipe!
+    const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions } = recipe!
     const [updateRecipe] = useUpdateRecipeByIdMutation()
-
+    const mealType = useContext(EditRecipeContext)
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title,
@@ -64,14 +67,15 @@ const EditRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose, 
             console.log('fill out all the mandatory fields');
             return
         }
-        const updatedRecipe: EditRecipeInput = { ...inputs, id: recipe!.id, tags, userId: me!.id, isStarred: recipe!.isStarred }
+        const updatedRecipe: EditRecipeInput = { ...inputs, id, tags, userId: me!.id, isStarred: recipe!.isStarred, __typename: 'Recipe' }
         console.log(updatedRecipe);
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache) {
-                const dataX: any = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }}) //, data: { getRecipeById: { ...updatedRecipe } } })
+                // const dataX: any = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }}) //, data: { getRecipeById: { ...updatedRecipe } } })
+                // const y  = { ...dataX.getRecipeById, ...updatedRecipe}
                 debugger
-                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: {...dataX.getRecipeById } } })
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: {...updatedRecipe } } })
                 // update recipes on me object
                 const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
                 me.recipes = me.recipes.map((r: RecipeSlim) => r.id === updatedRecipe.id ? updatedRecipe : r)
