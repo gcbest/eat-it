@@ -1,5 +1,5 @@
 import { Tag } from "generated/graphql";
-import { ModalCategory } from "./enums";
+import { ModalCategory, MealCategory } from "./enums";
 
 export interface Instructions {
     name: string;
@@ -48,6 +48,8 @@ export interface ModalInterface {
     recipe?: Recipe
     header?: string
     tags?: Tag[]
+    mealType?: MealCategory
+    setMealType?: (mealType: MealCategory) => void
 }
 
 export interface AddRecipeInput extends Recipe {

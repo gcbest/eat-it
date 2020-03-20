@@ -3,7 +3,7 @@ import nanoid from 'nanoid'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { ModalInterface, User } from 'lib/interfaces'
-import { ModalCategory } from 'lib/enums'
+import { ModalCategory, MealCategory } from 'lib/enums'
 import CreateRecipeModal from './CreateRecipeModal'
 import { ViewRecipeModal } from './ViewRecipeModal'
 import { EditRecipeModal } from './EditRecipeModal'
@@ -21,8 +21,11 @@ interface Props<T> {
 const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
     const { me } = useContext(ProfileContext)
     const { show, modalType, recipe } = params
-    
-    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, params, me, handleClose)
+    // const {recipe} = params!
+    // const {mealType} = recipe!
+    // if(recipe && recipe.mealType)
+    const [mealType, setMealType] = useState<MealCategory|undefined>(recipe && recipe.mealType) //since meal type is found in header and body contains rest of form 
+    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, {...params, mealType, setMealType}, me, handleClose)
 
     // REACT TAGS
     /////////////////////////////////// 
