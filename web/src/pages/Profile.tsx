@@ -6,7 +6,6 @@ import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
 import { ApolloConsumer } from "@apollo/react-hooks";
 import { ModalCategory } from "lib/enums";
-import { ViewRecipeModal } from "components/ViewRecipeModal";
 import { RecipeSlim } from "lib/interfaces";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import Button from "react-bootstrap/Button";

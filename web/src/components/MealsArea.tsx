@@ -1,9 +1,8 @@
-import React, { useState, useReducer, useContext } from 'react'
+import React, { useReducer, useContext } from 'react'
 import { MealCategory, ModalCategory } from 'lib/enums'
 import { MealCard } from './MealCard'
-import { RecipeSlim, Recipe, ModalInterface, ReducerAction } from 'lib/interfaces'
+import { RecipeSlim, ModalInterface, ReducerAction } from 'lib/interfaces'
 import { getEnumNames, getKeyByValue } from 'lib/utils'
-import CreateRecipeModal from './CreateRecipeModal'
 import MainModal from './MainModal'
 import { ProfileContext } from 'pages/Profile'
 

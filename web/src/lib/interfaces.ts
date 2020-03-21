@@ -42,6 +42,12 @@ export interface CustomToggleInterface {
     eventKey: string;
 }
 
+export interface ModalProps<T> {
+    params: T
+    me?: User
+    handleClose?: () => void
+}
+
 export interface ModalInterface {
     show: boolean
     modalType?: ModalCategory
@@ -68,4 +74,12 @@ export interface User {
 export interface ReducerAction {
     type: ModalCategory | string
     value?: any
+}
+
+export interface Image {
+    src: string
+    alt: string
+    caption?: string
+    height?: string
+    width?: string
 }

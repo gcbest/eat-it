@@ -3380,6 +3380,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-lazy-load-image-component@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-lazy-load-image-component/-/react-lazy-load-image-component-1.3.0.tgz#c02b5c94f2776cb726b7d6bdb9507b2583cdc52d"
+  integrity sha512-Wb+VvdKtvitAutq7seLRw84wutA1fm20l+/WLD9UZd3wuPCoog9mmWNFU3uMR42ghk0sMQKPyGbUxvwKnmgctA==
+  dependencies:
+    "@types/react" "*"
+    csstype "^2.2.0"
+
 "@types/react-native@*":
   version "0.61.16"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.61.16.tgz#8dc5f5d3fe0b2b4d1454bbc84641434c7afcdcf5"
@@ -9382,6 +9390,11 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "~3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -11882,6 +11895,14 @@ react-is@^16.9.0:
   version "16.13.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.0.tgz#0f37c3613c34fe6b37cd7f763a0d6293ab15c527"
   integrity sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
+
+react-lazy-load-image-component@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.4.1.tgz#fd4c7566ba85b9e0960876b670d7504b0ef6ec62"
+  integrity sha512-PeQh64fiZ0FwN9PComusEAWMshbJSChEKnA+31UyQ1+ioRMw/PWdUV4lTd1kV+YQHTWAG4WHjhoICTj3tSjSRw==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
