@@ -10,6 +10,7 @@ import { useDeleteRecipeByIdMutation, useAddRecipeMutation, EditRecipeInput, use
 import { GET_ME_LOCAL, GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations'
 import Button from 'react-bootstrap/Button'
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
+import placeholder from '../assets/images/placeholder.jpg'
 
 interface Props<T> {
     params: T
@@ -160,7 +161,14 @@ const CreateRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose
             console.log('fill out the mandatory fields');
             return
         }
-        const recipe = { ...inputs, tags, userId: me!.id, isStarred: false, mealType: parseFloat(MealCategory[header]) }
+        const recipe = { 
+            ...inputs,
+             tags,
+             userId: me!.id,
+             isStarred: false,
+             image: inputs.image ? inputs.image : placeholder,
+             mealType: parseFloat(MealCategory[header]) 
+        }
         console.log(recipe);
         const response = await addRecipe({
             variables: { recipe },
@@ -190,11 +198,11 @@ const CreateRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose
             </Form.Group>
             <Form.Group controlId="readyInMinutes">
                 <Form.Label>Prep + Cook Time</Form.Label>
-                <Form.Control type="number" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
+                <Form.Control type="number" min="0" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
             </Form.Group>
             <Form.Group controlId="servings">
                 <Form.Label># of Servings</Form.Label>
-                <Form.Control type="number" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
+                <Form.Control type="number" min="0" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
             </Form.Group>
             <Form.Group controlId="image">
                 <Form.Label>Image URL</Form.Label>

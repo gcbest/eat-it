@@ -5,7 +5,7 @@ import { setAccessToken } from "../lib/accessToken";
 
 interface Props { }
 
-export const Login: React.FC<RouteComponentProps> = ({ history }) => {
+const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
@@ -68,3 +68,5 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
     </form>
   );
 };
+
+export default Login

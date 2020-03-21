@@ -14,7 +14,7 @@ import Button from "react-bootstrap/Button";
 
 export const ProfileContext = React.createContext<any>(undefined)
 
-export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
+const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const { data, loading, error } = useMeQuery();
   const [search, setSearch] = useState([])
   const [loadingSearch, setLoadingSearch] = useState(false)
@@ -138,3 +138,5 @@ export const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     </ProfileContext.Provider>
     </div>)
 };
+
+export default Profile

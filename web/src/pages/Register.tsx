@@ -6,8 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-// export const Register: React.FC<RouteComponentProps> = ({ history }) => {
-export const Register: React.FC = () => {
+const Register: React.FC = () => {
 
   return (
     <Container>
@@ -69,3 +68,5 @@ export const Register: React.FC = () => {
   //   </form>
   // );
 };
+
+export default Register

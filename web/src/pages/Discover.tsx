@@ -16,7 +16,7 @@ import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQu
 
 export const DiscoverContext = React.createContext<any>(undefined)
 
-export const Discover: React.FC = () => {
+const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
 
     const [hasSearched, setHasSearched] = useState(false)
@@ -848,3 +848,4 @@ export const Discover: React.FC = () => {
     )
 }
 
+export default Discover

@@ -8,6 +8,8 @@ import img1 from '../assets/images/pizza-on-plate-2271194.jpg';
 import img2 from '../assets/images/close-up-cold-color-drop-372882.jpg';
 import img3 from '../assets/images/asparagus-barbecue-cuisine-delicious-361184.jpg';
 import StyledLink from "components/StyledLink";
+import { SpinnerComponent } from 'components/Spinner'
+
 
 interface Props { }
 
@@ -23,22 +25,19 @@ const RegisterButton = styled.button`
 `;
 
 
-export const Home: React.FC<Props> = () => {
+const Home: React.FC<Props> = () => {
   const { data } = useUsersQuery({ fetchPolicy: "network-only" });
 
   if (!data) {
     //TODO: add spinner Icon
-    return <div>loading...</div>;
-  }
-
-  const handleRegisterBtnClick = () => {
-
+    return <SpinnerComponent/>
   }
 
   return (
     <Fragment>
       <div className="hero">
-        <img className={moduleStyles.heroImg} width="100vh" height="100%" src={heroImg} alt="Fruit Salads" />
+        {/* <img className={moduleStyles.heroImg} width="100vh" height="100%" src={heroImg} alt="Fruit Salads" /> */}
+        <img className={moduleStyles.heroImg} src={heroImg} alt="Fruit Salads" />
         <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
         {/* <Button className={moduleStyles.signUpBtn} variant="secondary">Sign Up Now!</Button> */}
       </div>
@@ -70,3 +69,5 @@ export const Home: React.FC<Props> = () => {
   //   </div>
   // );
 };
+
+export default Home

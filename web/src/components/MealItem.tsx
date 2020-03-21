@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import { Tag } from 'react-tag-autocomplete';
 import { RecipeTag } from './RecipeTag';
-import { ProfileContext, Profile } from 'pages/Profile';
+import { ProfileContext } from 'pages/Profile';
 import { MealsAreaContext } from './MealsArea';
 
 
