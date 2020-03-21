@@ -73,11 +73,14 @@ const EditRecipeBody: React.FC<Props<ModalInterface>> = ({ params, handleClose, 
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache) {
-                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: {...updatedRecipe } } })
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: {...updatedRecipe} } })
+                const x = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }})
+                console.log(x);
+                
                 // update recipes on me object
-                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                me.recipes = me.recipes.map((r: RecipeSlim) => r.id === updatedRecipe.id ? updatedRecipe : r)
-                cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
+                // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+                // me.recipes = me.recipes.map((r: RecipeSlim) => r.id === updatedRecipe.id ? updatedRecipe : r)
+                // cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
             }
         })
 

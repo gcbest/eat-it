@@ -11,7 +11,6 @@ interface useFormInterface {
 
 export default function useForm(initialState: any = {}): useFormInterface {
     const [inputs, updateInputs] = useState(initialState);
-    debugger
     function handleChange(e: any) {
         if (e.target && e.target.hasAttribute('multiple') === true) {
             const selectedOptions: string[] = Array.from(e.target.selectedOptions).map((opt: any) => opt.value);

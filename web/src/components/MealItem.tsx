@@ -75,8 +75,8 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     // })
 
     useEffect(() => {
-        if(modalType)
-            handleShowModal(modalType)
+        if(modalType && data && data.getRecipeById)
+            showModal(modalType)
     }, [data && data.getRecipeById])
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
@@ -108,8 +108,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
     }
 
     const showModal = (type: ModalCategory) => {
-        
-        if(data && data.getRecipeById)
+        if(data && data.getRecipeById) {
             dispatch({
                 type,
                 value: {
@@ -118,6 +117,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({rcpSlm, header}) => {
                     recipe: data.getRecipeById,
                 }
             })
+        }
     }
     // const handleShowEdit = () => {
     //     getRecipeById({ variables: { id } })

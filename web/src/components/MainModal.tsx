@@ -24,12 +24,12 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
     // const {recipe} = params!
     // const {mealType} = recipe!
     // if(recipe && recipe.mealType)
+    const [tags, setTags] = useState<Tag[]>([])
     const [mealType, setMealType] = useState<MealCategory|undefined>(recipe && recipe.mealType) //since meal type is found in header and body contains rest of form 
-    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, {...params, mealType, setMealType}, me, handleClose)
+    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, {...params, mealType, setMealType, tags}, me, handleClose)
 
     // REACT TAGS
     /////////////////////////////////// 
-    const [tags, setTags] = useState<Tag[]>([])
     const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
@@ -44,7 +44,7 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
         if (modalType === ModalCategory.View)
             return // not allowed to edit tags in view mode
 
-        tag = { ...tag, id: nanoid(8) }
+        tag = { ...tag, id: nanoid(8), __typename: 'TagInput'}
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }
@@ -52,9 +52,10 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
     useEffect(() => {
         if (me && me.tags)
             setSuggestions(me.tags)
-        if (recipe && recipe.tags)
+        if (recipe && recipe.tags) {
             setTags(recipe.tags)
-    }, [])
+        }
+    }, [recipe && recipe.tags])
     /////////////////////////////////// 
 
     return (

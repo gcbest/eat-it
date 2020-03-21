@@ -30,7 +30,6 @@ const reducer = (state: ModalInterface, action: ReducerAction) => {
         case ModalCategory.View:
             return {...state, modalType: ModalCategory.View, ...value}
         case ModalCategory.Edit:
-            
             return {...state, modalType: ModalCategory.Edit, ...value}
         case CLOSE_MODAL:
             return initialState
