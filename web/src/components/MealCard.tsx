@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form';
+import { trackWindowScroll, LazyComponentProps }
+    from 'react-lazy-load-image-component';
 import { RecipeSlim, Recipe, ModalInterface } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory } from 'lib/enums';
@@ -10,7 +12,7 @@ import { ModalCategory } from 'lib/enums';
 import { Tag } from 'react-tag-autocomplete';
 import { MealsAreaContext } from './MealsArea';
 
-interface Props {
+interface Props extends LazyComponentProps {
     header: string
     recipesSlim: RecipeSlim[]
     // handleShow: (header: string) => void
@@ -19,13 +21,13 @@ interface Props {
 }
 
 // export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow, setModalType, setRecipe }) => {
-export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
+const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
     // const [show, setShow] = useState(false);
     // const handleClose = () => setShow(false);
     // // const handleShow = () => setShow(true);
 
     // const [recipes, setRecipes] = useState<RecipeSlim[]>([])
-    const {dispatch} = useContext(MealsAreaContext)
+    const { dispatch, currPos: scrollPosition } = useContext(MealsAreaContext)
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState<RecipeSlim[]>([])
 
@@ -38,9 +40,9 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
         const getTagNames = (tags: Tag[]): string[] => tags.map(t => t.name)
         // check if filter results match
         const results: RecipeSlim[] = recipesSlim.filter(rs => {
-            return searchTerm === '' || 
-            rs.title.trim().toLowerCase().includes(searchTerm.toLowerCase()) || 
-            getTagNames(rs.tags).join(' ').trim().includes(searchTerm.toLowerCase())
+            return searchTerm === '' ||
+                rs.title.trim().toLowerCase().includes(searchTerm.toLowerCase()) ||
+                getTagNames(rs.tags).join(' ').trim().includes(searchTerm.toLowerCase())
         })
         setSearchResults(results)
     }, [searchTerm, recipesSlim])
@@ -48,7 +50,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
     const showCreateModal = () => {
         dispatch({
             type: ModalCategory.Create,
-            value: { header}
+            value: { header }
         })
         // setModalType(ModalCategory.Create)
         // handleShow(header)
@@ -61,7 +63,7 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
     // }
 
     return (
-        <Card>            
+        <Card>
             <Card.Header>{header}</Card.Header>
             <Card.Body>
                 <Card.Title>
@@ -74,8 +76,8 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
                 </Card.Title>
                 <ListGroup>
                     {searchResults &&
-                        // searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} modalMethods={modalMethods} header={header} />)}
-                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} />)}
+                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} scrollPosition={scrollPosition} />)}
+                    {/* searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} />)} */}
                 </ListGroup>
             </Card.Body>
             <Card.Footer>
@@ -84,3 +86,5 @@ export const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
         </Card>
     )
 }
+
+export default trackWindowScroll(MealCard)

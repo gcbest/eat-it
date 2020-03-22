@@ -5,7 +5,7 @@ import { ModalInterface, User } from 'lib/interfaces'
 import { ModalCategory, MealCategory } from 'lib/enums'
 import ReactTags, { Tag } from 'react-tag-autocomplete'
 import { ProfileContext } from 'pages/Profile'
-import { useGenerateModalParts } from 'lib/generateModalParts'
+import { useGenerateModalParts } from 'lib/useGenerateModalParts'
 import './MainModal.css'
 import { RecipeTag } from './RecipeTag'
 interface Props<T> {

@@ -4,7 +4,7 @@
 
 .heroImg {
   width: 100vw;
-  max-height: 100vh;
+  /* max-height: 100vh; */
 }
 
 a:hover {

@@ -7,7 +7,8 @@ import { Header } from "./components/Header";
 import { SpinnerComponent } from './components/Spinner'
 
 
-const Home = lazy(() => import('./pages/Home'))
+// const Home = lazy(() => import('./pages/Home'))
+import Home from './pages/Home'
 const Register = lazy(() => import('./pages/Register'))
 const Login = lazy(() => import('./pages/Login'))
 const Profile = lazy(() => import('./pages/Profile'))

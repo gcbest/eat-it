@@ -9,6 +9,7 @@ import img2 from '../assets/images/close-up-cold-color-drop-372882.jpg';
 import img3 from '../assets/images/asparagus-barbecue-cuisine-delicious-361184.jpg';
 import StyledLink from "components/StyledLink";
 import { SpinnerComponent } from 'components/Spinner'
+import LazyLoadPic from "components/LazyLoadPic";
 
 
 interface Props { }
@@ -30,16 +31,29 @@ const Home: React.FC<Props> = () => {
 
   if (!data) {
     //TODO: add spinner Icon
-    return <SpinnerComponent/>
+    return <SpinnerComponent />
+  }
+
+  const image = {
+    className: moduleStyles.heroImg,
+
+    src: heroImg,
+    alt: 'Fruit Salads'
   }
 
   return (
     <Fragment>
-      <div className="hero">
+      <div className="hero" style={{ width: '100vw', height: '100vh' }}>
         {/* <img className={moduleStyles.heroImg} width="100vh" height="100%" src={heroImg} alt="Fruit Salads" /> */}
-        <img className={moduleStyles.heroImg} src={heroImg} alt="Fruit Salads" />
-        <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
+        <div className="wrapper" style={{overflowY: 'hidden', height: '100%'}}>
+          <LazyLoadPic image={image} />
+        </div>
+        {/* <img className={moduleStyles.heroImg} src={heroImg} alt="Fruit Salads" /> */}
         {/* <Button className={moduleStyles.signUpBtn} variant="secondary">Sign Up Now!</Button> */}
+      </div>
+      <div>
+
+        <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
       </div>
 
       <div className={moduleStyles.benefits}>

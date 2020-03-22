@@ -25,18 +25,16 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   if (loading)
     return <div>loading...</div>;
 
-    const handleShowRecipe = (id: number) => {
-        getRecipeById({ variables: { id } })
-        setShowRecipe(true)
-    }
-
-  const handleCloseRecipe = () => setShowRecipe(false);
+  const handleShowRecipe = (id: number) => {
+    getRecipeById({ variables: { id } })
+    setShowRecipe(true)
+  }
 
   const displayRecipe = (item: RecipeSlim | null) => {
-    if(!item)
+    if (!item)
       return
-    
-    return handleShowRecipe(item.id) 
+
+    return handleShowRecipe(item.id)
   }
 
   const handleStarToggle = () => {
@@ -44,30 +42,30 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const handleGetAnyRecipe = () => {
-    if(data && data.me && data.me.recipes) {
+    if (data && data.me && data.me.recipes) {
       const recipesArr = data.me.recipes
-      const randomlySelectedRecipe = recipesArr[Math.floor(Math.random()*recipesArr.length)]
+      const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
       handleShowRecipe(randomlySelectedRecipe.id)
     }
     console.error('No recipes found on user to randomly select one');
-    
+
   }
-  
 
-    const onSearchChange = (e: any) => {
-      console.log('Searching...');
-      // turn loading on
-      setLoadingSearch(true)
 
-      // filter
-      if(data && data.me && data.me.recipes) {
-        const filteredItems = data.me.recipes.filter(recipe => {
-          return recipe.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
-        })
-        setItems(filteredItems)
-      }
-      setLoadingSearch(false)
+  const onSearchChange = (e: any) => {
+    console.log('Searching...');
+    // turn loading on
+    setLoadingSearch(true)
+
+    // filter
+    if (data && data.me && data.me.recipes) {
+      const filteredItems = data.me.recipes.filter(recipe => {
+        return recipe.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
+      })
+      setItems(filteredItems)
     }
+    setLoadingSearch(false)
+  }
   // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
   if (error) {
@@ -84,8 +82,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
 
   return (<div>
-    <ProfileContext.Provider value={{me: data.me}}>
-    <SearchStyles>
+    <ProfileContext.Provider value={{ me: data.me }}>
+      <SearchStyles>
         <Downshift onChange={displayRecipe} itemToString={(item: any) => (item === null ? '' : item.title)}>
           {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }) => (
             <div>
@@ -109,7 +107,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
                 <DropDown>
                   {items.map((item: any, index) => (
                     <DropDownItem
-                      {...getItemProps({item})}
+                      {...getItemProps({ item })}
                       key={item.id}
                       highlighted={index === highlightedIndex}
                     >
@@ -125,17 +123,17 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
           )}
         </Downshift>
       </SearchStyles>
-      <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar/></span> : <span>Show All <FaRegStar/></span>}</Button>
+      <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
       <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
       {/* {recipeData && recipeData.getRecipeById ?
             <ViewRecipeModal show={showRecipe} handleClose={handleCloseRecipe} options={{ type: ModalCategory.View }} recipe={recipeData && recipeData.getRecipeById} /> :
             null
         } */}
-      <MealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred}/>
+      <MealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred} />
 
 
     </ProfileContext.Provider>
-    </div>)
+  </div>)
 };
 
 export default Profile

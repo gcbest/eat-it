@@ -1,10 +1,12 @@
-import React, { useReducer, useContext } from 'react'
+import React, { useReducer, useContext, useState } from 'react'
 import { MealCategory, ModalCategory } from 'lib/enums'
-import { MealCard } from './MealCard'
+import MealCard from './MealCard'
 import { RecipeSlim, ModalInterface, ReducerAction } from 'lib/interfaces'
 import { getEnumNames, getKeyByValue } from 'lib/utils'
 import MainModal from './MainModal'
 import { ProfileContext } from 'pages/Profile'
+import { useScrollPosition } from '../lib/useScrollPosition'
+
 
 interface Props {
     recipesSlim: RecipeSlim[] | undefined
@@ -21,19 +23,19 @@ const initialState: ModalInterface = {
 }
 
 const reducer = (state: ModalInterface, action: ReducerAction) => {
-    state = {...state, show: true} // show the modal for all types
-    const {type, value} = action
-    switch(type) {
+    state = { ...state, show: true } // show the modal for all types
+    const { type, value } = action
+    switch (type) {
         case ModalCategory.Create:
-            return {...state, modalType: ModalCategory.Create, ...value}
+            return { ...state, modalType: ModalCategory.Create, ...value }
         case ModalCategory.View:
-            return {...state, modalType: ModalCategory.View, ...value}
+            return { ...state, modalType: ModalCategory.View, ...value }
         case ModalCategory.Edit:
-            return {...state, modalType: ModalCategory.Edit, ...value}
+            return { ...state, modalType: ModalCategory.Edit, ...value }
         case CLOSE_MODAL:
             return initialState
         default:
-            return {...state, show: false}
+            return { ...state, show: false }
     }
 }
 
@@ -45,16 +47,23 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
     // const [modalType, setModalType] = useState<ModalCategory|undefined>(undefined)
     // const [recipe, setRecipe] = useState<Recipe|undefined>(undefined)
 
-    const {me} = useContext(ProfileContext)
+    const { me } = useContext(ProfileContext)
 
     const [params, dispatch] = useReducer(reducer, initialState)
 
-    const handleClose = () => dispatch({type: CLOSE_MODAL})
+    const handleClose = () => dispatch({ type: CLOSE_MODAL })
+
+    const [currPos, setCurrPos] = useState({ x: null, y: null })
+
+    useScrollPosition(({ currPos }: { currPos: any }) => {
+        const { x, y } = currPos
+        setCurrPos({ x, y })
+    })
     // const handleShow = (newHeader: string) => {
     //     setHeader(newHeader)
     //     setShow(true)
     // }
-    
+
     // const params = {show, handleClose, header, type: modalType}
 
 
@@ -70,14 +79,14 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
     recipesSlim.forEach(rcpSlm => {
         const mealName = getKeyByValue(MealCategory, rcpSlm.mealType)
 
-        if(onlyShowStarred) {
-            if(rcpSlm.isStarred)
+        if (onlyShowStarred) {
+            if (rcpSlm.isStarred)
                 sortedMeals[mealName!].push(rcpSlm)
-        } 
+        }
         else {
             sortedMeals[mealName!].push(rcpSlm)
         }
-            
+
     })
 
     return (
@@ -85,15 +94,15 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
 
             {/* <CreateRecipeModal show={show} handleClose={handleClose} options={{ header }} /> */}
 
-            {params.show && <MainModal params={params} handleClose={handleClose} me={me}/>}
+            {params.show && <MainModal params={params} handleClose={handleClose} me={me} />}
 
-            <MealsAreaContext.Provider value={{dispatch}}>
-            {/* create a new meal card for each meal of the day */}
-            {getEnumNames(MealCategory).map(mealName => {
-                const recipesForThisMeal = sortedMeals[mealName]
-                // return <MealCard key={mealName} header={mealName} setRecipe={setRecipe} setModalType={setModalType} handleShow={handleShow} recipesSlim={recipesForThisMeal} />
-                return <MealCard key={mealName} header={mealName} recipesSlim={recipesForThisMeal} />
-            })}
+            <MealsAreaContext.Provider value={{ dispatch, currPos }}>
+                {/* create a new meal card for each meal of the day */}
+                {getEnumNames(MealCategory).map(mealName => {
+                    const recipesForThisMeal = sortedMeals[mealName]
+                    // return <MealCard key={mealName} header={mealName} setRecipe={setRecipe} setModalType={setModalType} handleShow={handleShow} recipesSlim={recipesForThisMeal} />
+                    return <MealCard key={mealName} header={mealName} recipesSlim={recipesForThisMeal} />
+                })}
             </MealsAreaContext.Provider>
         </div>
     )

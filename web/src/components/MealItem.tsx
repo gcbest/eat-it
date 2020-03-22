@@ -20,12 +20,13 @@ import './MealItem.css'
 
 interface Props<T> {
     rcpSlm: T
-    modalMethods?: {
-        setModalType: (modalType: ModalCategory) => void
-        handleShow: (header: string) => void
-        setRecipe: (recipe: Recipe) => void
-    }
+    // modalMethods?: {
+    //     setModalType: (modalType: ModalCategory) => void
+    //     handleShow: (header: string) => void
+    //     setRecipe: (recipe: Recipe) => void
+    // }
     header: string
+    scrollPosition?: any
 }
 
 const GET_ME_LOCAL = gql`
@@ -43,9 +44,9 @@ query meLocal {
 }
 `
 
-export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, header }) => {
+export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, header, scrollPosition }) => {
     const { image, title, id, tags, isStarred } = rcpSlm
-    const imgInfo: Image = { src: image, alt: title, width: '100%', caption: title }
+    const imgInfo: Image = { src: image, alt: title, width: '100%', caption: title, scrollPosition }
     const [modalType, setModalType] = useState<ModalCategory | undefined>(undefined)
     const { dispatch } = useContext(MealsAreaContext)
     const { me } = useContext(ProfileContext)

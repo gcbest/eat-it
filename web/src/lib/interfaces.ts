@@ -82,4 +82,6 @@ export interface Image {
     caption?: string
     height?: string
     width?: string
+    className?: string
+    scrollPosition?: any
 }
