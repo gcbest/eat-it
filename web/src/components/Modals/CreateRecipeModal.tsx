@@ -9,7 +9,7 @@ import useForm from 'lib/useForm';
 import { useAddRecipeMutation } from 'generated/graphql';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
-import placeholder from '../../assets/images/placeholder.jpg'
+import placeholder from '../../assets/images/recipe_placeholder.jpg'
 
 
 export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params }) => {

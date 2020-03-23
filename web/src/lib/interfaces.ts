@@ -86,14 +86,17 @@ export interface Image {
     scrollPosition?: any
 }
 
-export interface CartItem {
+export interface CartItemInterface {
     name: string
+    amount: number
+    img?: string
+    units?: string
     aisle?: number
     isChecked: boolean
 }
 
 export interface ShoppingCartInterface {
-    items?: CartItem[]
+    items?: CartItemInterface[]
 }
 
 export interface SlidingPaneInterface {

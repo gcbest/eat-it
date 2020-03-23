@@ -3,7 +3,7 @@ import { useUsersQuery } from "../generated/graphql";
 import moduleStyles from '../styles/Home.module.css';
 // import Button from 'react-bootstrap/Button'
 import styled from 'styled-components';
-import heroImg from '../assets/images/fruit-salads-in-plate-1640774.jpg';
+import heroImage from '../assets/images/fruit-salads-in-plate-1640774.jpg';
 import img1 from '../assets/images/pizza-on-plate-2271194.jpg';
 import img2 from '../assets/images/close-up-cold-color-drop-372882.jpg';
 import img3 from '../assets/images/asparagus-barbecue-cuisine-delicious-361184.jpg';
@@ -34,37 +34,48 @@ const Home: React.FC<Props> = () => {
     return <SpinnerComponent />
   }
 
-  const image = {
+  const heroImg = {
     className: moduleStyles.heroImg,
-
-    src: heroImg,
+    src: heroImage,
     alt: 'Fruit Salads'
+  }
+
+  const pizzaImg = {
+    src: img1,
+    alt: 'Pizza'
+  }
+
+  const peppersImg = {
+    src: img2,
+    alt: 'Peppers'
+  }
+
+  const prepImg = {
+    src: img3,
+    alt: 'Prep'
   }
 
   return (
     <Fragment>
       <div className="hero" style={{ width: '100vw', height: '100vh' }}>
-        {/* <img className={moduleStyles.heroImg} width="100vh" height="100%" src={heroImg} alt="Fruit Salads" /> */}
-        <div className="wrapper" style={{overflowY: 'hidden', height: '100%'}}>
-          <LazyLoadPic image={image} />
+        <div className="wrapper" style={{ overflowY: 'hidden', height: '100%' }}>
+          <LazyLoadPic image={heroImg} />
         </div>
-        {/* <img className={moduleStyles.heroImg} src={heroImg} alt="Fruit Salads" /> */}
-        {/* <Button className={moduleStyles.signUpBtn} variant="secondary">Sign Up Now!</Button> */}
       </div>
       <div>
-
         <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
       </div>
 
       <div className={moduleStyles.benefits}>
         <div>
-          <img src={img1} alt="Pizza" />
+          <LazyLoadPic image={pizzaImg} />
         </div>
         <div>
-          <img src={img2} alt="Peppers" />
+          <LazyLoadPic image={peppersImg} />
         </div>
         <div>
-          <img src={img3} alt="Prep" />
+          <LazyLoadPic image={prepImg} />
+          {/* <img src={img3} alt="Prep" /> */}
         </div>
       </div>
     </Fragment>
