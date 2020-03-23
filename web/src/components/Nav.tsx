@@ -5,15 +5,11 @@ import Nav from 'react-bootstrap/Nav';
 import { setAccessToken } from "../lib/accessToken";
 import { useLogoutMutation, useMeQuery } from '../generated/graphql';
 
-
-
 const LoginLink = () => (<Nav.Link as={Link} to="/login">Login</Nav.Link>)
 const LogoutLink = () => (<Nav.Link eventKey="1" as={Link} to="/login">Logout</Nav.Link>)
 const RegisterLink = () => (<Nav.Link as={Link} to="/register">Register</Nav.Link>)
 
-interface Props { }
-
-export const NavComponent: React.FC<Props> = () => {
+export const NavComponent: React.FC = () => {
   const [logout, { client }] = useLogoutMutation();
   const { data, loading } = useMeQuery();
 

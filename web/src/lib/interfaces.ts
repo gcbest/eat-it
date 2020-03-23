@@ -85,3 +85,28 @@ export interface Image {
     className?: string
     scrollPosition?: any
 }
+
+export interface CartItem {
+    name: string
+    aisle?: number
+    isChecked: boolean
+}
+
+export interface ShoppingCartInterface {
+    items?: CartItem[]
+}
+
+export interface SlidingPaneInterface {
+    isOpen: boolean,
+    title?: any,
+    subtitle?: any,
+    onRequestClose?: () => void,
+    onAfterOpen?: () => void,
+    children: any,
+    className?: string,
+    overlayClassName?: string,
+    closeIcon?: any,
+    from?: 'left' | 'right' | 'bottom',
+    width?: string,
+    shouldCloseOnEsc?: boolean
+}

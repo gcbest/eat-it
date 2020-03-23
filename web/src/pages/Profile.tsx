@@ -1,30 +1,33 @@
 import React, { useState } from "react";
-import { useMeLocalQuery, useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
-import { Redirect, RouteComponentProps, Link } from 'react-router-dom'
+import { useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
+import { RouteComponentProps, Link } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
 import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
 import { ApolloConsumer } from "@apollo/react-hooks";
-import { ModalCategory } from "lib/enums";
-import { RecipeSlim } from "lib/interfaces";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar, FaShoppingCart } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
+import { RecipeSlim } from "lib/interfaces";
+import SlidingPane from "components/SlidingPane/SlidingPane";
+import ShoppingCart from "components/ShoppingCart/ShoppingCart";
 
 
 export const ProfileContext = React.createContext<any>(undefined)
 
 const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const { data, loading, error } = useMeQuery();
-  const [search, setSearch] = useState([])
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [showRecipe, setShowRecipe] = useState(false)
-  const [items, setItems] = useState<RecipeSlim[]>([])
+  const [showCart, setShowCart] = useState(false)
+  const [recipes, setRecipes] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
   const [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
 
   if (loading)
     return <div>loading...</div>;
 
+
+  // DOWNSHIFT 
   const handleShowRecipe = (id: number) => {
     getRecipeById({ variables: { id } })
     setShowRecipe(true)
@@ -36,6 +39,22 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
     return handleShowRecipe(item.id)
   }
+
+  const onSearchChange = (e: any) => {
+    console.log('Searching...');
+    // turn loading on
+    setLoadingSearch(true)
+
+    // filter
+    if (data && data.me && data.me.recipes) {
+      const filteredRecipes = data.me.recipes.filter(recipe => {
+        return recipe.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
+      })
+      setRecipes(filteredRecipes)
+    }
+    setLoadingSearch(false)
+  }
+  ////////////////////////
 
   const handleStarToggle = () => {
     setOnlyShowStarred(!onlyShowStarred)
@@ -52,20 +71,13 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
 
-  const onSearchChange = (e: any) => {
-    console.log('Searching...');
-    // turn loading on
-    setLoadingSearch(true)
-
-    // filter
-    if (data && data.me && data.me.recipes) {
-      const filteredItems = data.me.recipes.filter(recipe => {
-        return recipe.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
-      })
-      setItems(filteredItems)
-    }
-    setLoadingSearch(false)
+  // SHOPPING CART 
+  const handleCartToggle = () => {
+    setShowCart(!showCart)  
   }
+  /////////////////////////
+
+  
   // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
   if (error) {
@@ -105,7 +117,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
               </ApolloConsumer>
               {isOpen && (
                 <DropDown>
-                  {items.map((item: any, index) => (
+                  {recipes.map((item: any, index) => (
                     <DropDownItem
                       {...getItemProps({ item })}
                       key={item.id}
@@ -115,7 +127,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
                       {item.title}
                     </DropDownItem>
                   ))}
-                  {!items.length &&
+                  {!recipes.length &&
                     !loading && <DropDownItem> Nothing Found {inputValue}</DropDownItem>}
                 </DropDown>
               )}
@@ -125,13 +137,10 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       </SearchStyles>
       <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
       <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
-      {/* {recipeData && recipeData.getRecipeById ?
-            <ViewRecipeModal show={showRecipe} handleClose={handleCloseRecipe} options={{ type: ModalCategory.View }} recipe={recipeData && recipeData.getRecipeById} /> :
-            null
-        } */}
+      <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
+      <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart/>}/>
+
       <MealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred} />
-
-
     </ProfileContext.Provider>
   </div>)
 };
