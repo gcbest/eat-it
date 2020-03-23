@@ -9,7 +9,7 @@ interface Props {
     item: CartItemInterface
 }
 
-const CartItem: React.FC<Props> = ({ item: {name, aisle, amount, units, img, isChecked} }) =>
+const CartItem: React.FC<Props> = ({ item: {name, aisle, amount, units, img, isChecked} }) => 
     (
         <ListGroup.Item>
             <Form.Check
