@@ -1,15 +1,11 @@
 import React, { useState, memo, useContext, useEffect } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
-// import { ViewRecipeModal } from './ViewRecipeModal'
-// import { EditRecipeModal } from './Modals/EditRecipeModal'
 import { ModalCategory } from 'lib/enums';
-import { Recipe, User, RecipeSlim, Image } from 'lib/interfaces';
+import { RecipeSlim, Image } from 'lib/interfaces';
 import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useMeLocalQuery, useUpdateRecipeByIdMutation, useToggleRecipeStarMutation } from 'generated/graphql';
 import { FaEdit, FaTrashAlt, FaRegStar, FaStar } from "react-icons/fa";
-import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
-// import { Tag } from 'react-tag-autocomplete';
 import { RecipeTag } from './RecipeTag';
 import { ProfileContext } from 'pages/Profile';
 import { MealsAreaContext } from './MealsArea';
@@ -20,11 +16,6 @@ import './MealItem.css'
 
 interface Props<T> {
     rcpSlm: T
-    // modalMethods?: {
-    //     setModalType: (modalType: ModalCategory) => void
-    //     handleShow: (header: string) => void
-    //     setRecipe: (recipe: Recipe) => void
-    // }
     header: string
     scrollPosition?: any
 }

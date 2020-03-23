@@ -10,7 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
-import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/react-hooks'
 import { ModalInterface } from '../lib/interfaces'
 import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQuery } from 'generated/graphql';
 

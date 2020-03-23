@@ -7,7 +7,6 @@ import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames, createMarkup } from 'lib/utils';
-import { useMutation } from '@apollo/react-hooks';
 import ReactTags, {Tag} from 'react-tag-autocomplete'
 import gql from 'graphql-tag';
 import nanoid from 'nanoid';

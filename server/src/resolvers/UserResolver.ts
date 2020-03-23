@@ -9,6 +9,7 @@ import {
   UseMiddleware,
   Int,
   // InputType,
+  // InputType,
   // ArgsType
 } from "type-graphql";
 import { hash, compare } from "bcryptjs";
@@ -66,24 +67,24 @@ export class UserResolver {
     return User.find();
   }
 
-  @Query(() => User)
-  @UseMiddleware(isAuth)
-  profile(@Ctx() context: MyContext) {
-    const authorization = context.req.headers["authorization"];
+  // @Query(() => User)
+  // @UseMiddleware(isAuth)
+  // profile(@Ctx() context: MyContext) {
+  //   const authorization = context.req.headers["authorization"];
 
-    if (!authorization) {
-      return null;
-    }
+  //   if (!authorization) {
+  //     return null;
+  //   }
 
-    try {
-      const token = authorization.split(" ")[1];
-      const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
-      return User.findOne(payload.userId, { relations: ["recipes"] });
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-  }
+  //   try {
+  //     const token = authorization.split(" ")[1];
+  //     const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!);
+  //     return User.findOne(payload.userId, { relations: ["recipes"] });
+  //   } catch (err) {
+  //     console.log(err);
+  //     return null;
+  //   }
+  // }
 
   @Query(() => User, { nullable: true })
   async me(@Ctx() context: MyContext) {
@@ -111,6 +112,8 @@ export class UserResolver {
 
     return true;
   }
+
+  
 
   @Mutation(() => Boolean)
   async revokeRefreshTokensForUser(@Arg("userId", () => Int) userId: number) {
