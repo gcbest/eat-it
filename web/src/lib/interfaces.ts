@@ -96,7 +96,7 @@ export interface CartItemInterface {
 }
 
 export interface ShoppingCartInterface {
-    items?: CartItemInterface[]
+    items: CartItemInterface[]
 }
 
 export interface SlidingPaneInterface {

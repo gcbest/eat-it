@@ -89,3 +89,17 @@ query GetRecipeById($id: Float!) {
         }
     }
 }`
+
+export const GET_CART_ITEMS_BY_USER_ID = gql`
+query GetCartItemsByUserId($id: Float!) {
+getCartItemsByUserId(id: $id) {
+    id
+    name
+    amount
+    img
+    units
+    aisle
+    isChecked
+}
+}
+`

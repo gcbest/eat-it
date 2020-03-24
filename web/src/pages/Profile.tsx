@@ -4,24 +4,28 @@ import { RouteComponentProps, Link } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
 import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
-import { ApolloConsumer } from "@apollo/react-hooks";
+import { ApolloConsumer, useLazyQuery } from "@apollo/react-hooks";
 import { FaStar, FaRegStar, FaShoppingCart } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { RecipeSlim } from "lib/interfaces";
 import SlidingPane from "components/SlidingPane/SlidingPane";
 import ShoppingCart from "components/ShoppingCart/ShoppingCart";
-
+import { GET_CART_ITEMS_BY_USER_ID } from "graphql/queriesAndMutations";
 
 export const ProfileContext = React.createContext<any>(undefined)
 
 const Profile: React.FC<RouteComponentProps> = ({ history }) => {
-  const { data, loading, error } = useMeQuery();
+  const { data: userData, loading, error } = useMeQuery();
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [showRecipe, setShowRecipe] = useState(false)
   const [showCart, setShowCart] = useState(false)
   const [recipes, setRecipes] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
   const [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
+  const [getCartItems, {loading: cartItemsLoading, error: cartItemsError, data: cartItemsData}] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
+
+
+
 
   if (loading)
     return <div>loading...</div>;
@@ -46,9 +50,9 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     setLoadingSearch(true)
 
     // filter
-    if (data && data.me && data.me.recipes) {
-      const filteredRecipes = data.me.recipes.filter(recipe => {
-        return recipe.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
+    if (userData && userData.me && userData.me.recipes) {
+      const filteredRecipes = userData.me.recipes.filter((recipeSlim: RecipeSlim) => {
+        return recipeSlim.title.trim().toLowerCase().includes(e.target.value.trim().toLowerCase())
       })
       setRecipes(filteredRecipes)
     }
@@ -61,8 +65,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const handleGetAnyRecipe = () => {
-    if (data && data.me && data.me.recipes) {
-      const recipesArr = data.me.recipes
+    if (userData && userData.me && userData.me.recipes) {
+      const recipesArr = userData.me.recipes
       const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
       handleShowRecipe(randomlySelectedRecipe.id)
     }
@@ -73,6 +77,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   // SHOPPING CART 
   const handleCartToggle = () => {
+    if(userData && userData.me && userData.me.id)
+      getCartItems({variables: {id: userData.me.id}})
     setShowCart(!showCart)  
   }
   /////////////////////////
@@ -89,12 +95,12 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Something went wrong!</div>;
   }
 
-  if (!data || !data.me)
+  if (!userData || !userData.me)
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
 
   return (<div>
-    <ProfileContext.Provider value={{ me: data.me }}>
+    <ProfileContext.Provider value={{ me: userData.me }}>
       <SearchStyles>
         <Downshift onChange={displayRecipe} itemToString={(item: any) => (item === null ? '' : item.title)}>
           {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }) => (
@@ -138,9 +144,9 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
       <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
       <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
-      <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart/>}/>
+      <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />}/>
 
-      <MealsArea recipesSlim={data.me.recipes} onlyShowStarred={onlyShowStarred} />
+      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} />
     </ProfileContext.Provider>
   </div>)
 };

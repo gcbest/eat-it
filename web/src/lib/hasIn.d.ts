@@ -1,3 +1,3 @@
 declare module '@bit/lodash.lodash.has-in' {
-    export default function hasIn(object: Object, path: Array | string): boolean;
+    export default function hasIn(object: Object | undefined, path: Array | string): boolean;
 }
