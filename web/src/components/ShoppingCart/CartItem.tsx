@@ -2,7 +2,7 @@ import React from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
-import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID } from 'graphql/queriesAndMutations'
+import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID, TOGGLE_CART_ITEM_CHECKED_BY_ID } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import { CartItemInterface, User } from 'lib/interfaces'
 import ingredientPlaceholder from '../../assets/images/ingredients_placeholder.png'
@@ -13,14 +13,22 @@ interface Props {
 }
 
 const CartItem: React.FC<Props> = ({ me, item }) => {
-    const {name, aisle, amount, units, img, isChecked} = item
+    const {id, name, aisle, amount, units, img, isChecked} = item
     const [updateCartItem] = useMutation(UPDATE_CART_ITEM_BY_ID, {
         variables: {item: {...item, isChecked: !isChecked, userId: me.id}},
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
+    const [toggleCartItem] = useMutation(TOGGLE_CART_ITEM_CHECKED_BY_ID, {
+        variables: {id, isChecked: !isChecked},
+        refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
+    })
+
+    
+
     const handleClick = () => {
-        updateCartItem()
+        // updateCartItem()
+        toggleCartItem()
     }
 
     return (

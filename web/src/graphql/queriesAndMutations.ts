@@ -115,3 +115,10 @@ mutation UpdateCartItemById($item: EditCartItem!) {
     updateCartItemById(item: $item)
 }
 `
+
+export const TOGGLE_CART_ITEM_CHECKED_BY_ID = gql`
+mutation toggleCartItemCheckedById($id: Float!, $isChecked: Boolean!) {
+    toggleCartItemCheckedById(id: $id, isChecked: $isChecked)
+}
+`
+

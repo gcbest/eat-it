@@ -103,4 +103,22 @@ export class CartItemResolver {
         }
     }
 
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async toggleCartItemCheckedById(@Arg("id") id: number, @Arg("isChecked") isChecked: boolean): Promise<Boolean> {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .update(CartItem)
+                .set({isChecked})
+                .where("id = :id", { id })
+                .execute();
+
+            return true
+        } catch (error) {
+            console.error('error message:', error);
+            return false
+        }
+    }
+
 }
