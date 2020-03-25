@@ -65,11 +65,7 @@ export class CartItemResolver {
         try {
             let user = await User.findOne(item.userId)
             const newItem = { ...item, user: user! }
-            
             await CartItem.insert(newItem)
-            // user?.cartItems.push(item)
-
-            // await User.insert
             return true
         } catch (error) {
             console.error(error);

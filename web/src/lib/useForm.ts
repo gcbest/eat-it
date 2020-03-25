@@ -20,6 +20,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
                 [e.target.name]: [...selectedOptions].join(), // create a string of all selected numbers: e.g. 2,4
             });
         } else {
+            // debugger
             updateInputs({
                 ...inputs,
                 [e.target.name]: isNaN(parseFloat(e.target.value)) ? e.target.value : parseFloat(e.target.value) // convert '1' to 1.0 but leave text alone
@@ -31,21 +32,14 @@ export default function useForm(initialState: any = {}): useFormInterface {
         updateInputs(initialState);
     }
 
-    // function forceChange(arrUpdates: [{name: string, value: any}]) {
     function forceChange(updates: any) {
         Object.keys(updates).forEach((key: any) => {
-            updateInputs({
-                ...inputs,
+            updateInputs((prevInputs: any) => ({
+                ...prevInputs, // overwrite inputs with new object
                 [key]: isNaN(parseFloat(updates[key])) ? updates[key] : parseFloat(updates[key]) // convert '1' to 1.0 but leave text alone
-            })    
+            })
+            )
         })
-
-        // arrUpdates.forEach((update: {name: string, value: any}) => {
-        //     updateInputs({
-        //         ...inputs,
-        //         [update.name]: isNaN(parseFloat(update.value)) ? update.value : parseFloat(update.value) // convert '1' to 1.0 but leave text alone
-        //     })
-        // })
     }
 
     function isRegistrationValid() {
