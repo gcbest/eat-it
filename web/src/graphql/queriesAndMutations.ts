@@ -122,3 +122,9 @@ mutation toggleCartItemCheckedById($id: Float!, $isChecked: Boolean!) {
 }
 `
 
+export const DELETE_CART_ITEM = gql`
+mutation deleteCartItem($id: Float!) {
+    deleteCartItem(id: $id)
+}
+`
+

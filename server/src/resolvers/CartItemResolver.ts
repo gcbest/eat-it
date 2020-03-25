@@ -121,4 +121,26 @@ export class CartItemResolver {
         }
     }
 
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async deleteCartItem(@Arg("id") id: number): Promise<Boolean> {
+        try {
+            console.log(id);
+            
+            await getConnection()
+                .createQueryBuilder()
+                .delete()
+                .from(CartItem)
+                .where("id = :id", { id })
+                .execute();
+
+                console.log('DELETED');
+                
+            return true
+        } catch (error) {
+            console.error('error message:', error);
+            return false
+        }
+    }
+
 }
