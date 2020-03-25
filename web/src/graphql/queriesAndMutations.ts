@@ -109,3 +109,9 @@ mutation AddCartItem($item: AddCartItem!) {
     addCartItem(item: $item) 
 }
 `
+
+export const UPDATE_CART_ITEM_BY_ID = gql`
+mutation UpdateCartItemById($item: EditCartItem!) {
+    updateCartItemById(item: $item)
+}
+`

@@ -1,14 +1,5 @@
 import { useState } from 'react';
-
-interface useFormInterface {
-    inputs: any;
-    handleChange(e: any): void;
-    forceChange(updates: any): void;
-    resetForm(): void;
-    isRegistrationValid(): boolean;
-    confirmPasswordsMatch(): boolean;
-    isCreateRecipeValid(): boolean
-}
+import { useFormInterface } from './interfaces';
 
 export default function useForm(initialState: any = {}): useFormInterface {
     const [inputs, updateInputs] = useState(initialState);

@@ -4,17 +4,17 @@ import Autocomplete from 'react-autocomplete'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { FaPlus } from 'react-icons/fa'
-import { CartItemInterface } from 'lib/interfaces'
+import { CartItemInterface, User } from 'lib/interfaces'
 import useForm from 'lib/useForm'
-import { ProfileContext } from 'pages/Profile'
-import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID } from 'graphql/queriesAndMutations'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID } from 'graphql/queriesAndMutations'
+import { useMutation } from '@apollo/react-hooks'
 
 interface Props {
     itemSuggestions: CartItemInterface[]
-    // setNewItem: (newItem: CartItemInterface) => void
+    me: User
 }
 
+//TODO: move this style out
 const formControlStyles = {
     display: 'block',
     width: '100%',
@@ -30,14 +30,13 @@ const formControlStyles = {
     borderRadius: '0.4rem',
     transition: 'border-color 0.15s'
 }
-const AddCartItem: React.FC<Props> = ({ itemSuggestions }) => {
+const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
     const [selectedItem, setSelectedItem] = useState<CartItemInterface | null>(null)
-    // const [newItem, setNewItem] = useState<CartItemInterface>({ name: '', amount: 0, isChecked: false })
-    const { me } = useContext(ProfileContext)
 
-    const [addCartItem, { loading, error, data }] = useMutation(ADD_CART_ITEM, {
+    const [addCartItem] = useMutation(ADD_CART_ITEM, {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
+
     const { inputs, handleChange, forceChange, resetForm } = useForm({
         name: '',
         amount: 1,
@@ -51,6 +50,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         addCartItem({ variables: { item: { ...inputs, userId: me.id } } })
+        resetForm()
     }
 
     const handleSelection = (val: any) => {

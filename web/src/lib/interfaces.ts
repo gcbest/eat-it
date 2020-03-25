@@ -114,3 +114,13 @@ export interface SlidingPaneInterface {
     width?: string,
     shouldCloseOnEsc?: boolean
 }
+
+export interface useFormInterface {
+    inputs: any;
+    handleChange(e: any): void;
+    forceChange(updates: any): void;
+    resetForm(): void;
+    isRegistrationValid(): boolean;
+    confirmPasswordsMatch(): boolean;
+    isCreateRecipeValid(): boolean
+}
