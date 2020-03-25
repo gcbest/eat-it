@@ -103,3 +103,9 @@ getCartItemsByUserId(id: $id) {
 }
 }
 `
+
+export const ADD_CART_ITEM = gql`
+mutation AddCartItem($item: AddCartItem!) {
+    addCartItem(item: $item) 
+}
+`

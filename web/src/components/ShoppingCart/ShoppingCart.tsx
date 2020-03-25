@@ -1,14 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { ShoppingCartInterface, CartItemInterface } from 'lib/interfaces'
 import CartItem from './CartItem'
 import AddCartItem from './AddCartItem'
 
+
 const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     const [itemsToComplete, setItemsToComplete] = useState<CartItemInterface[]>([])
     const [completedItems, setCompletedItems] = useState<CartItemInterface[]>([])
-    const [newItem, setNewItem] = useState<CartItemInterface>({ name: '', amount: 0, isChecked: false })
-    
+
+    useEffect(() => {
+        const toComplete: CartItemInterface[] = []
+        const completed: CartItemInterface[] = []
+        items.forEach(item => { item.isChecked ? completed.push(item) : toComplete.push(item) })
+        setItemsToComplete(toComplete)
+        setCompletedItems(completed)
+    }, [items])
 
     if (!items || items.length < 1) {
         return (
@@ -20,12 +27,6 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         )
     }
 
-    const toComplete: CartItemInterface[] = []
-    const completed: CartItemInterface[] = []
-    items.forEach(item => { item.isChecked ? completed.push(item) : toComplete.push(item) })
-    setItemsToComplete(toComplete)
-    setCompletedItems(completed)
-
     return (
         <ListGroup>
             <h1>Shopping Cart</h1>
@@ -33,12 +34,12 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
 
             {/* Unchecked Section */}
             <h3>Items to Get</h3>
-            {itemsToComplete.map(item => <CartItem item={item} />)}
+            {itemsToComplete.map(item => <CartItem key={item.id} item={item} />)}
 
             {/* Already Checked Selection */}
             <h3>Items already Got</h3>
 
-            {completedItems.map(item => <CartItem item={item} />)}
+            {completedItems.map(item => <CartItem key={item.id} item={item} />)}
         </ListGroup>
     )
 }

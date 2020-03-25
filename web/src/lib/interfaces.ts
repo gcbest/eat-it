@@ -87,6 +87,7 @@ export interface Image {
 }
 
 export interface CartItemInterface {
+    id?: number
     name: string
     amount: number
     img?: string

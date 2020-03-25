@@ -3,6 +3,7 @@ import { useState } from 'react';
 interface useFormInterface {
     inputs: any;
     handleChange(e: any): void;
+    forceChange(updates: any): void;
     resetForm(): void;
     isRegistrationValid(): boolean;
     confirmPasswordsMatch(): boolean;
@@ -28,6 +29,23 @@ export default function useForm(initialState: any = {}): useFormInterface {
 
     function resetForm() {
         updateInputs(initialState);
+    }
+
+    // function forceChange(arrUpdates: [{name: string, value: any}]) {
+    function forceChange(updates: any) {
+        Object.keys(updates).forEach((key: any) => {
+            updateInputs({
+                ...inputs,
+                [key]: isNaN(parseFloat(updates[key])) ? updates[key] : parseFloat(updates[key]) // convert '1' to 1.0 but leave text alone
+            })    
+        })
+
+        // arrUpdates.forEach((update: {name: string, value: any}) => {
+        //     updateInputs({
+        //         ...inputs,
+        //         [update.name]: isNaN(parseFloat(update.value)) ? update.value : parseFloat(update.value) // convert '1' to 1.0 but leave text alone
+        //     })
+        // })
     }
 
     function isRegistrationValid() {
@@ -77,6 +95,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
     return {
         inputs,
         handleChange,
+        forceChange,
         resetForm,
         isRegistrationValid,
         confirmPasswordsMatch,

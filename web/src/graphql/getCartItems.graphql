@@ -1,11 +1,11 @@
-query GetCartItemsByUserId($id: Float!) {
-    getCartItemsByUserId(id: $id) {
-        id
-        name
-        amount
-        img
-        units
-        aisle
-        isChecked
-    }
-}
+# query GetCartItemsByUserId($id: Float!) {
+#     getCartItemsByUserId(id: $id) {
+#         id
+#         name
+#         amount
+#         img
+#         units
+#         aisle
+#         isChecked
+#     }
+# }

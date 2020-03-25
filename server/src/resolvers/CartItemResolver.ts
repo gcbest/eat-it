@@ -4,7 +4,9 @@ import {
     // InputType,
     // Field,
     UseMiddleware,
-    // Mutation,
+    Mutation,
+    InputType,
+    Field,
 } from 'type-graphql';
 // import { User } from '../entity/User';
 import { CartItem } from '../entity/CartItem';
@@ -16,6 +18,24 @@ import { User } from '../entity/User';
 // class CartItemInput extends CartItem {
 
 // }
+
+@InputType()
+class AddCartItem implements Partial<CartItem> {
+    @Field()
+    name: string;
+    @Field()
+    amount: number;
+    @Field()
+    img: string;
+    @Field()
+    units: string;
+    @Field()
+    aisle: number;
+    @Field()
+    isChecked: boolean;
+    @Field()
+    userId: number;
+}
 
 @Resolver()
 export class CartItemResolver {
@@ -39,16 +59,22 @@ export class CartItemResolver {
         }
     }
 
-    // @Mutation()
-    // @UseMiddleware(isAuth)
-    // async addCartItem(@Arg("input") input: CartItem): Promise<Boolean> {
-    //     try {
-    //         await CartItem.insert(input)
-    //         return true
-    //     } catch (error) {
-    //         console.error(error);
-    //         return false
-    //     }
-    // }
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async addCartItem(@Arg("item") item: AddCartItem): Promise<Boolean> {
+        try {
+            let user = await User.findOne(item.userId)
+            const newItem = { ...item, user: user! }
+            
+            await CartItem.insert(newItem)
+            // user?.cartItems.push(item)
+
+            // await User.insert
+            return true
+        } catch (error) {
+            console.error(error);
+            return false
+        }
+    }
 
 }
