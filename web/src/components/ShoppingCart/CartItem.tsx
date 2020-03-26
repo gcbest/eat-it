@@ -49,6 +49,8 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         setIsEditable(true)
     }
 
+    const imgUrl = img ? img : ingredientPlaceholder
+
     return (
         <ListGroup.Item variant={isChecked ? 'dark' : 'light'}>
             <Form.Check
@@ -56,9 +58,8 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
                 id={`${name}`}
                 checked={isChecked}
             >
-                {img ? <img src={img} alt={name} /> : <img onClick={handleClick} src={ingredientPlaceholder} alt={name} />}
-
-                {   
+                <img onClick={handleClick} src={imgUrl} alt={name} style={{width: '2rem', borderRadius: '5rem' }}/>
+                {
                     isEditable ?
                     <Form.Control style={{width: 'fit-content'}} type="text" name="name" value={name}/> :
                     <span onClick={handleEditClick} className={isChecked ? 'completed' : ''}>{name}</span>

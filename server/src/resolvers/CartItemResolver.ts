@@ -47,19 +47,22 @@ class EditCartItem extends AddCartItem {
 @Resolver()
 export class CartItemResolver {
     @Query(() => [CartItem])
-    // @Query(() => User)
     @UseMiddleware(isAuth)
     async getCartItemsByUserId(@Arg('id') id: number): Promise<CartItem[] | undefined> {
-    // async getCartItemsByUserId(@Arg('id') id: number): Promise<User | undefined> {
         try {
-            const user = await User.findOne({ where: { id }, relations: ['cartItems'] })
-            // const user = await User.findOne({ id })
-            if(!user)
+            const user = await getConnection()
+                .createQueryBuilder()
+                .select("user")
+                .from(User, "user")
+                .where("user.id = :id", { id })
+                .leftJoinAndSelect('user.cartItems', 'cartItems')
+                .orderBy('cartItems.aisle', 'ASC')
+                .getOne();
+
+            if (!user)
                 return
 
-            console.log(user);
             return user.cartItems
-            // return user
         } catch (error) {
             console.error(error);
             return
@@ -84,11 +87,11 @@ export class CartItemResolver {
     @UseMiddleware(isAuth)
     async updateCartItemById(@Arg("item") item: EditCartItem): Promise<Boolean> {
         try {
-            const {userId} = item
+            const { userId } = item
             delete item.userId
-            let user = await User.findOne({where: {id: userId}})
+            let user = await User.findOne({ where: { id: userId } })
             const updatedItem = { ...item, user: user! }
-            
+
             await getConnection()
                 .createQueryBuilder()
                 .update(CartItem)
@@ -110,7 +113,7 @@ export class CartItemResolver {
             await getConnection()
                 .createQueryBuilder()
                 .update(CartItem)
-                .set({isChecked})
+                .set({ isChecked })
                 .where("id = :id", { id })
                 .execute();
 
@@ -126,7 +129,7 @@ export class CartItemResolver {
     async deleteCartItem(@Arg("id") id: number): Promise<Boolean> {
         try {
             console.log(id);
-            
+
             await getConnection()
                 .createQueryBuilder()
                 .delete()
@@ -134,8 +137,8 @@ export class CartItemResolver {
                 .where("id = :id", { id })
                 .execute();
 
-                console.log('DELETED');
-                
+            console.log('DELETED');
+
             return true
         } catch (error) {
             console.error('error message:', error);
