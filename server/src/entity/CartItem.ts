@@ -34,6 +34,10 @@ export class CartItem extends BaseEntity {
     @Column()
     isChecked: boolean;
 
+    @Field()
+    @Column()
+    isCleared: boolean; // cleared from list so not being displayed
+
     @ManyToOne(() => User, user => user.cartItems, { onDelete: 'CASCADE' })
     user: User
 }

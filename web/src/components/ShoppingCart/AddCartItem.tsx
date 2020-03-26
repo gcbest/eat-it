@@ -44,6 +44,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
         aisle: 1,
         img: '',
         isChecked: false,
+        isCleared: false
     })
 
 

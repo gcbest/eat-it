@@ -94,6 +94,7 @@ export interface CartItemInterface {
     units?: string
     aisle?: number
     isChecked: boolean
+    isCleared: boolean
 }
 
 export interface ShoppingCartInterface {

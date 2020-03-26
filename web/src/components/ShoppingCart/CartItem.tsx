@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
-import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID, TOGGLE_CART_ITEM_CHECKED_BY_ID, DELETE_CART_ITEM } from 'graphql/queriesAndMutations'
+import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID, TOGGLE_CART_ITEM_CHECKED_BY_ID, DELETE_CART_ITEM, CLEAR_ITEM_FROM_SHOPPING_LIST } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import { CartItemInterface, User } from 'lib/interfaces'
 import ingredientPlaceholder from '../../assets/images/ingredients_placeholder.png'
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const CartItem: React.FC<Props> = ({ me, item }) => {
-    const {id, name, aisle, amount, units, img, isChecked} = item
+    const {id, name, aisle, amount, units, img, isChecked, isCleared} = item
     const [isEditable, setIsEditable] = useState(false)
     const [updateCartItem] = useMutation(UPDATE_CART_ITEM_BY_ID, {
         variables: {item: {...item, isChecked: !isChecked, userId: me.id}},
@@ -27,12 +27,15 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
+    const [clearCartItem] = useMutation(CLEAR_ITEM_FROM_SHOPPING_LIST, {
+        variables: {id, isCleared: true},
+        refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
+    })
+
     const [deleteCartItem] = useMutation(DELETE_CART_ITEM, {
         variables: {id},
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
-
-
     
 
     const handleClick = () => {
@@ -47,6 +50,10 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
 
     const handleEditClick = () => {
         setIsEditable(true)
+    }
+
+    const handleClearItemFromList = () => {
+        clearCartItem()
     }
 
     const imgUrl = img ? img : ingredientPlaceholder
@@ -67,7 +74,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
                 <span className={isChecked ? 'completed' : ''}>{amount}</span>
                 <span className={isChecked ? 'completed' : ''}>{units}</span>
                 <span className={isChecked ? 'completed' : ''}>Aisle <Badge variant="primary">{aisle}</Badge></span>
-                <Button variant="danger" onClick={handleDelete}>X</Button>
+                <Button variant="danger" onClick={handleClearItemFromList}>X</Button>
             </Form.Check>
         </ListGroup.Item>
     )

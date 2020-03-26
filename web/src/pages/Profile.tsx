@@ -144,11 +144,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
       <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
       <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
-      {/* {console.log(cartItemsData)
-      } */}
+      {console.log(cartItemsData)}
       <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />}/>
-      {/* <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={[]} />}/> */}
-
       <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} />
     </ProfileContext.Provider>
   </div>)

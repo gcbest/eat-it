@@ -92,15 +92,16 @@ query GetRecipeById($id: Float!) {
 
 export const GET_CART_ITEMS_BY_USER_ID = gql`
 query GetCartItemsByUserId($id: Float!) {
-getCartItemsByUserId(id: $id) {
-    id
-    name
-    amount
-    img
-    units
-    aisle
-    isChecked
-}
+    getCartItemsByUserId(id: $id) {
+        id
+        name
+        amount
+        img
+        units
+        aisle
+        isChecked
+        isCleared
+    }
 }
 `
 
@@ -128,3 +129,8 @@ mutation deleteCartItem($id: Float!) {
 }
 `
 
+export const CLEAR_ITEM_FROM_SHOPPING_LIST = gql`
+mutation clearItemFromShoppingList($id: Float!, $isCleared: Boolean!) {
+    clearItemFromShoppingList(id: $id, isCleared: $isCleared)
+}
+`

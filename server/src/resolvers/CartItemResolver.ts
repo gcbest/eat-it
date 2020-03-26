@@ -15,10 +15,6 @@ import { User } from '../entity/User';
 import { getConnection } from 'typeorm';
 // import { getConnection } from "typeorm";
 
-// @InputType()
-// class CartItemInput extends CartItem {
-
-// }
 
 @InputType()
 class AddCartItem implements Partial<CartItem> {
@@ -35,6 +31,8 @@ class AddCartItem implements Partial<CartItem> {
     @Field()
     isChecked: boolean;
     @Field()
+    isCleared: boolean;
+    @Field()
     userId: number;
 }
 
@@ -42,6 +40,8 @@ class AddCartItem implements Partial<CartItem> {
 class EditCartItem extends AddCartItem {
     @Field()
     id: number
+    @Field()
+    isCleared: boolean    
 }
 
 @Resolver()
@@ -51,17 +51,20 @@ export class CartItemResolver {
     async getCartItemsByUserId(@Arg('id') id: number): Promise<CartItem[] | undefined> {
         try {
             const user = await getConnection()
-                .createQueryBuilder()
+            .createQueryBuilder()
                 .select("user")
                 .from(User, "user")
-                .where("user.id = :id", { id })
                 .leftJoinAndSelect('user.cartItems', 'cartItems')
+                .where("user.id = :id", { id })
+                // .andWhere('cartItems.isCleared = :isCleared', {isCleared: false}) // keeping the cleared items for suggestions
                 .orderBy('cartItems.aisle', 'ASC')
                 .getOne();
 
             if (!user)
                 return
 
+            console.log(user);
+            
             return user.cartItems
         } catch (error) {
             console.error(error);
@@ -123,6 +126,25 @@ export class CartItemResolver {
             return false
         }
     }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async clearItemFromShoppingList(@Arg("id") id: number, @Arg("isCleared") isCleared: boolean): Promise<Boolean> {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .update(CartItem)
+                .set({ isCleared })
+                .where("id = :id", { id })
+                .execute();
+
+            return true
+        } catch (error) {
+            console.error('error message:', error);
+            return false
+        }
+    }
+    
 
     @Mutation(() => Boolean)
     @UseMiddleware(isAuth)
