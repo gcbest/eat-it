@@ -5,6 +5,9 @@ import CartItem from './CartItem'
 import AddCartItem from './AddCartItem'
 import { ProfileContext } from 'pages/Profile'
 import Accordion from 'react-bootstrap/Accordion'
+import { useMutation } from '@apollo/react-hooks'
+import { CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST, GET_CART_ITEMS_BY_USER_ID } from 'graphql/queriesAndMutations'
+import Button from 'react-bootstrap/Button'
 
 
 
@@ -12,16 +15,25 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     const { me } = useContext(ProfileContext)
     const [itemsToComplete, setItemsToComplete] = useState<CartItemInterface[]>([])
     const [completedItems, setCompletedItems] = useState<CartItemInterface[]>([])
-
+    const [clearItems] = useMutation(CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST, {
+        refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
+    })
 
     useEffect(() => {
         const toComplete: CartItemInterface[] = []
         const completed: CartItemInterface[] = []
-        debugger
         items.filter(item => !item.isCleared).forEach(item => { item.isChecked ? completed.push(item) : toComplete.push(item) })
         setItemsToComplete(toComplete)
         setCompletedItems(completed)
     }, [items])
+
+    const handleClearItems = (itemsArr: CartItemInterface[]) => {
+        const ids = itemsArr.map(item => item.id)
+        debugger
+        clearItems({
+            variables: {ids, isCleared: true},
+        })
+    }
 
     if (!items || items.length < 1) {
         return (
@@ -58,8 +70,9 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
             <Accordion defaultActiveKey="1">
                 {/* <Accordion.Toggle as={Button} variant="link" eventKey="1"> */}
                 <Accordion.Toggle eventKey="1">
-                    <h3>Items already Got</h3>
+                    <h3>Items already Got</h3> 
                 </Accordion.Toggle>
+                <Button onClick={() => handleClearItems(completedItems)}>Clear Items</Button>
                 <Accordion.Collapse eventKey="1">
                     <ListGroup>
                         {completedItems.map(item => <CartItem key={item.id} me={me} item={item} />)}

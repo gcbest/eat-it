@@ -134,3 +134,9 @@ mutation clearItemFromShoppingList($id: Float!, $isCleared: Boolean!) {
     clearItemFromShoppingList(id: $id, isCleared: $isCleared)
 }
 `
+
+export const CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST = gql`
+mutation clearMultipleItemsFromShoppingList($ids: [Float!]!, $isCleared: Boolean!) {
+    clearMultipleItemsFromShoppingList(ids: $ids, isCleared: $isCleared)
+}
+`

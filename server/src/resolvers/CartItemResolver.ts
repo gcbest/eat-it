@@ -135,7 +135,25 @@ export class CartItemResolver {
                 .createQueryBuilder()
                 .update(CartItem)
                 .set({ isCleared })
-                .where("id = :id", { id })
+                .where("id = :id)", { id })
+                .execute();
+
+            return true
+        } catch (error) {
+            console.error('error message:', error);
+            return false
+        }
+    }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async clearMultipleItemsFromShoppingList(@Arg("ids", () => [Number]) ids: number[], @Arg("isCleared") isCleared: boolean): Promise<Boolean> {
+        try {
+            await getConnection()
+                .createQueryBuilder()
+                .update(CartItem)
+                .set({ isCleared })
+                .where("id IN (:...ids)", { ids: [...ids]})
                 .execute();
 
             return true
