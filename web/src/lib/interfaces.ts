@@ -97,6 +97,15 @@ export interface CartItemInterface {
     isCleared: boolean
 }
 
+export interface CartItemEditables {
+    [index: string]: boolean
+    name: boolean
+    amount: boolean
+    // img: boolean
+    units: boolean
+    aisle: boolean
+}
+
 export interface ShoppingCartInterface {
     items: CartItemInterface[]
 }

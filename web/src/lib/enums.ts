@@ -22,5 +22,12 @@ export enum Diet {
     Vegan
 }
 
+export enum ItemDetails {
+    name = 1,
+    amount,
+    units,
+    aisle
+}
+
 
 

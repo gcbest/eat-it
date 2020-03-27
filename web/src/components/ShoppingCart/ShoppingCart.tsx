@@ -29,7 +29,6 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
 
     const handleClearItems = (itemsArr: CartItemInterface[]) => {
         const ids = itemsArr.map(item => item.id)
-        debugger
         clearItems({
             variables: {ids, isCleared: true},
         })
