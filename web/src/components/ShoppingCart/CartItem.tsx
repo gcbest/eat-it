@@ -2,7 +2,7 @@ import React, { useState, useReducer, useRef, useEffect } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form'
 import Badge from 'react-bootstrap/Badge'
-import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID, TOGGLE_CART_ITEM_CHECKED_BY_ID, DELETE_CART_ITEM, CLEAR_ITEM_FROM_SHOPPING_LIST } from 'graphql/queriesAndMutations'
+import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID, TOGGLE_CART_ITEM_CHECKED_BY_ID, CLEAR_ITEM_FROM_SHOPPING_LIST } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import { CartItemInterface, User, CartItemEditables } from 'lib/interfaces'
 import ingredientPlaceholder from '../../assets/images/ingredients_placeholder.png'
@@ -79,18 +79,10 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
-    const [deleteCartItem] = useMutation(DELETE_CART_ITEM, {
-        variables: {id},
-        refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
-    })
+    
     
 
     const handleClick = () => toggleCartItem()
-
-    const handleDelete = () => {
-        if(window.confirm('Are you sure you want to delete item?'))
-            deleteCartItem()
-    }
 
     // set value equal to the opposite of what that value currently is 
     const toggleEditable = (type: any) => {

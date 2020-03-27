@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import { FaPlus } from 'react-icons/fa'
 import { CartItemInterface, User } from 'lib/interfaces'
 import useForm from 'lib/useForm'
-import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID } from 'graphql/queriesAndMutations'
+import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, DELETE_CART_ITEM } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 
 interface Props {
@@ -30,10 +30,15 @@ const formControlStyles = {
     borderRadius: '0.4rem',
     transition: 'border-color 0.15s'
 }
+
 const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
     const [selectedItem, setSelectedItem] = useState<CartItemInterface | null>(null)
 
     const [addCartItem] = useMutation(ADD_CART_ITEM, {
+        refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
+    })
+
+    const [deleteCartItem] = useMutation(DELETE_CART_ITEM, {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
@@ -61,6 +66,11 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
         forceChange(update)
     }
 
+    const handleDelete = (id: number) => {
+        if (window.confirm('Are you sure you want to delete item?'))
+            deleteCartItem({ variables: { id } })
+    }
+
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="addCartItem">
@@ -71,7 +81,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                             getItemValue={(item) => { setSelectedItem(item); return item.name }}
                             items={itemSuggestions} renderItem={(item, isHighlighted) =>
                                 <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                    {item.name} | {item.amount} | {item.units} | {item.aisle}
+                                    {item.name} | {item.amount} | {item.units} | {item.aisle} | <Button onClick={() => handleDelete(item.id)} size="sm" variant="danger">x</Button>
                                 </div>
                             }
                             inputProps={{ style: formControlStyles, name: 'name' }}
