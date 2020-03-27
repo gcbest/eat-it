@@ -135,7 +135,7 @@ export class CartItemResolver {
                 .createQueryBuilder()
                 .update(CartItem)
                 .set({ isCleared })
-                .where("id = :id)", { id })
+                .where("id = :id", { id })
                 .execute();
 
             return true
