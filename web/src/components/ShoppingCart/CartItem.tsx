@@ -11,6 +11,7 @@ import './CartItem.css'
 import { ItemDetails } from 'lib/enums'
 import { getKeyByValue } from 'lib/utils'
 import FormControl from 'react-bootstrap/FormControl'
+import useForm from 'lib/useForm'
 
 interface Props {
     item: CartItemInterface
@@ -48,6 +49,13 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     const aisleRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const [isEditable, dispatch] = useReducer(reducer, initialState)
 
+    const { inputs, handleChange, resetForm } = useForm({
+        name,
+        amount,
+        units,
+        aisle,
+    });
+
     useEffect(() => {
         if(nameRef && nameRef.current)
             nameRef.current.focus()
@@ -65,7 +73,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     ])
 
     const [updateCartItem] = useMutation(UPDATE_CART_ITEM_BY_ID, {
-        variables: {item: {...item, isChecked: !isChecked, userId: me.id}},
+        variables: {item: {...item, ...inputs, userId: me.id}},
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
@@ -79,17 +87,17 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
-    
-    
-
     const handleClick = () => toggleCartItem()
 
     // set value equal to the opposite of what that value currently is 
     const toggleEditable = (type: any) => {
         const key: string | undefined = getKeyByValue(ItemDetails, type)
-        debugger
-        if(key)
-            dispatch({type, value: !isEditable[key]}) // e.g. ['name'] of true = false
+        if(!key) return
+        
+        const isInputEditable = isEditable[key]
+        if(isInputEditable) // turning from editable to non-editable, so auto save changes made
+            updateCartItem()
+        dispatch({type, value: !isInputEditable}) // e.g. ['name'] of true set = false now
     }
 
     const handleClearItemFromList = () => clearCartItem()
@@ -106,23 +114,23 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
                 <img onClick={handleClick} src={imgUrl} alt={name} style={{width: '2rem', borderRadius: '5rem' }}/>
                 {
                     isEditable.name ? 
-                    <Form.Control style={{width: 'fit-content'}} type="text" name="name" value={name} ref={nameRef} onBlur={() => toggleEditable(ItemDetails.name)}/> :
+                    <Form.Control style={{width: 'fit-content'}} type="text" name="name" onChange={handleChange} value={inputs.name} ref={nameRef} onBlur={() => toggleEditable(ItemDetails.name)}/> :
                     <span onClick={() => toggleEditable(ItemDetails.name)} className={isChecked ? 'completed' : ''}>{name}</span>
                 }
                 {
                     isEditable.amount ?
-                    <Form.Control style={{width: 'fit-content'}} type="number" min="1" name="amount" value={amount.toString()} ref={amountRef} onBlur={() => toggleEditable(ItemDetails.amount)}/> :
+                    <Form.Control style={{width: 'fit-content'}} type="number" min="1" name="amount" onChange={handleChange} value={inputs.amount.toString()} ref={amountRef} onBlur={() => toggleEditable(ItemDetails.amount)}/> :
                     <span onClick={() => toggleEditable(ItemDetails.amount)} className={isChecked ? 'completed' : ''}>{amount}</span>
                 }
                 {
                     isEditable.units ?
-                    <Form.Control style={{width: 'fit-content'}} type="text" name="units" value={units} ref={unitsRef} onBlur={() => toggleEditable(ItemDetails.units)}/> :
+                    <Form.Control style={{width: 'fit-content'}} type="text" name="units" onChange={handleChange} value={inputs.units} ref={unitsRef} onBlur={() => toggleEditable(ItemDetails.units)}/> :
                     <span onClick={() => toggleEditable(ItemDetails.units)} className={isChecked ? 'completed' : ''}>{units}</span>                    
                 }
                 {
                     isEditable.aisle ?
                     (
-                    <span>Aisle # <Form.Control style={{width: 'fit-content', display: 'inline'}} type="number" min="1" name="aisle" value={aisle ? aisle.toString() : '1'} ref={aisleRef} onBlur={() => toggleEditable(ItemDetails.aisle)}/> </span>
+                    <span>Aisle # <Form.Control style={{width: 'fit-content', display: 'inline'}} type="number" min="1" name="aisle" onChange={handleChange} value={inputs.aisle} ref={aisleRef} onBlur={() => toggleEditable(ItemDetails.aisle)}/> </span>
                     )
                     :
                     <span onClick={() => toggleEditable(ItemDetails.aisle)} className={isChecked ? 'completed' : ''}>Aisle <Badge variant="primary">{aisle}</Badge></span>
