@@ -8,6 +8,7 @@ import Accordion from 'react-bootstrap/Accordion'
 import { useMutation } from '@apollo/react-hooks'
 import { CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST, GET_CART_ITEMS_BY_USER_ID } from 'graphql/queriesAndMutations'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 
 
@@ -15,6 +16,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     const { me } = useContext(ProfileContext)
     const [itemsToComplete, setItemsToComplete] = useState<CartItemInterface[]>([])
     const [completedItems, setCompletedItems] = useState<CartItemInterface[]>([])
+    const [filteredItems, setFilteredItems] = useState<CartItemInterface[]>([])
     const [clearItems] = useMutation(CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST, {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
@@ -25,6 +27,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         items.filter(item => !item.isCleared).forEach(item => { item.isChecked ? completed.push(item) : toComplete.push(item) })
         setItemsToComplete(toComplete)
         setCompletedItems(completed)
+        setFilteredItems(toComplete)
     }, [items])
 
     const handleClearItems = (itemsArr: CartItemInterface[]) => {
@@ -32,6 +35,15 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         clearItems({
             variables: {ids, isCleared: true},
         })
+    }
+
+
+    const handleFilter = (e: any) => {
+        if(e.target.value === '')
+            return setFilteredItems(itemsToComplete)
+            
+        const itemsLeft = itemsToComplete.filter(item => item.name.includes(e.target.value))
+        setFilteredItems(itemsLeft)
     }
 
     if (!items || items.length < 1) {
@@ -44,6 +56,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         )
     }
 
+
     return (
         <div>
 
@@ -54,11 +67,13 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
             <Accordion defaultActiveKey="0">
                 {/* <Accordion.Toggle as={Button} variant="link" eventKey="0"> */}
                 <Accordion.Toggle eventKey="0">
-                    <h3>Items to Get</h3>
+                    <h3>Items to Get</h3> 
                 </Accordion.Toggle>
+                <Form.Label>Filter Items</Form.Label>
+                <Form.Control style={{display: 'inline', width: '35%'}} onChange={handleFilter}></Form.Control>
                 <Accordion.Collapse eventKey="0">
                     <ListGroup>
-                        {itemsToComplete.map(item => <CartItem key={item.id} me={me} item={item} />)}
+                        {filteredItems.map(item => <CartItem key={item.id} me={me} item={item} />)}
                     </ListGroup>
 
                 </Accordion.Collapse>
