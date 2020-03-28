@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import { Redirect } from 'react-router-dom';
 import nanoid from 'nanoid';
-import { useRegisterMutation } from "../generated/graphql";
+import { useRegisterMutation, useLoginMutation, MeQuery, MeDocument } from "../generated/graphql";
 import useForm from 'lib/useForm';
 import { getKeyByValue } from 'lib/utils';
 import { Diet } from 'lib/enums';
@@ -19,8 +19,11 @@ export const RegistrationForm: React.FC = () => {
         exerciseLevel: '1',
         diets: []
     });
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [showCompleteFormAlert, setShowCompleteFormAlert] = useState(false)
     const [register] = useRegisterMutation();
+    const [login] = useLoginMutation();
+
 
     // const handleSubmit = event => {
     //     const form = event.currentTarget;
@@ -54,23 +57,51 @@ export const RegistrationForm: React.FC = () => {
         // create tags for the diet types
         const selectedDietTags: Tag[] = convertDietTypesToTags(dietsArr) // e.g. [{id: 123, name: 'keto'}, {id: 456, name: 'pescatarian'}]
 
-        
-        const response = await register({
-            variables: {
-                email,
-                password,
-                exerciseLevel: parseInt(exerciseLevel),
-                diets,
-                tags: [...defaultTags, ...selectedDietTags]
-            }
-        });
-        console.log(response);
-        resetForm();
-        return <Redirect to="/" push={true} />
+        try {
+            const response = await register({
+                variables: {
+                    email,
+                    password,
+                    exerciseLevel: parseInt(exerciseLevel),
+                    diets,
+                    tags: [...defaultTags, ...selectedDietTags]
+                }
+            });
+            console.log(response);
+
+            await login({
+                variables: {
+                  email,
+                  password,
+                },
+                update: (store, { data }) => {
+                  if (!data) {
+                    return null;
+                  }
+      
+                  console.log('DATA from CACHE');
+                  console.log(data);
+      
+                  store.writeQuery<MeQuery>({
+                    query: MeDocument,
+                    data: {
+                      me: data.login.user
+                    }
+                  });
+                }
+            })
+                
+            resetForm();
+            setIsLoggedIn(true)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-
     return (
+        isLoggedIn ? 
+        <Redirect to="/profile" push={true} /> 
+        :
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="email">
                 <Form.Label>Email address</Form.Label>
@@ -104,10 +135,6 @@ export const RegistrationForm: React.FC = () => {
                     <option value="4">Vegetarian</option>
                     <option value="5">Vegan</option>
                 </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Example textarea</Form.Label>
-                <Form.Control as="textarea" rows="3" />
             </Form.Group>
             {(showCompleteFormAlert && <Alert variant='warning'>Please answer all questions</Alert>)}
             {/* {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)} */}
