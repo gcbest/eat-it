@@ -111,6 +111,12 @@ mutation AddCartItem($item: AddCartItem!) {
 }
 `
 
+export const ADD_MANY_CART_ITEMS = gql`
+mutation AddManyCartItems($items: [AddCartItem!]!) {
+    addManyCartItems(items: $items) 
+}
+`
+
 export const UPDATE_CART_ITEM_BY_ID = gql`
 mutation UpdateCartItemById($item: EditCartItem!) {
     updateCartItemById(item: $item)

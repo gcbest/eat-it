@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from 'typeorm';
-import { ObjectType, Field, Int, InputType } from 'type-graphql';
+import { ObjectType, Field, Int, InputType, Float } from 'type-graphql';
 import { User } from './User';
 
 @ObjectType()
@@ -14,8 +14,8 @@ export class CartItem extends BaseEntity {
     @Column('text')
     name: string;
 
-    @Field(() => Int)
-    @Column()
+    @Field(() => Float)
+    @Column({type: 'float'})
     amount: number;
 
     @Field()

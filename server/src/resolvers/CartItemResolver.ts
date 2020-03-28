@@ -7,20 +7,18 @@ import {
     Mutation,
     InputType,
     Field,
+    Float,
 } from 'type-graphql';
-// import { User } from '../entity/User';
 import { CartItem } from '../entity/CartItem';
 import { isAuth } from '../isAuth';
 import { User } from '../entity/User';
 import { getConnection } from 'typeorm';
-// import { getConnection } from "typeorm";
-
 
 @InputType()
 class AddCartItem implements Partial<CartItem> {
     @Field()
     name: string;
-    @Field()
+    @Field(() => Float)
     amount: number;
     @Field()
     img: string;
@@ -79,6 +77,34 @@ export class CartItemResolver {
             let user = await User.findOne(item.userId)
             const newItem = { ...item, user: user! }
             await CartItem.insert(newItem)
+            return true
+        } catch (error) {
+            console.error(error);
+            return false
+        }
+    }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async addManyCartItems(@Arg("items", () => [AddCartItem]) items: [AddCartItem]): Promise<Boolean> {
+        try {
+            const user = await User.findOne(items[0].userId)
+            const itemsUserAdded = items.map(item => {
+                delete item.userId
+                return {...item, user}
+            })
+
+            console.log(itemsUserAdded);
+            
+            
+            
+            await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(CartItem)
+                .values(itemsUserAdded)
+                .execute();
+
             return true
         } catch (error) {
             console.error(error);

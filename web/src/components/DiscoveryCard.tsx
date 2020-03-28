@@ -8,10 +8,10 @@ import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import { ModalCategory } from '../lib/enums'
 import DiscoverRecipeModal from 'components/DiscoverRecipeModal'
 
-import { Recipe, CustomToggleInterface, Instructions } from 'lib/interfaces'
+import { Recipe, CustomToggleInterface, Instructions, CartItemInterface } from 'lib/interfaces'
 import { createMarkup } from 'lib/utils'
 import { useMutation } from '@apollo/react-hooks'
-import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID } from 'graphql/queriesAndMutations'
+import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, ADD_MANY_CART_ITEMS } from 'graphql/queriesAndMutations'
 import { DiscoverContext } from 'pages/Discover'
 
 interface Props<T> {
@@ -27,6 +27,11 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
     const [addCartItem] = useMutation(ADD_CART_ITEM, {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
+
+    const [addManyCartItems] = useMutation(ADD_MANY_CART_ITEMS, {
+        refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
+    })
+
     const imgUrlBase = 'https://spoonacular.com/cdn/ingredients_100x100/'
 
     const handleClose = () => setShow(false);
@@ -43,12 +48,25 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
         return (<Button variant="secondary" onClick={decoratedOnClick}>{children}</Button>);
     }
 
-    const handleAddIngredient = (ingredient: any) => {
-        const {id, name, amount, unit, image} = ingredient
+    const convertIngredientToItem = (ingredient: any): CartItemInterface => {
+        const {name, amount, unit, image} = ingredient
         const img = `${imgUrlBase}${image}`
-        const item = {name, amount, unit, img, aisle: 0, isChecked: false, isCleared: false, userId: me.id}
+        const item = {name, amount: parseFloat(amount), unit, img, aisle: 0, isChecked: false, isCleared: false, userId: me.id}
+        return item;
+    }
+
+    const handleAddIngredient = (ingredient: any) => {
+        const item = convertIngredientToItem(ingredient)
         addCartItem({
             variables: {item}
+        })
+    }
+
+    const handleAddAllIngredients = (ingredientsArr: [any]) => {
+        const items = ingredientsArr.map(convertIngredientToItem)
+        debugger
+        addManyCartItems({
+            variables: {items}
         })
     }
 
@@ -98,7 +116,7 @@ export const DiscoveryCard: React.FC<Props<Recipe>> = ({ recipe }) => {
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <h3>Click on an item to add to shopping cart</h3>
-                                    <Button variant="primary">Add all ingredients to cart</Button>
+                                    <Button onClick={() => handleAddAllIngredients(JSON.parse(extendedIngredients))} variant="primary">Add all ingredients to cart</Button>
                                     <ListGroup>
                                         {JSON.parse(extendedIngredients).map((extIng: any) => {
                                             return (<ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)}> <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name}/> {extIng.name} | {extIng.originalString} </ListGroup.Item>)
