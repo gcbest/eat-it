@@ -45,8 +45,8 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
     const { inputs, handleChange, forceChange, resetForm } = useForm({
         name: '',
         amount: 1,
-        units: '',
-        aisle: 1,
+        unit: '',
+        aisle: 0,
         img: '',
         isChecked: false,
         isCleared: false
@@ -61,8 +61,8 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
 
     const handleSelection = (val: any) => {
         // set other input values once an item name is selected 
-        const { name, amount, units, aisle } = selectedItem!
-        const update: any = { name, amount, units, aisle }
+        const { name, amount, unit, aisle } = selectedItem!
+        const update: any = { name, amount, unit, aisle }
         forceChange(update)
     }
 
@@ -81,7 +81,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                             getItemValue={(item) => { setSelectedItem(item); return item.name }}
                             items={itemSuggestions} renderItem={(item, isHighlighted) =>
                                 <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                    {item.name} | {item.amount} | {item.units} | {item.aisle} | <Button onClick={() => handleDelete(item.id)} size="sm" variant="danger">x</Button>
+                                    {item.name} | {item.amount} | {item.unit} | {item.aisle} | <Button onClick={() => handleDelete(item.id)} size="sm" variant="danger">x</Button>
                                 </div>
                             }
                             inputProps={{ style: formControlStyles, name: 'name' }}
@@ -97,11 +97,11 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                     </Col>
                     <Col>
                         <Form.Label>Units</Form.Label>
-                        <Form.Control type="text" name="units" value={inputs.units} onChange={handleChange} placeholder="lbs/bags/etc" />
+                        <Form.Control type="text" name="unit" value={inputs.unit} onChange={handleChange} placeholder="lbs/bags/etc" />
                     </Col>
                     <Col>
                         <Form.Label>Aisle #</Form.Label>
-                        <Form.Control type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="1" />
+                        <Form.Control type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
                     </Col>
                     <Col>
                         <Button type="submit"><FaPlus /></Button>

@@ -25,7 +25,7 @@ class AddCartItem implements Partial<CartItem> {
     @Field()
     img: string;
     @Field()
-    units: string;
+    unit: string;
     @Field()
     aisle: number;
     @Field()

@@ -48,6 +48,9 @@ export class Recipe extends BaseEntity {
   analyzedInstructions: string;
 
   @Field()
+  extendedIngredients: string;
+
+  @Field()
   @Column()
   isStarred: boolean;
 

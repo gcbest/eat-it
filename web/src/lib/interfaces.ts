@@ -21,6 +21,7 @@ export interface Recipe {
     sourceUrl: string;
     // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
+    extendedIngredients: string;
     tags: Tag[];
     mealType: number;
     isStarred: boolean
@@ -91,7 +92,7 @@ export interface CartItemInterface {
     name: string
     amount: number
     img?: string
-    units?: string
+    unit?: string
     aisle?: number
     isChecked: boolean
     isCleared: boolean
@@ -101,8 +102,7 @@ export interface CartItemEditables {
     [index: string]: boolean
     name: boolean
     amount: boolean
-    // img: boolean
-    units: boolean
+    unit: boolean
     aisle: boolean
 }
 

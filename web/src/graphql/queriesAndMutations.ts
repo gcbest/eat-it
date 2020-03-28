@@ -97,7 +97,7 @@ query GetCartItemsByUserId($id: Float!) {
         name
         amount
         img
-        units
+        unit
         aisle
         isChecked
         isCleared

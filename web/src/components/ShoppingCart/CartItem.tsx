@@ -21,7 +21,7 @@ interface Props {
 const initialState: CartItemEditables = {
     name: false,
     amount: false,
-    units: false,
+    unit: false,
     aisle: false,
 }
 
@@ -32,8 +32,8 @@ const reducer = (state: CartItemEditables, action: any): CartItemEditables  => {
             return {...state, name: value}
         case ItemDetails.amount: 
             return {...state, amount: value}
-        case ItemDetails.units: 
-            return {...state, units: value}
+        case ItemDetails.unit: 
+            return {...state, unit: value}
         case ItemDetails.aisle: 
             return {...state, aisle: value}
         default: 
@@ -42,7 +42,7 @@ const reducer = (state: CartItemEditables, action: any): CartItemEditables  => {
 }
 
 const CartItem: React.FC<Props> = ({ me, item }) => {
-    const {id, name, aisle, amount, units, img, isChecked} = item
+    const {id, name, aisle, amount, unit, img, isChecked} = item
     const nameRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const amountRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const unitsRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
@@ -52,7 +52,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     const { inputs, handleChange, resetForm } = useForm({
         name,
         amount,
-        units,
+        unit,
         aisle,
     });
 
@@ -68,7 +68,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     }, [
         isEditable.name,
         isEditable.amount,
-        isEditable.units,
+        isEditable.unit,
         isEditable.aisle
     ])
 
@@ -123,9 +123,9 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
                     <span onClick={() => toggleEditable(ItemDetails.amount)} className={isChecked ? 'completed' : ''}>{amount}</span>
                 }
                 {
-                    isEditable.units ?
-                    <Form.Control style={{width: 'fit-content'}} type="text" name="units" onChange={handleChange} value={inputs.units} ref={unitsRef} onBlur={() => toggleEditable(ItemDetails.units)}/> :
-                    <span onClick={() => toggleEditable(ItemDetails.units)} className={isChecked ? 'completed' : ''}>{units}</span>                    
+                    isEditable.unit ?
+                    <Form.Control style={{width: 'fit-content'}} type="text" name="unit" onChange={handleChange} value={inputs.unit} ref={unitsRef} onBlur={() => toggleEditable(ItemDetails.unit)}/> :
+                    <span onClick={() => toggleEditable(ItemDetails.unit)} className={isChecked ? 'completed' : ''}>{unit}</span>                    
                 }
                 {
                     isEditable.aisle ?

@@ -89,6 +89,7 @@ export class RecipeResolver {
             // convert analyzedInstructions into string
             const formattedResults = results.map((r: Recipe) => {
                 r.analyzedInstructions = JSON.stringify(r.analyzedInstructions[0])
+                r.extendedIngredients = JSON.stringify(r.extendedIngredients)
                 return r
             })
             return formattedResults;
@@ -114,8 +115,6 @@ export class RecipeResolver {
     @Mutation(() => User, { nullable: true })
     @UseMiddleware(isAuth)
     async addRecipe(@Arg("input") input: AddRecipeInput): Promise<User | undefined> {
-        // sample implementation
-        // const recipe = Recipe.create(input, ctx.req.body.user);
         try {
             let user = await User.findOne({ where: { id: input.userId } })
             const newRecipe = { ...input, user: user! }

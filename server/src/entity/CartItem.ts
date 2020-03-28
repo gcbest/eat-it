@@ -24,7 +24,7 @@ export class CartItem extends BaseEntity {
 
     @Field()
     @Column('text')
-    units: string;
+    unit: string;
 
     @Field(() => Int)
     @Column()

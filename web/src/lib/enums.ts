@@ -25,7 +25,7 @@ export enum Diet {
 export enum ItemDetails {
     name = 1,
     amount,
-    units,
+    unit,
     aisle
 }
 

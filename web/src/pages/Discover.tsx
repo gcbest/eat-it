@@ -33,6 +33,7 @@ const Discover: React.FC = () => {
             image
             summary
             sourceUrl
+            extendedIngredients
             analyzedInstructions
             dishTypes
         }
