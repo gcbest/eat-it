@@ -5,7 +5,7 @@ import MealsArea from "components/MealsArea";
 import Downshift, { resetIdCounter } from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
 import { ApolloConsumer, useLazyQuery } from "@apollo/react-hooks";
-import { FaStar, FaRegStar, FaShoppingCart } from "react-icons/fa";
+import { FaStar, FaRegStar, FaShoppingCart, FaDice } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { RecipeSlim } from "lib/interfaces";
 import SlidingPane from "components/SlidingPane/SlidingPane";
@@ -65,13 +65,12 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const handleGetAnyRecipe = () => {
-    if (userData && userData.me && userData.me.recipes) {
-      const recipesArr = userData.me.recipes
-      const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
-      handleShowRecipe(randomlySelectedRecipe.id)
-    }
-    console.error('No recipes found on user to randomly select one');
-
+    if (!userData || !userData.me || !userData.me.recipes)
+      return console.error('No recipes found on user to randomly select one');
+    
+    const recipesArr = userData.me.recipes
+    const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
+    handleShowRecipe(randomlySelectedRecipe.id)
   }
 
 
@@ -142,9 +141,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
         </Downshift>
       </SearchStyles>
       <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
-      <Button onClick={handleGetAnyRecipe}>Show Random Recipe</Button>
+      <Button onClick={handleGetAnyRecipe}>Show Random <FaDice/></Button>
       <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
-      {console.log(cartItemsData)}
       <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />}/>
       <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} />
     </ProfileContext.Provider>

@@ -7,13 +7,14 @@ import { trackWindowScroll, LazyComponentProps }
     from 'react-lazy-load-image-component';
 import { RecipeSlim, Recipe, ModalInterface } from 'lib/interfaces';
 import { MealItem } from './MealItem';
-import { ModalCategory } from 'lib/enums';
+import { ModalCategory, MealCategory } from 'lib/enums';
 // import CreateRecipeModal from './CreateRecipeModal';
 import { Tag } from 'react-tag-autocomplete';
 import { MealsAreaContext } from './MealsArea';
+import { getKeyByValue } from 'lib/utils';
 
 interface Props extends LazyComponentProps {
-    header: string
+    mealType: MealCategory
     recipesSlim: RecipeSlim[]
     // handleShow: (header: string) => void
     // setModalType: (modalType: ModalCategory) => void
@@ -21,12 +22,15 @@ interface Props extends LazyComponentProps {
 }
 
 // export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow, setModalType, setRecipe }) => {
-const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
+const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
     // const [show, setShow] = useState(false);
     // const handleClose = () => setShow(false);
     // // const handleShow = () => setShow(true);
 
     // const [recipes, setRecipes] = useState<RecipeSlim[]>([])
+    // const header = getKeyByValue(MealCategory, mealType)
+    const header = MealCategory[mealType]
+
     const { dispatch, currPos: scrollPosition } = useContext(MealsAreaContext)
     const [searchTerm, setSearchTerm] = useState('')
     const [searchResults, setSearchResults] = useState<RecipeSlim[]>([])
@@ -50,7 +54,7 @@ const MealCard: React.FC<Props> = ({ header, recipesSlim }) => {
     const showCreateModal = () => {
         dispatch({
             type: ModalCategory.Create,
-            value: { header }
+            value: { mealType }
         })
         // setModalType(ModalCategory.Create)
         // handleShow(header)

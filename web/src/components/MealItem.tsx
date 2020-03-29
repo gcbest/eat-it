@@ -81,7 +81,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, header, scrollPo
             dispatch({
                 type,
                 value: {
-                    header,
+                    // header,
                     tags,
                     recipe: data.getRecipeById,
                 }

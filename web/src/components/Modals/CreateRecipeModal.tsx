@@ -10,11 +10,13 @@ import { useAddRecipeMutation } from 'generated/graphql';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import placeholder from '../../assets/images/recipe_placeholder.jpg'
+import { getKeyByValue } from 'lib/utils';
 
 
-export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params }) => {
-    const { header } = params
-
+export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params: { mealType } }) => {
+    const header = MealCategory[mealType!]
+    debugger
+    
     return (
         <Modal.Title>Create New Recipe <Badge variant="secondary">{header}</Badge></Modal.Title>
     )
@@ -42,13 +44,13 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
             console.log('fill out the mandatory fields');
             return
         }
-        const recipe = { 
+        const recipe = {
             ...inputs,
-             tags,
-             userId: me!.id,
-             isStarred: false,
-             image: inputs.image ? inputs.image : placeholder,
-             mealType: parseFloat(MealCategory[header]) 
+            tags,
+            userId: me!.id,
+            isStarred: false,
+            image: inputs.image ? inputs.image : placeholder,
+            mealType: parseFloat(MealCategory[header])
         }
         console.log(recipe);
         const response = await addRecipe({

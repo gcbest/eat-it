@@ -17,11 +17,9 @@ interface Props<T> {
 const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
     const { me } = useContext(ProfileContext)
     const { show, modalType, recipe } = params
-    // const {recipe} = params!
-    // const {mealType} = recipe!
-    // if(recipe && recipe.mealType)
     const [tags, setTags] = useState<Tag[]>([])
-    const [mealType, setMealType] = useState<MealCategory|undefined>(recipe && recipe.mealType) //since meal type is found in header and body contains rest of form 
+    // use params.mealType for create modal and recipe.mealType for others
+    const [mealType, setMealType] = useState<MealCategory|undefined>(params.mealType || (recipe && recipe.mealType)) //since meal type is found in header and body contains rest of form 
     const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, {...params, mealType, setMealType, tags}, me, handleClose)
 
     // REACT TAGS

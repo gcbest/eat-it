@@ -24,18 +24,6 @@ export const RegistrationForm: React.FC = () => {
     const [register] = useRegisterMutation();
     const [login] = useLoginMutation();
 
-
-    // const handleSubmit = event => {
-    //     const form = event.currentTarget;
-    //     if (form.checkValidity() === false) {
-    //       event.preventDefault();
-    //       event.stopPropagation();
-    //     }
-
-    //     setValidated(true);
-    //   };
-
-
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         if (!isRegistrationValid()) {

@@ -53,7 +53,6 @@ export interface ModalInterface {
     show: boolean
     modalType?: ModalCategory
     recipe?: Recipe
-    header?: string
     tags?: Tag[]
     mealType?: MealCategory
     setMealType?: (mealType: MealCategory) => void

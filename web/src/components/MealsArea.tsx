@@ -6,6 +6,7 @@ import { getEnumNames, getKeyByValue } from 'lib/utils'
 import MainModal from './MainModal'
 import { ProfileContext } from 'pages/Profile'
 import { useScrollPosition } from '../lib/useScrollPosition'
+import { MealItem } from './MealItem'
 
 
 interface Props {
@@ -17,14 +18,13 @@ const CLOSE_MODAL = 'CLOSE_MODAL'
 
 const initialState: ModalInterface = {
     show: false,
-    header: '',
     modalType: undefined,
     recipe: undefined,
 }
 
 const reducer = (state: ModalInterface, action: ReducerAction) => {
     state = { ...state, show: true } // show the modal for all types
-    const { type, value } = action
+    const { type, value } = action // value includes ModalInterface props (recipe, mealType, tags)
     switch (type) {
         case ModalCategory.Create:
             return { ...state, modalType: ModalCategory.Create, ...value }
@@ -41,12 +41,7 @@ const reducer = (state: ModalInterface, action: ReducerAction) => {
 
 export const MealsAreaContext = React.createContext<any>(undefined)
 
-const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
-    // const [show, setShow] = useState(false)
-    // const [header, setHeader] = useState('')
-    // const [modalType, setModalType] = useState<ModalCategory|undefined>(undefined)
-    // const [recipe, setRecipe] = useState<Recipe|undefined>(undefined)
-
+const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred }) => {
     const { me } = useContext(ProfileContext)
 
     const [params, dispatch] = useReducer(reducer, initialState)
@@ -72,9 +67,6 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
         return { ...acc, [currentMealName]: [] }
     }, {})
 
-    if (recipesSlim === undefined || (Array.isArray(recipesSlim) && recipesSlim.length < 1))
-        return null
-
     // push each recipe into designated meal object {Breakfast: [{title: 'eggs & bacon'}]}
     recipesSlim.forEach(rcpSlm => {
         const mealName = getKeyByValue(MealCategory, rcpSlm.mealType)
@@ -86,22 +78,20 @@ const MealsArea: React.FC<Props> = ({ recipesSlim, onlyShowStarred }) => {
         else {
             sortedMeals[mealName!].push(rcpSlm)
         }
-
     })
 
     return (
         <div>
-
-            {/* <CreateRecipeModal show={show} handleClose={handleClose} options={{ header }} /> */}
-
+            {console.log(params)}
             {params.show && <MainModal params={params} handleClose={handleClose} me={me} />}
 
             <MealsAreaContext.Provider value={{ dispatch, currPos }}>
                 {/* create a new meal card for each meal of the day */}
                 {getEnumNames(MealCategory).map(mealName => {
                     const recipesForThisMeal = sortedMeals[mealName]
+                    const mealType = getKeyByValue(MealCategory, mealName)
                     // return <MealCard key={mealName} header={mealName} setRecipe={setRecipe} setModalType={setModalType} handleShow={handleShow} recipesSlim={recipesForThisMeal} />
-                    return <MealCard key={mealName} header={mealName} recipesSlim={recipesForThisMeal} />
+                    return <MealCard key={mealName} mealType={parseInt(mealType!)} recipesSlim={recipesForThisMeal} />
                 })}
             </MealsAreaContext.Provider>
         </div>

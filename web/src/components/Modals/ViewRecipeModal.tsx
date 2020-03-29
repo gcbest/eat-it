@@ -3,13 +3,15 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
 import { ModalInterface, ModalProps } from 'lib/interfaces'
-import { createMarkup } from 'lib/utils'
+import { createMarkup, getKeyByValue } from 'lib/utils'
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations'
 import { useDeleteRecipeByIdMutation } from 'generated/graphql'
+import { MealCategory } from 'lib/enums'
 
 
 export const ViewRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params }) => {
-    const { recipe, header } = params
+    const { recipe } = params
+    const header = getKeyByValue(MealCategory, recipe!.mealType)
 
     return (
         <Modal.Title>{recipe!.title} <Badge variant="secondary">{header}</Badge></Modal.Title>

@@ -27,7 +27,7 @@ export const EditRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params 
         <Fragment>
             <Modal.Title>Edit Recipe</Modal.Title>
             <Form>
-                <Form.Group controlId="view-header">
+                <Form.Group controlId="edit-header">
                     <Form.Control as="select" name="mealType" value={currentMealType.toString()} onChange={handleMealChange}>
                         {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
                     </Form.Control>
