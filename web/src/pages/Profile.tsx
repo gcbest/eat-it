@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
 import { RouteComponentProps, Link } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
@@ -17,15 +17,21 @@ export const ProfileContext = React.createContext<any>(undefined)
 const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const { data: userData, loading, error } = useMeQuery();
   const [loadingSearch, setLoadingSearch] = useState(false)
-  const [showRecipe, setShowRecipe] = useState(false)
+  const [showRandomRecipe, setShowRandomRecipe] = useState(false)
   const [showCart, setShowCart] = useState(false)
   const [recipes, setRecipes] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
-  const [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
+  let [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
   const [getCartItems, {loading: cartItemsLoading, error: cartItemsError, data: cartItemsData}] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
+  const randomlySelectedRecipesArr = []
 
-
-
+  useEffect(() => {
+    if(recipeData && recipeData.getRecipeById) {
+      recipeData.getRecipeById.id = Math.floor(Math.random() * 100)
+      recipeData = recipeData
+    }
+    
+  }, [recipeData])
 
   if (loading)
     return <div>loading...</div>;
@@ -34,7 +40,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   // DOWNSHIFT 
   const handleShowRecipe = (id: number) => {
     getRecipeById({ variables: { id } })
-    setShowRecipe(true)
+    setShowRandomRecipe(true)
   }
 
   const displayRecipe = (item: RecipeSlim | null) => {
@@ -69,7 +75,10 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       return console.error('No recipes found on user to randomly select one');
     
     const recipesArr = userData.me.recipes
-    const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
+    const randomlySelectedRecipe: any = recipesArr[Math.floor(Math.random() * recipesArr.length)]
+    // randomlySelectedRecipe.tempId = nanoid(3) // added so that useEffect can be triggered
+    console.log(randomlySelectedRecipe.tempId);
+    
     handleShowRecipe(randomlySelectedRecipe.id)
   }
 
@@ -82,6 +91,9 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
   /////////////////////////
 
+  // if(recipeData && recipeData.getRecipeById) {
+  // }
+  
   
   // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
@@ -96,7 +108,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   if (!userData || !userData.me)
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
-
 
   return (<div>
     <ProfileContext.Provider value={{ me: userData.me }}>
@@ -144,7 +155,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       <Button onClick={handleGetAnyRecipe}>Show Random <FaDice/></Button>
       <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
       <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />}/>
-      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} />
+      {/* create new object for recipeData so that it componentShouldUpdate is triggered in MealsArea's useEffect  */}
+      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={recipeData && {...recipeData}}/> 
     </ProfileContext.Provider>
   </div>)
 };

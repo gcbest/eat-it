@@ -1,17 +1,21 @@
-import React, { useReducer, useContext, useState } from 'react'
+import React, { useReducer, useContext, useState, useEffect } from 'react'
 import { MealCategory, ModalCategory } from 'lib/enums'
 import MealCard from './MealCard'
-import { RecipeSlim, ModalInterface, ReducerAction } from 'lib/interfaces'
+import { RecipeSlim, ModalInterface, ReducerAction, Recipe } from 'lib/interfaces'
 import { getEnumNames, getKeyByValue } from 'lib/utils'
 import MainModal from './MainModal'
 import { ProfileContext } from 'pages/Profile'
 import { useScrollPosition } from '../lib/useScrollPosition'
 import { MealItem } from './MealItem'
+import { randomFillSync } from 'crypto'
+import { GetRecipeByIdQuery } from 'generated/graphql'
 
 
 interface Props {
     recipesSlim: RecipeSlim[] | undefined
     onlyShowStarred: boolean
+    recipeData?: GetRecipeByIdQuery | {getRecipeById: Recipe}
+    // recipeData?: any
 }
 
 const CLOSE_MODAL = 'CLOSE_MODAL'
@@ -41,10 +45,22 @@ const reducer = (state: ModalInterface, action: ReducerAction) => {
 
 export const MealsAreaContext = React.createContext<any>(undefined)
 
-const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred }) => {
+const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeData }) => {
     const { me } = useContext(ProfileContext)
 
     const [params, dispatch] = useReducer(reducer, initialState)
+    
+    useEffect(() => {
+        if (!recipeData)
+            return;
+
+        const { getRecipeById: recipe } = recipeData
+        dispatch({
+            type: ModalCategory.View,
+            value: { recipe }
+        })
+    }, [recipeData])
+
 
     const handleClose = () => dispatch({ type: CLOSE_MODAL })
 
