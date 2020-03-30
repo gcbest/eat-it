@@ -6,15 +6,16 @@ import { getEnumNames, getKeyByValue } from 'lib/utils'
 import MainModal from './MainModal'
 import { ProfileContext } from 'pages/Profile'
 import { useScrollPosition } from '../lib/useScrollPosition'
-import { MealItem } from './MealItem'
-import { randomFillSync } from 'crypto'
 import { GetRecipeByIdQuery } from 'generated/graphql'
-
+import './MealsArea.css'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import Container from 'react-bootstrap/Container'
 
 interface Props {
     recipesSlim: RecipeSlim[] | undefined
     onlyShowStarred: boolean
-    recipeData?: GetRecipeByIdQuery | {getRecipeById: Recipe}
+    recipeData?: GetRecipeByIdQuery | { getRecipeById: Recipe }
     // recipeData?: any
 }
 
@@ -49,7 +50,7 @@ const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeD
     const { me } = useContext(ProfileContext)
 
     const [params, dispatch] = useReducer(reducer, initialState)
-    
+
     useEffect(() => {
         if (!recipeData)
             return;
@@ -97,7 +98,7 @@ const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeD
     })
 
     return (
-        <div>
+        <div className="mealsArea">
             {console.log(params)}
             {params.show && <MainModal params={params} handleClose={handleClose} me={me} />}
 

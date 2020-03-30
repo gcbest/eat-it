@@ -15,9 +15,10 @@ const LazyLoadPic: React.FC<Props<Image>> = ({ image }) => (
             alt={image.alt}
             height={image.height}
             src={image.src} 
+            style={image.style}
             scrollPosition={image.scrollPosition}
             width={image.width} />
-        <span>{image.caption}</span>
+        <span style={{display: 'block'}}>{image.caption}</span>
     </div>
 );
 

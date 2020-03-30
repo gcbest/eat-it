@@ -1,5 +1,6 @@
 import { Tag, MeLocalQuery } from "generated/graphql";
 import { ModalCategory, MealCategory } from "./enums";
+import { CSSProperties } from "react";
 
 export interface Instructions {
     name: string;
@@ -79,6 +80,7 @@ export interface ReducerAction {
 export interface Image {
     src: string
     alt: string
+    style?: CSSProperties
     caption?: string
     height?: string
     width?: string

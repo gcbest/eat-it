@@ -11,6 +11,7 @@ import { RecipeSlim } from "lib/interfaces";
 import SlidingPane from "components/SlidingPane/SlidingPane";
 import ShoppingCart from "components/ShoppingCart/ShoppingCart";
 import { GET_CART_ITEMS_BY_USER_ID } from "graphql/queriesAndMutations";
+import Container from "react-bootstrap/Container";
 
 export const ProfileContext = React.createContext<any>(undefined)
 
@@ -59,6 +60,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   ////////////////////////
 
   const handleStarToggle = () => {
+    recipeData = undefined // to prevent page from triggering show random recipe
     setOnlyShowStarred(!onlyShowStarred)
   }
 
@@ -99,7 +101,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   if (!userData || !userData.me)
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
-  return (<div>
+  return (<Container>
     <ProfileContext.Provider value={{ me: userData.me }}>
       <SearchStyles>
         <Downshift onChange={displayRecipe} itemToString={(item: any) => (item === null ? '' : item.title)}>
@@ -153,7 +155,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       {/* create new object for recipeData so that it componentShouldUpdate is triggered in MealsArea's useEffect  */}
       <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={recipeData && { ...recipeData }} />
     </ProfileContext.Provider>
-  </div>)
+  </Container>)
 };
 
 export default Profile
