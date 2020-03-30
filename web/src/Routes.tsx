@@ -16,15 +16,15 @@ const Profile = lazy(() => import('./pages/Profile'))
 const Discover = lazy(() => import('./pages/Discover'))
 
 export const Routes: React.FC = () => {
-  const { data: user, loading: loadingLocal } = useMeLocalQuery()
+  const { data: user, loading } = useMeLocalQuery()
   const loggedIn = user && user.me ? true : false
 
   return (
     <BrowserRouter>
-      <Header />
+      <Header user={user} loading={loading}  />
       {/* <Container> */}
-        <Row>
-          <Col>
+        {/* <Row> */}
+          {/* <Col> */}
             <Suspense fallback={<SpinnerComponent/>}>
               <Switch>
                 <Route exact path="/"> {loggedIn ? <Redirect to="/profile" /> : <Home />} </Route>
@@ -34,8 +34,8 @@ export const Routes: React.FC = () => {
                 <Route exact path="/discover" component={Discover} />
               </Switch>
             </Suspense>
-          </Col>
-        </Row>
+          {/* </Col> */}
+        {/* </Row> */}
       {/* </Container> */}
     </BrowserRouter>
   );

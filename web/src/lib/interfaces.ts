@@ -1,4 +1,4 @@
-import { Tag } from "generated/graphql";
+import { Tag, MeLocalQuery } from "generated/graphql";
 import { ModalCategory, MealCategory } from "./enums";
 
 export interface Instructions {
@@ -133,3 +133,9 @@ export interface useFormInterface {
     confirmPasswordsMatch(): boolean;
     isCreateRecipeValid(): boolean
 }
+
+export interface Me {
+    user: MeLocalQuery | undefined
+    loading: boolean
+    // error: Error
+  }

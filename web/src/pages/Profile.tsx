@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
 import { RouteComponentProps, Link } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
@@ -22,20 +22,12 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const [recipes, setRecipes] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
   let [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
-  const [getCartItems, {loading: cartItemsLoading, error: cartItemsError, data: cartItemsData}] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
-  const randomlySelectedRecipesArr = []
+  const [getCartItems, { loading: cartItemsLoading, error: cartItemsError, data: cartItemsData }] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
+  const hasRecipes = userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0
 
-  useEffect(() => {
-    if(recipeData && recipeData.getRecipeById) {
-      recipeData.getRecipeById.id = Math.floor(Math.random() * 100)
-      recipeData = recipeData
-    }
-    
-  }, [recipeData])
 
   if (loading)
     return <div>loading...</div>;
-
 
   // DOWNSHIFT 
   const handleShowRecipe = (id: number) => {
@@ -71,30 +63,28 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const handleGetAnyRecipe = () => {
-    if (!userData || !userData.me || !userData.me.recipes)
+    if (!(userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0))
       return console.error('No recipes found on user to randomly select one');
-    
+
     const recipesArr = userData.me.recipes
-    const randomlySelectedRecipe: any = recipesArr[Math.floor(Math.random() * recipesArr.length)]
-    // randomlySelectedRecipe.tempId = nanoid(3) // added so that useEffect can be triggered
-    console.log(randomlySelectedRecipe.tempId);
-    
+    const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
+    debugger
     handleShowRecipe(randomlySelectedRecipe.id)
   }
 
 
   // SHOPPING CART 
   const handleCartToggle = () => {
-    if(userData && userData.me && userData.me.id)
-      getCartItems({variables: {id: userData.me.id}})
-    setShowCart(!showCart)  
+    if (userData && userData.me && userData.me.id)
+      getCartItems({ variables: { id: userData.me.id } })
+    setShowCart(!showCart)
   }
   /////////////////////////
 
   // if(recipeData && recipeData.getRecipeById) {
   // }
-  
-  
+
+
   // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
   if (error) {
@@ -151,12 +141,17 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
           )}
         </Downshift>
       </SearchStyles>
-      <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
-      <Button onClick={handleGetAnyRecipe}>Show Random <FaDice/></Button>
-      <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
-      <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />}/>
+      {hasRecipes ?
+        <Fragment>
+          <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Show Starred <FaStar /></span> : <span>Show All <FaRegStar /></span>}</Button>
+          <Button onClick={handleGetAnyRecipe}>Show Random <FaDice /></Button>
+        </Fragment> 
+        : null
+      }
+      <Button onClick={handleCartToggle}><FaShoppingCart /></Button>
+      <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />} />
       {/* create new object for recipeData so that it componentShouldUpdate is triggered in MealsArea's useEffect  */}
-      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={recipeData && {...recipeData}}/> 
+      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={recipeData && { ...recipeData }} />
     </ProfileContext.Provider>
   </div>)
 };

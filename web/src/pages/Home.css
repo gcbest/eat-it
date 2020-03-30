@@ -1,0 +1,29 @@
+/*
+
+@media only screen and (max-width: 600px) {...}
+
+@media only screen and (min-width: 600px) {...}
+
+@media only screen and (min-width: 768px) {...}
+
+@media only screen and (min-width: 992px) {...}
+
+@media only screen and (min-width: 1200px) {...}
+
+*/
+.hero {
+  width: '100vw';
+  height: '100vh';
+  position: 'relative';
+}
+
+/* .hero {
+  background: url('https://images.unsplash.com/photo-1518176258769-f227c798150e')
+    center;
+  background-size: cover;
+  padding: 4rem 2rem;
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+} */

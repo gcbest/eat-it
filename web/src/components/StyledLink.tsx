@@ -5,7 +5,9 @@ import styled from 'styled-components';
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-
+    position: absolute;
+    top: 37%;
+    left: 24%;
     &:focus, &:hover, &:visited, &:link, &:active {
         text-decoration: none;
     }

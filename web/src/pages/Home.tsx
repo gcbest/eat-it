@@ -10,19 +10,19 @@ import img3 from '../assets/images/asparagus-barbecue-cuisine-delicious-361184.j
 import StyledLink from "components/StyledLink";
 import { SpinnerComponent } from 'components/Spinner'
 import LazyLoadPic from "components/LazyLoadPic";
-
+import './Home.css'
 
 interface Props { }
 
 const RegisterButton = styled.button`
   background: palevioletred;
   color: white;
-  font-size: 3em;
+  font-size: 1.5rem;
   display: block;
   margin: auto;
   padding: 0.25em 1em;
   border: 2px solid palevioletred;
-  border-radius: 3px;
+  border-radius: 7px;
 `;
 
 
@@ -57,15 +57,12 @@ const Home: React.FC<Props> = () => {
 
   return (
     <Fragment>
-      <div className="hero" style={{ width: '100vw', height: '100vh' }}>
-        <div className="wrapper" style={{ overflowY: 'hidden', height: '100%' }}>
+      <div className="hero" style={{ overflowY: 'hidden', height: '100%', position: 'relative' }}>
+        {/* <div className="wrapper" style={{ overflowY: 'hidden', height: '100%' }}> */}
           <LazyLoadPic image={heroImg} />
-        </div>
+          <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
+        {/* </div> */}
       </div>
-      <div>
-        <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
-      </div>
-
       <div className={moduleStyles.benefits}>
         <div>
           <LazyLoadPic image={pizzaImg} />
