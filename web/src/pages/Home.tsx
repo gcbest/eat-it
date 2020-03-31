@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { useUsersQuery } from "../generated/graphql";
 import moduleStyles from '../styles/Home.module.css';
-// import Button from 'react-bootstrap/Button'
 import styled from 'styled-components';
 import heroImage from '../assets/images/fruit-salads-in-plate-1640774.jpg';
 import img1 from '../assets/images/pizza-on-plate-2271194.jpg';
@@ -23,6 +22,20 @@ const RegisterButton = styled.button`
   padding: 0.25em 1em;
   border: 2px solid palevioletred;
   border-radius: 7px;
+`;
+
+const MainText = styled.h1`
+  text-shadow: 0 0 3px #FF0000;
+  position: absolute;
+    top: 43%;
+    left: 24%;
+`;
+
+const Description = styled.h4`
+  text-shadow: 0 0 3px #FF0000;
+  position: absolute;
+    top: 50%;
+    left: 24%;
 `;
 
 
@@ -61,6 +74,8 @@ const Home: React.FC<Props> = () => {
         {/* <div className="wrapper" style={{ overflowY: 'hidden', height: '100%' }}> */}
           <LazyLoadPic image={heroImg} />
           <StyledLink to="/register"><RegisterButton>Sign Up Now!</RegisterButton></StyledLink>
+          <MainText>Discover New Recipes, Track Your Grocery List</MainText>
+          <Description>All in one place</Description>
         {/* </div> */}
       </div>
       <div className={moduleStyles.benefits}>
