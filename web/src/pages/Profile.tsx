@@ -18,11 +18,11 @@ export const ProfileContext = React.createContext<any>(undefined)
 const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const { data: userData, loading, error } = useMeQuery();
   const [loadingSearch, setLoadingSearch] = useState(false)
-  const [showRandomRecipe, setShowRandomRecipe] = useState(false)
+  const [showRecipeModal, setShowRecipeModal] = useState(false) // to prevent modal from always showing when recipeData exists
   const [showCart, setShowCart] = useState(false)
   const [recipes, setRecipes] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
-  let [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
+  let   [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
   const [getCartItems, { loading: cartItemsLoading, error: cartItemsError, data: cartItemsData }] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
   const hasRecipes = userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0
 
@@ -33,12 +33,12 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   // DOWNSHIFT 
   const handleShowRecipe = (id: number) => {
     getRecipeById({ variables: { id } })
-    setShowRandomRecipe(true)
+    setShowRecipeModal(true)
   }
 
   const displayRecipe = (item: RecipeSlim | null) => {
     if (!item)
-      return
+      return setShowRecipeModal(false)
 
     return handleShowRecipe(item.id)
   }
@@ -60,7 +60,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   ////////////////////////
 
   const handleStarToggle = () => {
-    recipeData = undefined // to prevent page from triggering show random recipe
+    setShowRecipeModal(false)
     setOnlyShowStarred(!onlyShowStarred)
   }
 
@@ -77,6 +77,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   // SHOPPING CART 
   const handleCartToggle = () => {
+    setShowRecipeModal(false)
     if (userData && userData.me && userData.me.id)
       getCartItems({ variables: { id: userData.me.id } })
     setShowCart(!showCart)
@@ -85,7 +86,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
   // if(recipeData && recipeData.getRecipeById) {
   // }
-
 
   // TODO: set error name to check if not logged in
   // if (error && error.name === 'userNotFound') {
@@ -150,10 +150,10 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
         </Fragment> 
         : null
       }
-      <Button onClick={handleCartToggle}><FaShoppingCart /></Button>
+      <Button onClick={handleCartToggle}><FaShoppingCart/></Button>
       <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />} />
-      {/* create new object for recipeData so that it componentShouldUpdate is triggered in MealsArea's useEffect  */}
-      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={recipeData && { ...recipeData }} />
+      {/* create new object for recipeData so that componentShouldUpdate is triggered in MealsArea's useEffect  */}
+      <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={showRecipeModal && recipeData ? { ...recipeData } : undefined} />
     </ProfileContext.Provider>
   </Container>)
 };
