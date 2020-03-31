@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import { setAccessToken } from "../lib/accessToken";
 import { useLogoutMutation } from '../generated/graphql';
 import { Me } from 'lib/interfaces';
+import Col from 'react-bootstrap/Col';
 
 const LoginLink = () => (<Nav.Link as={Link} to="/login">Login</Nav.Link>)
 const LogoutLink = () => (<Nav.Link eventKey="1" as={Link} to="/login">Logout</Nav.Link>)
@@ -28,13 +29,15 @@ export const NavComponent: React.FC<Me> = ({ user, loading }) => {
           <img src="" alt="" />
           Eat It!
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" className="justify-content-end"/>
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav onSelect={handleLogout}>
-            {!loading && isLoggedIn ? <Nav.Link as={Link} to="/profile">Profile</Nav.Link> : null}
-            {!loading && isLoggedIn ? <Nav.Link as={Link} to="/discover">Discover</Nav.Link> : null}
-            {!loading && isLoggedIn ? null : <RegisterLink />}
-            {!loading && isLoggedIn ? <LogoutLink /> : <LoginLink />}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className="justify-content-end" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
+          <Nav style={{marginLeft: '2rem'}}>
+              {!loading && isLoggedIn ? <Nav.Link as={Link} to="/profile">Profile</Nav.Link> : null}
+              {!loading && isLoggedIn ? <Nav.Link as={Link} to="/discover">Discover</Nav.Link> : null}
+          </Nav>
+          <Nav style={{marginRight: '2rem'}} onSelect={handleLogout}>
+              {!loading && isLoggedIn ? null : <RegisterLink />}
+              {!loading && isLoggedIn ? <LogoutLink /> : <LoginLink />}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
