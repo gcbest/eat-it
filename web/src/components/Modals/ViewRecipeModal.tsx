@@ -25,7 +25,7 @@ export const ViewRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params })
     return (
         <Fragment>
             {image &&
-                <img src={image} alt={title} />}
+                <img src={image} alt={title} style={{width: '100%'}} />}
             <h3>{title}</h3>
             <p>
                 <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>

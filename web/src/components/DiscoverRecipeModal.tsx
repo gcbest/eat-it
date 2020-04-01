@@ -23,15 +23,16 @@ import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 
 interface Props<T>{
     params: T
+    handleClose: () => void
 }
 
 // interface ModalContent { title: string, actionButton: string, body: any }
 
 // const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
-const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params }) => {
-    const handleClose = () => null
+const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
+    // const handleClose = () => null
     // const [isEditing, setIsEditing] = useState(false)
-    const { show, recipe, modalType } = params
+    const { show, recipe } = params
 
     const user = useContext(DiscoverContext)
 
@@ -180,7 +181,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params }) => {
 
         <Fragment>
             {image &&
-                <img src={image} alt={title} />}
+                <img src={image} alt={title} style={{width: '100%'}} />}
             <h3>{title}</h3>
             <p>
                 <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
