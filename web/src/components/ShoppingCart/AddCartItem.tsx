@@ -9,6 +9,7 @@ import useForm from 'lib/useForm'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, DELETE_CART_ITEM } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import moduleStyles from './AddCartItem.module.css'
+import Row from 'react-bootstrap/Row';
 
 interface Props {
     itemSuggestions: CartItemInterface[]
@@ -59,7 +60,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
     }
 
 
-    const handleDelete = (id: number|undefined) => {
+    const handleDelete = (id: number | undefined) => {
         if (id && window.confirm('Are you sure you want to delete item?'))
             deleteCartItem({ variables: { id } })
     }
@@ -82,8 +83,8 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
     // based on the clicked suggestion.
     const getSuggestionValue = (suggestion: CartItemInterface) => (suggestion.name)
 
-    const renderSuggestion = (item: CartItemInterface, params: {isHighlighted: boolean, query: string}) => (        
-        <div style={{ background: params.isHighlighted ? 'lightgray' : 'white'}}>
+    const renderSuggestion = (item: CartItemInterface, params: { isHighlighted: boolean, query: string }) => (
+        <div style={{ background: params.isHighlighted ? 'lightgray' : 'white' }}>
             {item.name} | {item.amount} | {item.unit} | {item.aisle} | <Button onClick={() => handleDelete(item.id)} size="sm" variant="danger">x</Button>
         </div>
     );
@@ -99,7 +100,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
         setSuggestions([])
     };
 
-    const onSuggestionSelected = (event: any, { suggestion }: {suggestion: CartItemInterface}) => {
+    const onSuggestionSelected = (event: any, { suggestion }: { suggestion: CartItemInterface }) => {
         // set other input values once an item name is selected 
         const { name, amount, unit, aisle } = suggestion!
         const update: any = { name, amount, unit, aisle }
@@ -110,7 +111,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
         placeholder: 'Enter item name',
         value: inputs.name,
         onChange: handleChange,
-        style: formControlStyles, 
+        style: formControlStyles,
         name: 'name'
     };
 
@@ -118,7 +119,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="addCartItem">
                 <Form.Row>
-                    <Col>
+                    <Col sm={7} md={3}>
                         <Form.Label>Item Name</Form.Label>
                         <Autosuggest
                             suggestions={suggestions}
@@ -131,19 +132,20 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                         />
 
                     </Col>
-                    <Col>
+                    <Col sm={7} md={3}>
                         <Form.Label>Amount</Form.Label>
                         <Form.Control className={moduleStyles.formControl} type="number" name="amount" value={inputs.amount} onChange={handleChange} min="1" />
                     </Col>
-                    <Col>
+                    <Col sm={7} md={2}>
                         <Form.Label>Units</Form.Label>
                         <Form.Control className={moduleStyles.formControl} type="text" name="unit" value={inputs.unit} onChange={handleChange} placeholder="lbs/bags/etc" />
                     </Col>
-                    <Col>
+                    <Col sm={7} md={3}>
                         <Form.Label>Aisle #</Form.Label>
                         <Form.Control className={moduleStyles.formControl} type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
                     </Col>
-                    <Col>
+                    <Col sm={3} md={1}>
+                        <Form.Label>Add</Form.Label>
                         <Button type="submit"><FaPlus /></Button>
                     </Col>
                 </Form.Row>
