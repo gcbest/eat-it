@@ -24,13 +24,7 @@ export default function useForm(initialState: any = {}): useFormInterface {
     }
 
     function forceChange(updates: any) {
-        Object.keys(updates).forEach((key: any) => {
-            updateInputs((prevInputs: any) => ({
-                ...prevInputs, // overwrite inputs with new object
-                [key]: isNaN(parseFloat(updates[key])) ? updates[key] : parseFloat(updates[key]) // convert '1' to 1.0 but leave text alone
-            })
-            )
-        })
+        updateInputs({...inputs, ...updates})
     }
 
     function isRegistrationValid() {

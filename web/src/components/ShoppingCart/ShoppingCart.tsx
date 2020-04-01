@@ -64,7 +64,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
             <AddCartItem itemSuggestions={items} me={me} />
 
             {/* Unchecked Section */}
-            <Accordion defaultActiveKey="0">
+            <Accordion defaultActiveKey="0" style={{marginTop: '4rem'}}>
                 {/* <Accordion.Toggle as={Button} variant="link" eventKey="0"> */}
                 <Accordion.Toggle eventKey="0">
                     <h3>Items to Get</h3> 
@@ -73,7 +73,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
                 <Form.Control style={{display: 'inline', width: '35%'}} onChange={handleFilter}></Form.Control>
                 <Accordion.Collapse eventKey="0">
                     <ListGroup>
-                        {filteredItems.map(item => <CartItem key={item.id} me={me} item={item} />)}
+                        {filteredItems.length ? filteredItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
                     </ListGroup>
 
                 </Accordion.Collapse>
@@ -89,11 +89,10 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
                 <Button onClick={() => handleClearItems(completedItems)}>Clear Items</Button>
                 <Accordion.Collapse eventKey="1">
                     <ListGroup>
-                        {completedItems.map(item => <CartItem key={item.id} me={me} item={item} />)}
+                        {completedItems.length ? completedItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
                     </ListGroup>
                 </Accordion.Collapse>
             </Accordion>
-
 
         </div >
     )
