@@ -9,7 +9,6 @@ import useForm from 'lib/useForm'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, DELETE_CART_ITEM } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import moduleStyles from './AddCartItem.module.css'
-import Row from 'react-bootstrap/Row';
 
 interface Props {
     itemSuggestions: CartItemInterface[]
@@ -146,7 +145,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                     </Col>
                     <Col sm={3} md={1}>
                         <Form.Label>Add</Form.Label>
-                        <Button type="submit"><FaPlus /></Button>
+                        <Button type="submit"><FaPlus/></Button>
                     </Col>
                 </Form.Row>
             </Form.Group>

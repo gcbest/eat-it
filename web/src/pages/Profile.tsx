@@ -13,6 +13,7 @@ import ShoppingCart from "components/ShoppingCart/ShoppingCart";
 import { GET_CART_ITEMS_BY_USER_ID } from "graphql/queriesAndMutations";
 import Container from "react-bootstrap/Container";
 
+
 export const ProfileContext = React.createContext<any>(undefined)
 
 const Profile: React.FC<RouteComponentProps> = ({ history }) => {
