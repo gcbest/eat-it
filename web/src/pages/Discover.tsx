@@ -13,6 +13,7 @@ import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks'
 import { ModalInterface } from '../lib/interfaces'
 import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQuery } from 'generated/graphql';
+import Form from 'react-bootstrap/Form';
 
 export const DiscoverContext = React.createContext<any>(undefined)
 
@@ -821,31 +822,39 @@ const Discover: React.FC = () => {
     // }]
 
     return (
-        // <Container>
-        //     <Row>
-        //         <Col>
-        <DiscoverContext.Provider value={{me: user ? user.me : null}}>
+        <Container>
+        {/* //     <Row>
+        //         <Col> */}
+        <DiscoverContext.Provider value={{ me: user ? user.me : null }}>
 
-                    <InputGroup className="mb-3">
-                        <FormControl
-                            type="input"
-                            placeholder="Recipient's username"
-                            aria-label="Recipient's username"
-                            aria-describedby="basic-addon2"
-                            ref={queryRef as any} // react-bootstrap TS bug
-                            />
-                        <InputGroup.Append>
-                            <Button variant="outline-secondary" onClick={handleSearch}>Discover</Button>
-                        </InputGroup.Append>
-                    </InputGroup> {
-                        loading ?
-                        <SpinnerComponent /> :
-                        <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
-                    }
+            <Form>
+                <Form.Group>
+                    <Form.Label>
+                        <h2>Find New Recipes!</h2>
+                    </Form.Label>
+                <InputGroup className="mb-3">
+                    <FormControl
+                        type="input"
+                        placeholder="e.g. scallops"
+                        aria-label="recipe"
+                        aria-describedby="basic-addon2"
+                        ref={queryRef as any} // react-bootstrap TS bug
+                        />
+                    <InputGroup.Append>
+                        <Button variant="outline-secondary" onClick={handleSearch}>Discover</Button>
+                    </InputGroup.Append>
+                </InputGroup>
+                        </Form.Group>
+            </Form>
+            {
+                loading ?
+                    <SpinnerComponent /> :
+                    <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
+            }
         </DiscoverContext.Provider>
-        //         </Col>
-        //     </Row>
-        // </Container>
+        {/* //         </Col>
+        //     </Row> */}
+        </Container>
     )
 }
 

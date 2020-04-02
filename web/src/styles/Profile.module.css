@@ -1,0 +1,16 @@
+.content {
+  background: linear-gradient(
+    rgba(207, 243, 166, 0.45),
+    rgba(204, 240, 180, 0.45)
+  );
+}
+
+.actionButtons {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* .actionButtons button {
+  margin: 0 0.5rem;
+} */

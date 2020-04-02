@@ -12,6 +12,8 @@ import gql from 'graphql-tag';
 import nanoid from 'nanoid';
 import { DiscoverContext } from 'pages/Discover';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
+import {FaHeart} from 'react-icons/fa'
+
 
 
 // interface Props extends ModalInterface {
@@ -276,7 +278,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
                             />
                 </div>
                 <Button variant="secondary" onClick={() => handleSave()}>
-                    {`Add Recipe`}
+                    Add Recipe <FaHeart/> 
                 </Button>
             </Modal.Footer>
         </Modal>

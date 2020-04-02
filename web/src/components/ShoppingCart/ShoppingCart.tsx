@@ -13,6 +13,7 @@ import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import shoppingCartStyles from './ShoppingCart.module.css'
 
 
 

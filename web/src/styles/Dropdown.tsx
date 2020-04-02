@@ -36,7 +36,10 @@ const SearchStyles = styled.div`
   input {
     width: 100%;
     padding: 10px;
-    border: 0;
+    /* border: .25px solid ${props => props.theme.lightgrey}; */
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: 0.4rem;
+    margin-top: 1rem;
     font-size: 2rem;
     &.loading {
       animation: ${glow} 0.5s ease-in-out infinite alternate;
