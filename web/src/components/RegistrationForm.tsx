@@ -9,7 +9,8 @@ import useForm from 'lib/useForm';
 import { getKeyByValue } from 'lib/utils';
 import { Diet } from 'lib/enums';
 import { Tag } from 'react-tag-autocomplete';
-
+import formStyles from './RegistrationForm.module.css';
+import Card from 'react-bootstrap/Card';
 
 export const RegistrationForm: React.FC = () => {
     const { inputs, handleChange, resetForm, isRegistrationValid, confirmPasswordsMatch } = useForm({
@@ -34,11 +35,11 @@ export const RegistrationForm: React.FC = () => {
 
         console.log("form submitted");
         const { email, password, exerciseLevel, diets } = inputs
-        const defaultTags: Tag[] = [{id: nanoid(8), name: 'high-protein'}, {id: nanoid(8), name: 'vegan'}]
+        const defaultTags: Tag[] = [{ id: nanoid(8), name: 'high-protein' }, { id: nanoid(8), name: 'vegan' }]
         // e.g. (['keto', 'pescatarian']) => [{id: 123, name: 'keto'}, {id: 456, name: 'pescatarian'}]
         const convertDietTypesToTags = (dietsArr: number[]): Tag[] => dietsArr.map(dietNum => {
             const dietName = getKeyByValue(Diet, dietNum)!.toLowerCase()
-            return {id: nanoid(8), name: dietName}
+            return { id: nanoid(8), name: dietName }
         })
         // convert string values of diet types to ints
         const dietsArr: number[] = diets.split(',').map((d: string) => parseInt(d)) // e.g. (['1', '4']) => [1,4]
@@ -59,26 +60,26 @@ export const RegistrationForm: React.FC = () => {
 
             await login({
                 variables: {
-                  email,
-                  password,
+                    email,
+                    password,
                 },
                 update: (store, { data }) => {
-                  if (!data) {
-                    return null;
-                  }
-      
-                  console.log('DATA from CACHE');
-                  console.log(data);
-      
-                  store.writeQuery<MeQuery>({
-                    query: MeDocument,
-                    data: {
-                      me: data.login.user
+                    if (!data) {
+                        return null;
                     }
-                  });
+
+                    console.log('DATA from CACHE');
+                    console.log(data);
+
+                    store.writeQuery<MeQuery>({
+                        query: MeDocument,
+                        data: {
+                            me: data.login.user
+                        }
+                    });
                 }
             })
-                
+
             resetForm();
             setIsLoggedIn(true)
         } catch (error) {
@@ -87,46 +88,50 @@ export const RegistrationForm: React.FC = () => {
     }
 
     return (
-        isLoggedIn ? 
-        <Redirect to="/profile" push={true} /> 
-        :
-        <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="email">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" name="email" placeholder="name@example.com" value={inputs.email} onChange={handleChange} />
-            </Form.Group>
-            <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="*********" value={inputs.password} onChange={handleChange} />
-            </Form.Group>
-            {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)}
-            <Form.Group controlId="confirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" name="confirmPassword" placeholder="*********" value={inputs.confirmPassword} onChange={handleChange} />
-            </Form.Group>
-            <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Label>Example select</Form.Label>
-                <Form.Control as="select" name="exerciseLevel" value={inputs.exerciseLevel} onChange={handleChange}>
-                    <option value="1">1 (Exercise? What's That?)</option>
-                    <option value="2">2 </option>
-                    <option value="3">3 (3+ days/week)</option>
-                    <option value="4">4</option>
-                    <option value="5">5 (High Intensity 5+ days/week)</option>
-                </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="exampleForm.ControlSelect2">
-                <Form.Label>Example multiple select</Form.Label>
-                <Form.Control as="select" multiple name="diets" value={inputs.diets} onChange={handleChange}>
-                    <option value="1">Carnivore</option>
-                    <option value="2">Mediterranean</option>
-                    <option value="3">Pescatarian</option>
-                    <option value="4">Vegetarian</option>
-                    <option value="5">Vegan</option>
-                </Form.Control>
-            </Form.Group>
-            {(showCompleteFormAlert && <Alert variant='warning'>Please answer all questions</Alert>)}
-            {/* {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)} */}
-            <Button variant="secondary" type="submit" disabled={showCompleteFormAlert || !confirmPasswordsMatch()} >Submit</Button>
-        </Form>
+        isLoggedIn ?
+            <Redirect to="/profile" push={true} />
+            :
+            <Card className={formStyles.register}>
+                <Card.Body>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="email">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control type="email" name="email" placeholder="name@example.com" value={inputs.email} onChange={handleChange} />
+                        </Form.Group>
+                        <Form.Group controlId="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" name="password" placeholder="*********" value={inputs.password} onChange={handleChange} />
+                        </Form.Group>
+                        {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)}
+                        <Form.Group controlId="confirmPassword">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control type="password" name="confirmPassword" placeholder="*********" value={inputs.confirmPassword} onChange={handleChange} />
+                        </Form.Group>
+                        {/* <Form.Group controlId="ControlSelect1">
+                            <Form.Label>exerciseLevel</Form.Label>
+                            <Form.Control as="select" name="exerciseLevel" value={inputs.exerciseLevel} onChange={handleChange}>
+                                <option value="1">1 (Exercise? What's That?)</option>
+                                <option value="2">2 </option>
+                                <option value="3">3 (3+ days/week)</option>
+                                <option value="4">4</option>
+                                <option value="5">5 (High Intensity 5+ days/week)</option>
+                            </Form.Control>
+                        </Form.Group> */}
+                        <Form.Group controlId="ControlSelect2">
+                            <Form.Label>Preferred Diets</Form.Label>
+                            <Form.Control as="select" multiple name="diets" value={inputs.diets} onChange={handleChange}>
+                                <option value="1">Carnivore</option>
+                                <option value="2">Mediterranean</option>
+                                <option value="3">Pescatarian</option>
+                                <option value="4">Vegetarian</option>
+                                <option value="5">Vegan</option>
+                            </Form.Control>
+                        </Form.Group>
+                        {(showCompleteFormAlert && <Alert variant='warning'>Please answer all questions</Alert>)}
+                        {/* {(!confirmPasswordsMatch() && <Alert variant='danger'>Passwords do not match!</Alert>)} */}
+                        <Button variant="secondary" type="submit" disabled={showCompleteFormAlert || !confirmPasswordsMatch()} >Submit</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
     )
 }

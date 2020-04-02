@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { useLoginMutation, MeDocument, MeQuery } from "../generated/graphql";
 import { setAccessToken } from "../lib/accessToken";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import loginStyles from '../styles/Login.module.css'
+import Button from "react-bootstrap/Button";
 
 interface Props { }
 
@@ -31,41 +35,57 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
   });
 
   return (
-    <form
-      onSubmit={async e => {
-        e.preventDefault();
-        console.log("form submitted");
-        const response = await login().catch(err => { return console.error(err) });
+    <div className={loginStyles.background}>
+      <Card className={loginStyles.login}>
+        <Form
+          onSubmit={async (e: any) => {
+            e.preventDefault();
+            console.log("form submitted");
+            const response = await login().catch(err => { return console.error(err) });
 
-        console.log(response);
-        if (response && response.data) {
-          setAccessToken(response.data.login.accessToken);
-          history.push("/");
-        }
+            console.log(response);
+            if (response && response.data) {
+              setAccessToken(response.data.login.accessToken);
+              history.push("/");
+            }
 
-      }}
-    >
-      <div>
-        <input
-          value={email}
-          placeholder="email"
-          onChange={e => {
-            setEmail(e.target.value);
           }}
-        />
-      </div>
-      <div>
-        <input
+        >
+          {/* <div>
+          <input
+            value={email}
+            placeholder="email"
+            onChange={e => {
+              setEmail(e.target.value);
+            }}
+          />
+        </div> */}
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" name="email" placeholder="name@example.com" value={email} onChange={(e: any) => {
+              setEmail(e.target.value);
+            }} />
+          </Form.Group>
+          {/* <div>
+          <input
           type="password"
           value={password}
           placeholder="password"
           onChange={e => {
             setPassword(e.target.value);
           }}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+          />
+        </div> */}
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" name="password" placeholder="*********" value={password} onChange={(e: any) => {
+              setPassword(e.target.value);
+            }} />
+          </Form.Group>
+          <Button type="submit">login</Button>
+        </Form>
+      </Card>
+    </div>
   );
 };
 

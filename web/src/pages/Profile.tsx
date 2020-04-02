@@ -1,10 +1,11 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
 import { RouteComponentProps, Link } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
-import Downshift, { resetIdCounter } from 'downshift';
+import Downshift from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
 import { ApolloConsumer, useLazyQuery } from "@apollo/react-hooks";
+import debounce from 'lodash.debounce';
 import { FaStar, FaRegStar, FaShoppingCart, FaDice } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { RecipeSlim } from "lib/interfaces";
@@ -28,7 +29,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const [getCartItems, { loading: cartItemsLoading, error: cartItemsError, data: cartItemsData }] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
   const hasRecipes = userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0
 
-
   if (loading)
     return <div>loading...</div>;
 
@@ -39,15 +39,17 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const displayRecipe = (item: RecipeSlim | null) => {
+    debugger
     if (!item)
       return setShowRecipeModal(false)
 
     return handleShowRecipe(item.id)
   }
 
-  const onSearchChange = (e: any) => {
+  const onSearchChange = debounce((e: any) => {
     console.log('Searching...');
     // turn loading on
+    setShowRecipeModal(false)
     setLoadingSearch(true)
 
     // filter
@@ -58,7 +60,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
       setRecipes(filteredRecipes)
     }
     setLoadingSearch(false)
-  }
+  }, 350)
   ////////////////////////
 
   const handleStarToggle = () => {
@@ -101,7 +103,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
   return (
-    <div className={profileStyles.content}>
+
+    <div className={profileStyles.background}>
 
       <Container>
         <ProfileContext.Provider value={{ me: userData.me }}>

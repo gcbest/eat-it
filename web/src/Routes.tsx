@@ -22,9 +22,6 @@ export const Routes: React.FC = () => {
   return (
     <BrowserRouter>
       <Header user={user} loading={loading}  />
-      {/* <Container> */}
-        {/* <Row> */}
-          {/* <Col> */}
             <Suspense fallback={<SpinnerComponent/>}>
               <Switch>
                 <Route exact path="/"> {loggedIn ? <Redirect to="/profile" /> : <Home />} </Route>
@@ -34,9 +31,6 @@ export const Routes: React.FC = () => {
                 <Route exact path="/discover" component={Discover} />
               </Switch>
             </Suspense>
-          {/* </Col> */}
-        {/* </Row> */}
-      {/* </Container> */}
     </BrowserRouter>
   );
 };

@@ -21,7 +21,7 @@ export const Header: React.FC<Props> = ({user, loading}) => {
   return (
     <header>
       <Nav user={user} loading={loading}/>
-      {body}
+      {/* {body} */}
     </header>
   );
 };

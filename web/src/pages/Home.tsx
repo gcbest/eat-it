@@ -78,7 +78,7 @@ const Home: React.FC<Props> = () => {
           <Description>All in one place</Description>
         {/* </div> */}
       </div>
-      <div className={moduleStyles.benefits}>
+      {/* <div className={moduleStyles.benefits}>
         <div>
           <LazyLoadPic image={pizzaImg} />
         </div>
@@ -87,9 +87,8 @@ const Home: React.FC<Props> = () => {
         </div>
         <div>
           <LazyLoadPic image={prepImg} />
-          {/* <img src={img3} alt="Prep" /> */}
         </div>
-      </div>
+      </div> */}
     </Fragment>
   );
 

@@ -1,0 +1,26 @@
+.background {
+  /* background: linear-gradient(
+    rgba(207, 243, 166, 0.45),
+    rgba(204, 240, 180, 0.45)
+  ); */
+  background-image: url(../assets/images/close-up-cold-color-drop-372882.jpg);
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.login {
+  background: rgba(120, 194, 173, 0.65);
+  max-width: 40%;
+  margin: 0 auto;
+  padding: 1.5rem 3rem;
+  vertical-align: middle;
+}
+
+label {
+  opacity: 1;
+  /* color: #212529; */
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
