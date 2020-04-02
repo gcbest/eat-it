@@ -39,7 +39,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const displayRecipe = (item: RecipeSlim | null) => {
-    debugger
     if (!item)
       return setShowRecipeModal(false)
 
@@ -103,17 +102,15 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
   return (
-
     <div className={profileStyles.background}>
-
       <Container>
         <ProfileContext.Provider value={{ me: userData.me }}>
           <SearchStyles>
-            <Downshift onChange={displayRecipe} itemToString={(item: any) => (item === null ? '' : item.title)}>
+            <Downshift 
+              itemToString={(item: any) => (item === null ? '' : item.title)}
+              onSelect={displayRecipe}>
               {({ getInputProps, getItemProps, isOpen, inputValue, highlightedIndex }) => (
                 <div>
-                  <ApolloConsumer>
-                    {client => (
                       <input
                         {...getInputProps({
                           type: 'search',
@@ -126,8 +123,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
                           },
                         })}
                       />
-                    )}
-                  </ApolloConsumer>
                   {isOpen && (
                     <DropDown>
                       {recipes.map((item: any, index) => (
@@ -141,7 +136,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
                         </DropDownItem>
                       ))}
                       {!recipes.length &&
-                        !loading && <DropDownItem> Nothing Found {inputValue}</DropDownItem>}
+                        !loading && <DropDownItem> Nothing Found: {inputValue}</DropDownItem>}
                     </DropDown>
                   )}
                 </div>
