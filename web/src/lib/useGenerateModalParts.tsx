@@ -26,7 +26,7 @@ export const useGenerateModalParts = (type: ModalCategory, params: ModalInterfac
             break
         case ModalCategory.View:
             ModalHeader = <ViewRecipeHeader params={params} />
-            ModalBody = <ViewRecipeBody params={params} />
+            ModalBody = <ViewRecipeBody params={params} me={me} />
             ModalFooter = <ViewRecipeFooter params={params} me={me} />
             break
         case ModalCategory.Edit:
