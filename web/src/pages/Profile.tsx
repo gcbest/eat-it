@@ -101,6 +101,11 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   if (!userData || !userData.me)
     return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
 
+  // size buttons based on window width
+  const btnProp: {size?: 'lg' | 'sm'} = {}
+  if(window.innerWidth > 900)
+    btnProp.size = 'lg'
+
   return (
     <div className={profileStyles.background}>
       <Container>
@@ -146,12 +151,12 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
           <div className={profileStyles.actionButtons}>
             {hasRecipes ?
               <Fragment>
-                <Button onClick={handleStarToggle}>{!onlyShowStarred ? <span>Starred <FaStar /></span> : <span>All <FaRegStar /></span>}</Button>
-                <Button onClick={handleGetAnyRecipe}>Random <FaDice /></Button>
+                <Button {...btnProp} onClick={handleStarToggle}>{!onlyShowStarred ? <span>Starred <FaStar /></span> : <span>All <FaRegStar /></span>}</Button>
+                <Button {...btnProp} onClick={handleGetAnyRecipe}>Random <FaDice /></Button>
               </Fragment>
               : null
             }
-            <Button onClick={handleCartToggle}>Cart <FaShoppingCart /></Button>
+            <Button {...btnProp} onClick={handleCartToggle}>Cart <FaShoppingCart /></Button>
           </div>
           <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />} />
           {/* create new object for recipeData so that componentShouldUpdate is triggered in MealsArea's useEffect  */}

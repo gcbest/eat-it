@@ -12,6 +12,7 @@ import { ModalCategory, MealCategory } from 'lib/enums';
 import { Tag } from 'react-tag-autocomplete';
 import { MealsAreaContext } from './MealsArea';
 import { getKeyByValue } from 'lib/utils';
+import mealCardStyles from './MealCard.module.css'
 
 interface Props extends LazyComponentProps {
     mealType: MealCategory
@@ -69,7 +70,7 @@ const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
     return (
         <Card>
             <Card.Header>{header}</Card.Header>
-            <Card.Body>
+            <Card.Body className={mealCardStyles.cardContainer}>
                 <Card.Title>
                     <Form>
                         <Form.Group controlId={`${header}Filter`}>

@@ -1,0 +1,4 @@
+.cardContainer {
+  max-height: 30rem;
+  overflow-y: scroll;
+}

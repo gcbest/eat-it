@@ -7,14 +7,17 @@
   height: 100vh;
   background-size: cover;
   background-position: center;
+  position: relative;
 }
 
 .login {
   background: rgba(120, 194, 173, 0.65);
   max-width: 40%;
-  margin: 0 auto;
   padding: 1.5rem 3rem;
-  vertical-align: middle;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 label {
@@ -23,4 +26,10 @@ label {
   color: #fff;
   font-size: 1.1rem;
   font-weight: 500;
+}
+
+@media only screen and (max-width: 600px) {
+  .login {
+    max-width: 80%;
+  }
 }

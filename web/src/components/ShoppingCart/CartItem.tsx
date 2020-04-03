@@ -7,11 +7,15 @@ import { useMutation } from '@apollo/react-hooks'
 import { CartItemInterface, User, CartItemEditables } from 'lib/interfaces'
 import ingredientPlaceholder from '../../assets/images/ingredients_placeholder.png'
 import Button from 'react-bootstrap/Button'
-import './CartItem.css'
 import { ItemDetails } from 'lib/enums'
 import { getKeyByValue } from 'lib/utils'
 import FormControl from 'react-bootstrap/FormControl'
 import useForm from 'lib/useForm'
+import classNames from 'classnames/bind'
+import cartItemStyles from './CartItem.module.css'
+import CartTextInput from './CartTextInput'
+
+let cx = classNames.bind(cartItemStyles)
 
 interface Props {
     item: CartItemInterface
@@ -25,27 +29,27 @@ const initialState: CartItemEditables = {
     aisle: false,
 }
 
-const reducer = (state: CartItemEditables, action: any): CartItemEditables  => {
-    const {type, value} = action
-    switch(type) {
-        case ItemDetails.name: 
-            return {...state, name: value}
-        case ItemDetails.amount: 
-            return {...state, amount: value}
-        case ItemDetails.unit: 
-            return {...state, unit: value}
-        case ItemDetails.aisle: 
-            return {...state, aisle: value}
-        default: 
+const reducer = (state: CartItemEditables, action: any): CartItemEditables => {
+    const { type, value } = action
+    switch (type) {
+        case ItemDetails.name:
+            return { ...state, name: value }
+        case ItemDetails.amount:
+            return { ...state, amount: value }
+        case ItemDetails.unit:
+            return { ...state, unit: value }
+        case ItemDetails.aisle:
+            return { ...state, aisle: value }
+        default:
             return state
     }
 }
 
 const CartItem: React.FC<Props> = ({ me, item }) => {
-    const {id, name, aisle, amount, unit, img, isChecked} = item
+    const { id, name, aisle, amount, unit, img, isChecked } = item
     const nameRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const amountRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
-    const unitsRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
+    const unitRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const aisleRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const [isEditable, dispatch] = useReducer(reducer, initialState)
 
@@ -56,34 +60,34 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         aisle,
     });
 
-    useEffect(() => {
-        if(nameRef && nameRef.current)
-            nameRef.current.focus()
-        if(amountRef && amountRef.current)
-            amountRef.current.focus()
-        if(unitsRef && unitsRef.current)
-            unitsRef.current.focus()
-        if(aisleRef && aisleRef.current)
-            aisleRef.current.focus()
-    }, [
-        isEditable.name,
-        isEditable.amount,
-        isEditable.unit,
-        isEditable.aisle
-    ])
+    // useEffect(() => {
+    //     if(nameRef && nameRef.current)
+    //         nameRef.current.focus()
+    //     if(amountRef && amountRef.current)
+    //         amountRef.current.focus()
+    //     if(unitRef && unitRef.current)
+    //         unitRef.current.focus()
+    //     if(aisleRef && aisleRef.current)
+    //         aisleRef.current.focus()
+    // }, [
+    //     isEditable.name,
+    //     isEditable.amount,
+    //     isEditable.unit,
+    //     isEditable.aisle
+    // ])
 
     const [updateCartItem] = useMutation(UPDATE_CART_ITEM_BY_ID, {
-        variables: {item: {...item, ...inputs, userId: me.id}},
+        variables: { item: { ...item, ...inputs, userId: me.id } },
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
     const [toggleCartItem] = useMutation(TOGGLE_CART_ITEM_CHECKED_BY_ID, {
-        variables: {id, isChecked: !isChecked},
+        variables: { id, isChecked: !isChecked },
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
     const [clearCartItem] = useMutation(CLEAR_ITEM_FROM_SHOPPING_LIST, {
-        variables: {id, isCleared: true},
+        variables: { id, isCleared: true },
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
@@ -92,52 +96,58 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     // set value equal to the opposite of what that value currently is 
     const toggleEditable = (type: any) => {
         const key: string | undefined = getKeyByValue(ItemDetails, type)
-        if(!key) return
-        
+        if (!key) return
+
         const isInputEditable = isEditable[key]
-        if(isInputEditable) // turning from editable to non-editable, so auto save changes made
+        if (isInputEditable) // turning from editable to non-editable, so auto save changes made
             updateCartItem()
-        dispatch({type, value: !isInputEditable}) // e.g. ['name'] of true set = false now
+        dispatch({ type, value: !isInputEditable }) // e.g. ['name'] of true set = to false now
     }
 
     const handleClearItemFromList = () => clearCartItem()
 
     const imgUrl = img ? img : ingredientPlaceholder
 
+    // Add conditional classNames
+    let className = cx({
+        completed: isChecked,
+        itemInfo: true,
+        displayImage: true
+    })
+
     return (
         <ListGroup.Item variant={isChecked ? 'dark' : 'light'}>
-            <Form.Check
-                type='checkbox'
-                id={`${name}`}
-                checked={isChecked}
-            >
-                <img onClick={handleClick} src={imgUrl} alt={name} style={{width: '2rem', borderRadius: '5rem' }}/>
-                {
-                    isEditable.name ? 
-                    <Form.Control style={{width: 'fit-content'}} type="text" name="name" onChange={handleChange} value={inputs.name} ref={nameRef} onBlur={() => toggleEditable(ItemDetails.name)}/> :
-                    <span onClick={() => toggleEditable(ItemDetails.name)} className={isChecked ? 'completed' : ''}>{name}</span>
-                }
-                {
-                    isEditable.amount ?
-                    <Form.Control style={{width: 'fit-content'}} type="number" min="1" name="amount" onChange={handleChange} value={inputs.amount.toString()} ref={amountRef} onBlur={() => toggleEditable(ItemDetails.amount)}/> :
-                    <span onClick={() => toggleEditable(ItemDetails.amount)} className={isChecked ? 'completed' : ''}>{amount}</span>
-                }
-                {
-                    isEditable.unit ?
-                    <Form.Control style={{width: 'fit-content'}} type="text" name="unit" onChange={handleChange} value={inputs.unit} ref={unitsRef} onBlur={() => toggleEditable(ItemDetails.unit)}/> :
-                    <span onClick={() => toggleEditable(ItemDetails.unit)} className={isChecked ? 'completed' : ''}>{unit}</span>                    
-                }
-                {
-                    isEditable.aisle ?
-                    (
-                    <span>Aisle # <Form.Control style={{width: 'fit-content', display: 'inline'}} type="number" min="1" name="aisle" onChange={handleChange} value={inputs.aisle} ref={aisleRef} onBlur={() => toggleEditable(ItemDetails.aisle)}/> </span>
-                    )
-                    :
-                    <span onClick={() => toggleEditable(ItemDetails.aisle)} className={isChecked ? 'completed' : ''}>Aisle <Badge variant="primary">{aisle}</Badge></span>
-                }
-                
-                <Button variant="danger" onClick={handleClearItemFromList}>X</Button>
-            </Form.Check>
+            <img onClick={handleClick} src={imgUrl} alt={name} className={cartItemStyles.displayImage} />
+
+            <CartTextInput isEditable={isEditable.name} inputType="text" name="name"
+                handleChange={handleChange} value={inputs.name} ref={nameRef}
+                details={ItemDetails.name}
+                toggleEditable={toggleEditable}
+                className={className}
+            />
+
+            <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
+                handleChange={handleChange} value={inputs.amount} ref={amountRef}
+                details={ItemDetails.amount}
+                toggleEditable={toggleEditable}
+                className={className}
+            />
+
+            <CartTextInput isEditable={isEditable.unit} inputType="text" name="unit"
+                handleChange={handleChange} value={inputs.unit} ref={unitRef}
+                details={ItemDetails.unit}
+                toggleEditable={toggleEditable}
+                className={className}
+            />
+
+            <CartTextInput isEditable={isEditable.aisle} inputType="text" name="aisle"
+                handleChange={handleChange} value={inputs.aisle} ref={aisleRef}
+                details={ItemDetails.aisle}
+                toggleEditable={toggleEditable}
+                className={className}
+            />
+
+            <Button variant="danger" onClick={handleClearItemFromList}>X</Button>
         </ListGroup.Item>
     )
 }

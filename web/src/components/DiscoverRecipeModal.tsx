@@ -3,12 +3,11 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { ModalCategory, MealCategory } from '../lib/enums'
-import { Recipe, ModalInterface, User, AddRecipeInput } from 'lib/interfaces'
+import { Recipe, ModalInterface, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useMeLocalQuery, useAddRecipeMutation } from 'generated/graphql';
+import { useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames, createMarkup } from 'lib/utils';
 import ReactTags, {Tag} from 'react-tag-autocomplete'
-import gql from 'graphql-tag';
 import nanoid from 'nanoid';
 import { DiscoverContext } from 'pages/Discover';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';

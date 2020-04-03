@@ -9,3 +9,12 @@ span.edit {
 input.edit {
   display: inline;
 }
+
+.displayImage {
+  width: 3.5rem;
+  border-radius: 5rem;
+}
+
+.itemInfo {
+  font-size: 1.5rem;
+}
