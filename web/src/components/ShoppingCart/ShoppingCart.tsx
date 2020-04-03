@@ -68,14 +68,13 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     return (
         <div>
 
-            <h1>Shopping Cart</h1>
             <AddCartItem itemSuggestions={items} me={me} />
 
             {/* Unchecked Section */}
             <Row>
                 <Col sm={12} md={12} lg={10}>
                     <Accordion defaultActiveKey="0" style={{ marginTop: '4rem' }}>
-                        <Card style={{ border: '1px solid rgba(0,0,0,0.125)', borderRadius: '0.4rem' }}>
+                        <Card style={{border: '1px solid rgba(0, 0, 0, 0.125)', borderRadius: '0.4rem'}}>
                             <Card.Header>
                                 <Accordion.Toggle as={Button} variant="light" eventKey="0">
                                     <h3>Items to Get</h3>
@@ -83,7 +82,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
                                 <Form.Control style={{ display: 'inline', width: '35%', marginLeft: '1.5rem' }} placeholder='Filter items' onChange={handleFilter}></Form.Control>
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
-                                <Card.Body>
+                                <Card.Body className={shoppingCartStyles.itemsDisplay}>
                                     <ListGroup>
                                         {filteredItems.length ? filteredItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
                                     </ListGroup>
@@ -98,7 +97,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
             <Row>
                 <Col sm={12} md={8} lg={10}>
                     <Accordion defaultActiveKey="1" style={{ marginTop: '4rem' }}>
-                        <Card style={{ border: '1px solid rgba(0,0,0,0.125)', borderRadius: '0.4rem' }}>
+                        <Card style={{border: '1px solid rgba(0, 0, 0, 0.125)', borderRadius: '0.4rem'}}>
                             <Card.Header>
                                 <Accordion.Toggle as={Button} variant="light" eventKey="1">
                                     <h3>Items Completed</h3>
@@ -107,7 +106,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
 
                             </Card.Header>
                             <Accordion.Collapse eventKey="1">
-                                <Card.Body>
+                                <Card.Body className={shoppingCartStyles.itemsDisplay}>
                                     <ListGroup>
                                         {completedItems.length ? completedItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
                                     </ListGroup>

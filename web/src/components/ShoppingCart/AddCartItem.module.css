@@ -1,3 +1,17 @@
-.formControl {
-  /* background-color: red; */
+.addBtn {
+  position: absolute;
+  bottom: 0;
+}
+
+.labels {
+  color: #5a5a5a;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+  .addBtn {
+    position: relative;
+    margin-top: 2rem;
+  }
 }

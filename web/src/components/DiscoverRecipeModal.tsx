@@ -253,7 +253,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
                 {/* <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title> */}
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect2">
-                        <Form.Label>Example multiple select</Form.Label>
+                        <Form.Label>Select Meal Type</Form.Label>
                         <Form.Control as="select" name="mealType" value={inputs.mealType} onChange={handleChange}>
                             {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
                         </Form.Control>

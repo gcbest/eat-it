@@ -22,12 +22,13 @@ const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChang
             ref.current.focus()
     }, [isEditable])
 
+    // Aisle Input
     if(name==='aisle') {
         return (
             <Fragment> {
                 isEditable ?
                 (<span>Aisle # <Form.Control style={{width: 'fit-content', display: 'inline'}} type={inputType} min={min} name={name} onChange={handleChange} value={value} ref={ref} onBlur={() => toggleEditable(details)}/> </span>)
-                    : <span className={className} onClick={() => toggleEditable(details)}>Aisle <Badge variant="primary">{value}</Badge></span>
+                    : <span className={className} onClick={() => toggleEditable(details)}><Badge variant="primary"><span className={className}>Aisle {value}</span></Badge></span>
             }
             </Fragment>
         )
@@ -37,7 +38,7 @@ const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChang
         <Fragment> {
             isEditable ?
             <Form.Control style={{width: 'fit-content'}} type={inputType} name={name} onChange={handleChange} value={value.toString()} min={min} ref={ref} onBlur={() => toggleEditable(details)}/> :
-            <span className={className} onClick={() => toggleEditable(details)}>{value}</span>
+            <span style={{margin: '0.5rem'}} className={className} onClick={() => toggleEditable(details)}>{value}</span>
         }
         </Fragment>
     )

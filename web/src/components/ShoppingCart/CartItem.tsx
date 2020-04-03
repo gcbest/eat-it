@@ -15,7 +15,7 @@ import classNames from 'classnames/bind'
 import cartItemStyles from './CartItem.module.css'
 import CartTextInput from './CartTextInput'
 
-let cx = classNames.bind(cartItemStyles)
+const cx = classNames.bind(cartItemStyles)
 
 interface Props {
     item: CartItemInterface
@@ -60,22 +60,6 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         aisle,
     });
 
-    // useEffect(() => {
-    //     if(nameRef && nameRef.current)
-    //         nameRef.current.focus()
-    //     if(amountRef && amountRef.current)
-    //         amountRef.current.focus()
-    //     if(unitRef && unitRef.current)
-    //         unitRef.current.focus()
-    //     if(aisleRef && aisleRef.current)
-    //         aisleRef.current.focus()
-    // }, [
-    //     isEditable.name,
-    //     isEditable.amount,
-    //     isEditable.unit,
-    //     isEditable.aisle
-    // ])
-
     const [updateCartItem] = useMutation(UPDATE_CART_ITEM_BY_ID, {
         variables: { item: { ...item, ...inputs, userId: me.id } },
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
@@ -119,12 +103,15 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         <ListGroup.Item variant={isChecked ? 'dark' : 'light'}>
             <img onClick={handleClick} src={imgUrl} alt={name} className={cartItemStyles.displayImage} />
 
+
             <CartTextInput isEditable={isEditable.name} inputType="text" name="name"
                 handleChange={handleChange} value={inputs.name} ref={nameRef}
                 details={ItemDetails.name}
                 toggleEditable={toggleEditable}
                 className={className}
             />
+            
+            <br/>
 
             <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
                 handleChange={handleChange} value={inputs.amount} ref={amountRef}

@@ -8,28 +8,12 @@ import { CartItemInterface, User } from 'lib/interfaces'
 import useForm from 'lib/useForm'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, DELETE_CART_ITEM } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
-import moduleStyles from './AddCartItem.module.css'
+import addCartItemStyles from './AddCartItem.module.css'
+import './AddCartItem.css'
 
 interface Props {
     itemSuggestions: CartItemInterface[]
     me: User
-}
-
-//TODO: move this style out
-const formControlStyles = {
-    display: 'block',
-    width: '100%',
-    height: 'calc(1.5em + 0.75rem + 2px)',
-    padding: '0.375rem 0.75rem',
-    fontSize: '1rem',
-    fontWeight: 400,
-    lineHeight: 1.5,
-    color: '#5a5a5a',
-    backgroundColor: '#fff',
-    backgroundClip: 'padding-box',
-    border: '1px solid #ced4da',
-    borderRadius: '0.4rem',
-    transition: 'border-color 0.15s',
 }
 
 const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
@@ -110,8 +94,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
         placeholder: 'Enter item name',
         value: inputs.name,
         onChange: handleChange,
-        style: formControlStyles,
-        name: 'name'
+        name: 'name',
     };
 
     return (
@@ -119,7 +102,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
             <Form.Group controlId="addCartItem">
                 <Form.Row>
                     <Col sm={7} md={3}>
-                        <Form.Label>Item Name</Form.Label>
+                        <Form.Label className={addCartItemStyles.labels}>Item Name</Form.Label>
                         <Autosuggest
                             suggestions={suggestions}
                             onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -129,23 +112,21 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                             renderSuggestion={renderSuggestion}
                             inputProps={inputProps}
                         />
-
                     </Col>
                     <Col sm={7} md={3}>
-                        <Form.Label>Amount</Form.Label>
-                        <Form.Control className={moduleStyles.formControl} type="number" name="amount" value={inputs.amount} onChange={handleChange} min="1" />
+                        <Form.Label className={addCartItemStyles.labels}>Amount</Form.Label>
+                        <Form.Control type="number" name="amount" value={inputs.amount} onChange={handleChange} min="1" />
                     </Col>
                     <Col sm={7} md={2}>
-                        <Form.Label>Units</Form.Label>
-                        <Form.Control className={moduleStyles.formControl} type="text" name="unit" value={inputs.unit} onChange={handleChange} placeholder="lbs/bags/etc" />
+                        <Form.Label className={addCartItemStyles.labels}>Units</Form.Label>
+                        <Form.Control type="text" name="unit" value={inputs.unit} onChange={handleChange} placeholder="lbs/bags/etc" />
                     </Col>
                     <Col sm={7} md={3}>
-                        <Form.Label>Aisle #</Form.Label>
-                        <Form.Control className={moduleStyles.formControl} type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
+                        <Form.Label className={addCartItemStyles.labels}>Aisle #</Form.Label>
+                        <Form.Control type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
                     </Col>
-                    <Col sm={3} md={1}>
-                        <Form.Label>Add</Form.Label>
-                        <Button type="submit"><FaPlus/></Button>
+                    <Col sm={7} md={1} style={{position: 'relative'}}>
+                        <Button className={addCartItemStyles.addBtn} variant="secondary" type="submit">Add <FaPlus/></Button>
                     </Col>
                 </Form.Row>
             </Form.Group>
