@@ -508,6 +508,7 @@ export const GetRecipeByIdDocument = gql`
     summary
     sourceUrl
     analyzedInstructions
+    extendedIngredients
     mealType
     isStarred
     tags {

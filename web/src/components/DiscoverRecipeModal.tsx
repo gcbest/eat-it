@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, useContext } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
-import { ModalCategory, MealCategory } from '../lib/enums'
+import { MealCategory } from '../lib/enums'
 import { Recipe, ModalInterface, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useAddRecipeMutation } from 'generated/graphql';
@@ -39,7 +39,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
 
     const [addRecipe] = useAddRecipeMutation()
     // const { type } = options
-    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, dishTypes = [], mealType = 1 } = recipe!
+    const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, extendedIngredients, dishTypes = [], mealType = 1 } = recipe!
 
     
     //REACT TAGS
@@ -77,45 +77,14 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         summary,
         sourceUrl,
         analyzedInstructions,
+        extendedIngredients,
         mealType
     });
 
-    // if (loadingLocal)
-    //     console.log('loading local');
 
     if (user)
         console.log(user);
 
-    const renderText = (category: ModalCategory): string => {
-        // let text = {title: '', actionButton: ''}
-        switch (category) {
-            case ModalCategory.Discover:
-                return 'Save'
-            case ModalCategory.Create:
-                return 'Create'
-            case ModalCategory.Edit:
-                return 'Edit'
-            default:
-                return 'Save'
-        }
-        return 'Save'
-    }
-
-    // const renderContent = (category: ModalCategory): ModalContent => {
-    //     let content: ModalContent = { title: '', actionButton: '', body: undefined }
-    //     switch (category) {
-    //         case ModalCategory.Discover:
-    //             content.title = 'Save this recipe'
-    //             content.actionButton = 'Save recipe'
-    //             content.body = generateCreateBody()
-    //             break
-    //         case ModalCategory.Create:
-    //             content.title = 'Add this recipe'
-    //             break
-    //         case ModalCategory.Edit:
-    //     }
-    //     return content
-    // }
 
     const addRecipeFromDiscover = () => {
         if (!recipe)
@@ -155,25 +124,8 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         })
     }
 
-    const editRecipe = () => {
-        // grab details from recipe
-        // make graphql query to request them
-    }
 
     const handleSave = () => {
-        // switch case to handle the different saving/updating options
-        // switch (category) {
-        //     case ModalCategory.Discover:
-
-        //         // add from discover
-        //         addRecipeFromDiscover()
-        //         break
-        //     case ModalCategory.Edit:
-        //         editRecipe()
-        //         break
-        // }
-        // edit existing recipe
-
         addRecipeFromDiscover()
         handleClose()
     }
@@ -211,46 +163,9 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         handleClose()
     }
 
-    const displayEditContent = (recipe: Recipe | null | undefined) => (
-        recipe ?
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="title">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" name="title" value={inputs.title} onChange={handleChange} />
-                </Form.Group>
-                <Form.Group controlId="sourceUrl">
-                    <Form.Label>Link to recipe</Form.Label>
-                    <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
-                </Form.Group>
-                <Form.Group controlId="readyInMinutes">
-                    <Form.Label>Prep + Cook Time</Form.Label>
-                    <Form.Control type="number" name="readyInMinutes" placeholder="e.g. 45" value={inputs.readyInMinutes} onChange={handleChange} />
-                </Form.Group>
-                <Form.Group controlId="servings">
-                    <Form.Label># of Servings</Form.Label>
-                    <Form.Control type="number" name="servings" placeholder="e.g. 8" value={inputs.servings} onChange={handleChange} />
-                </Form.Group>
-                <Form.Group controlId="image">
-                    <Form.Label>Image URL</Form.Label>
-                    <Form.Control type="text" name="image" placeholder="" value={inputs.image} onChange={handleChange} />
-                </Form.Group>
-                <Form.Group controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Summary</Form.Label>
-                    <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
-                </Form.Group>
-                <Button variant="secondary" type="submit">
-                    Edit Recipe
-            </Button>
-            </Form>
-            :
-            null
-    )
-
-
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                {/* <Modal.Title>{`${renderText(type)} This Recipe`}</Modal.Title> */}
                 <Form>
                     <Form.Group controlId="exampleForm.ControlSelect2">
                         <Form.Label>Select Meal Type</Form.Label>

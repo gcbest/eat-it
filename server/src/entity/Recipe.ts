@@ -48,6 +48,7 @@ export class Recipe extends BaseEntity {
   analyzedInstructions: string;
 
   @Field()
+  @Column("text")
   extendedIngredients: string;
 
   @Field()

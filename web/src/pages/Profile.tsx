@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
-import { RouteComponentProps, Link } from 'react-router-dom'
+import { RouteComponentProps, Link, Redirect } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
 import Downshift from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
@@ -98,8 +98,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>Something went wrong!</div>;
   }
 
-  if (!userData || !userData.me)
-    return <div>Profile not found.  <Link to="react-router-dom"> Sign up</Link> for an account today!</div>;
+  if(!userData || !userData.me)
+    return <Redirect to="/login" push={true} />
 
   // size buttons based on window width
   const btnProp: {size?: 'lg' | 'sm'} = {}

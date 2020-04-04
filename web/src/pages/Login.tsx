@@ -61,7 +61,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           />
         </div> */}
           <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
+            <Form.Label className={loginStyles.labels}>Email</Form.Label>
             <Form.Control type="email" name="email" placeholder="name@example.com" value={email} onChange={(e: any) => {
               setEmail(e.target.value);
             }} />
@@ -77,7 +77,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           />
         </div> */}
           <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
+            <Form.Label className={loginStyles.labels}>Password</Form.Label>
             <Form.Control type="password" name="password" placeholder="*********" value={password} onChange={(e: any) => {
               setPassword(e.target.value);
             }} />

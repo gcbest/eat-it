@@ -57,9 +57,8 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     if (!items || items.length < 1) {
         return (
             <div>
-                <h1>Shopping Cart</h1>
                 <AddCartItem itemSuggestions={items} me={me} />
-                <h3>No Items in Cart</h3>
+                <h2>No Items in Cart</h2>
             </div>
         )
     }

@@ -14,7 +14,7 @@ export const ViewRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params 
     const { recipe } = params
     const header = getKeyByValue(MealCategory, recipe!.mealType)
 
-    return (<Modal.Title>{recipe!.title} <Badge variant="secondary">{header}</Badge></Modal.Title>)
+    return (<Modal.Title>{recipe!.title} <br/> <Badge variant="secondary">{header}</Badge></Modal.Title>)
 }
 
 export const ViewRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, me }) => {

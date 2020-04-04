@@ -15,6 +15,7 @@ import { ModalInterface } from '../lib/interfaces'
 import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQuery } from 'generated/graphql';
 import Form from 'react-bootstrap/Form';
 import discoverStyles from '../styles/Discover.module.css'
+import { Redirect } from 'react-router-dom';
 
 export const DiscoverContext = React.createContext<any>(undefined)
 
@@ -29,8 +30,7 @@ const Discover: React.FC = () => {
     const [hasSearched, setHasSearched] = useState(false)
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
 
-
-
+    
     const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
         randomRecipes(tags: $tags, number: $number) {
@@ -48,17 +48,6 @@ const Discover: React.FC = () => {
         }
     `);
 
-    // const [getMeLocal, { data: dataLocal, loading: loadingLocal }] = useMeLocalLazyQuery()
-    // const { data: dataLocal, loading: loadingLocal } = useMeLocalQuery()
-
-    // if (loadingLocal)
-    //     console.log('loading local');
-
-    // if (dataLocal)
-    //     console.log(dataLocal);
-
-    const [addRecipe] = useAddRecipeMutation()
-
     const handleSearch = (e: any) => {
         e.preventDefault()
         setHasSearched(true)
@@ -67,7 +56,7 @@ const Discover: React.FC = () => {
                 getRandomRecipes({
                     variables: {
                         tags: queryRef.current.value.toLowerCase(),
-                        number: 1
+                        number: 3
                     }
                 })
             }
@@ -76,6 +65,8 @@ const Discover: React.FC = () => {
         }
     }
 
+    if(!user)
+        return <Redirect to="/login" push={true} />
     
     return (
         <div className={discoverStyles.background}>
@@ -89,7 +80,7 @@ const Discover: React.FC = () => {
                 <InputGroup className="mb-3">
                     <FormControl
                         type="input"
-                        placeholder="e.g. scallops"
+                        placeholder="e.g. shrimp"
                         aria-label="recipe"
                         aria-describedby="basic-addon2"
                         ref={queryRef as any} // react-bootstrap TS bug

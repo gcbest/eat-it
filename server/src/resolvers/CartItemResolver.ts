@@ -8,6 +8,7 @@ import {
     InputType,
     Field,
     Float,
+    Int,
 } from 'type-graphql';
 import { CartItem } from '../entity/CartItem';
 import { isAuth } from '../isAuth';
@@ -24,13 +25,13 @@ class AddCartItem implements Partial<CartItem> {
     img: string;
     @Field()
     unit: string;
-    @Field()
+    @Field(() => Int)
     aisle: number;
     @Field()
     isChecked: boolean;
     @Field()
     isCleared: boolean;
-    @Field()
+    @Field(() => Int)
     userId: number;
 }
 

@@ -8,11 +8,12 @@ query GetRecipeById($id: Float!) {
         summary
         sourceUrl
         analyzedInstructions
+        extendedIngredients
         mealType
         isStarred
         tags {
             id
             name
         }
-    }
+}
 }
