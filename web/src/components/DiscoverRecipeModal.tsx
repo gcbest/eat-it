@@ -3,15 +3,17 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { MealCategory } from '../lib/enums'
-import { Recipe, ModalInterface, AddRecipeInput } from 'lib/interfaces'
+import { ModalInterface, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useAddRecipeMutation } from 'generated/graphql';
 import { getEnumNames, createMarkup } from 'lib/utils';
-import ReactTags, {Tag} from 'react-tag-autocomplete'
+import ReactTags, { Tag } from 'react-tag-autocomplete'
 import nanoid from 'nanoid';
 import { DiscoverContext } from 'pages/Discover';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
-import {FaHeart} from 'react-icons/fa'
+import { FaHeart } from 'react-icons/fa'
+import { useToasts } from 'react-toast-notifications'
+
 
 
 
@@ -22,7 +24,7 @@ import {FaHeart} from 'react-icons/fa'
 //     recipe: Recipe | null | undefined
 // }
 
-interface Props<T>{
+interface Props<T> {
     params: T
     handleClose: () => void
 }
@@ -33,6 +35,9 @@ interface Props<T>{
 const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
     // const handleClose = () => null
     // const [isEditing, setIsEditing] = useState(false)
+
+    const { addToast } = useToasts()
+
     const { show, recipe } = params
 
     const user = useContext(DiscoverContext)
@@ -41,29 +46,29 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
     // const { type } = options
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, extendedIngredients, dishTypes = [], mealType = 1 } = recipe!
 
-    
+
     //REACT TAGS
     /////////////////////////////////// 
-    const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({id: nanoid(8), name: tagName}))
+    const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({ id: nanoid(8), name: tagName }))
 
     const defaultTags = createTags(dishTypes)
     const [tags, setTags] = useState<Tag[]>(defaultTags)
     const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
-        const updatedTags = tags.filter((_:any, index: number) => !(index === indexToRmv))
+        const updatedTags = tags.filter((_: any, index: number) => !(index === indexToRmv))
         setTags(updatedTags)
     }
 
     const handleAddition = (tag: Tag) => {
-        tag = {...tag, id: nanoid(8)}
+        tag = { ...tag, id: nanoid(8) }
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }
 
-    
+
     useEffect(() => {
-        if(user && user.me && user.me.tags) 
+        if (user && user.me && user.me.tags)
             setSuggestions(user.me.tags)
     }, [])
 
@@ -85,20 +90,19 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
     if (user)
         console.log(user);
 
-
-    const addRecipeFromDiscover = () => {
+    const addRecipeFromDiscover = async () => {
         if (!recipe)
             throw new Error('recipe from discover not found')
 
         if (!inputs.mealType)
             throw new Error('need a meal type')
 
-        const formattedRecipe: AddRecipeInput = { 
+        const formattedRecipe: AddRecipeInput = {
             ...recipe,
-             tags,
-             userId: user!.me!.id,
-             isStarred: false,
-             mealType: parseFloat(inputs.mealType) 
+            tags,
+            userId: user!.me!.id,
+            isStarred: false,
+            mealType: parseFloat(inputs.mealType)
         }
 
         // remove properties not needed by mutation
@@ -106,15 +110,15 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         delete formattedRecipe.dishTypes
         console.log('adding recipe');
 
-        addRecipe({
+        const {errors, data} = await addRecipe({
             variables: {
                 recipe: formattedRecipe
             },
             update(cache, { data }) {
                 console.log(data);
-                
+
                 const { me }: any = cache.readQuery({ query: GET_ME_LOCAL })
-                if(data && data.addRecipe) {
+                if (data && data.addRecipe) {
                     cache.writeQuery({
                         query: GET_ME_LOCAL,
                         data: { me: { ...me, recipes: data.addRecipe.recipes } }
@@ -122,6 +126,13 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
                 }
             }
         })
+
+        if(errors)
+            addToast(errors[0].message, { appearance: 'error' })
+        if(data)
+            addToast('Recipe Added Successfully', { appearance: 'success' })
+
+
     }
 
 
@@ -130,38 +141,38 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         handleClose()
     }
 
-    const displayViewContent = (recipe: Recipe) => (
+    // const displayViewContent = (recipe: Recipe) => (
 
-        <Fragment>
-            {image &&
-                <img src={image} alt={title} style={{width: '100%'}} />}
-            <h3>{title}</h3>
-            <p>
-                <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
-            </p>
-            {<p dangerouslySetInnerHTML={createMarkup(summary)}></p>}
-        </Fragment>
-    )
+    //     <Fragment>
+    //         {image &&
+    //             <img src={image} alt={title} style={{ width: '100%' }} />}
+    //         <h3>{title}</h3>
+    //         <p>
+    //             <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
+    //         </p>
+    //         {<p dangerouslySetInnerHTML={createMarkup(summary)}></p>}
+    //     </Fragment>
+    // )
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault()
-        console.log('submit edit');
+    // const handleSubmit = async (e: any) => {
+    //     e.preventDefault()
+    //     console.log('submit edit');
 
-        if (!isCreateRecipeValid()) {
-            console.log('fill out the mandatory fields');
-            return
-        }
-        const recipe = { ...inputs, userId: user!.me!.id }
-        console.log(recipe);
-        const response = await addRecipe({
-            variables: { recipe }
-        })
+    //     if (!isCreateRecipeValid()) {
+    //         console.log('fill out the mandatory fields');
+    //         return
+    //     }
+    //     const recipe = { ...inputs, userId: user!.me!.id }
+    //     console.log(recipe);
+    //     const response = await addRecipe({
+    //         variables: { recipe }
+    //     })
 
-        console.log(response);
+    //     console.log(response);
 
-        resetForm()
-        handleClose()
-    }
+    //     resetForm()
+    //     handleClose()
+    // }
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -177,22 +188,31 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
             </Modal.Header>
             <Modal.Body>
                 {
-                    recipe && displayViewContent(recipe)
+                    recipe &&
+                    <Fragment>
+                        {image &&
+                            <img src={image} alt={title} style={{ width: '100%' }} />}
+                        <h3>{title}</h3>
+                        <p>
+                            <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
+                        </p>
+                        {<p dangerouslySetInnerHTML={createMarkup(summary)}></p>}
+                    </Fragment>
                 }
             </Modal.Body>
             <Modal.Footer>
-                <div>       
+                <div>
                     <ReactTags
-                            tags={tags}
-                            suggestions={suggestions}
-                            handleDelete={handleDelete}
-                            handleAddition={handleAddition}
-                            allowNew={true}
-                            allowBackspace={false}
-                            />
+                        tags={tags}
+                        suggestions={suggestions}
+                        handleDelete={handleDelete}
+                        handleAddition={handleAddition}
+                        allowNew={true}
+                        allowBackspace={false}
+                    />
                 </div>
                 <Button variant="secondary" onClick={() => handleSave()}>
-                    Add Recipe <FaHeart/> 
+                    Add Recipe <FaHeart />
                 </Button>
             </Modal.Footer>
         </Modal>

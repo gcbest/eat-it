@@ -1,0 +1,9 @@
+.pointer {
+    cursor: pointer;
+}
+
+.cardImage {
+    width: 100%;
+    padding: 0.5rem;
+    borderRadius: 1.5rem;
+}

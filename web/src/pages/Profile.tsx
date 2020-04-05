@@ -73,7 +73,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
 
     const recipesArr = userData.me.recipes
     const randomlySelectedRecipe = recipesArr[Math.floor(Math.random() * recipesArr.length)]
-    debugger
     handleShowRecipe(randomlySelectedRecipe.id)
   }
 

@@ -15,7 +15,6 @@ import { getKeyByValue } from 'lib/utils';
 
 export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params: { mealType } }) => {
     const header = MealCategory[mealType!]
-    debugger
     
     return (
         <Modal.Title>Create New Recipe <Badge variant="secondary">{header}</Badge></Modal.Title>

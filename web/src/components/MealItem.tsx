@@ -37,7 +37,7 @@ query meLocal {
 
 export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }) => {
     const { image, title, id, tags, isStarred } = rcpSlm
-    const imgInfo: Image = { src: image, alt: title, width: '90%', caption: title, scrollPosition, style: {display: 'block'} }
+    const imgInfo: Image = { src: image, alt: title, width: '90%', caption: title, scrollPosition, style: {display: 'block', cursor: 'pointer'} }
     const [modalType, setModalType] = useState<ModalCategory | undefined>(undefined)
     const { dispatch } = useContext(MealsAreaContext)
     const { me } = useContext(ProfileContext)

@@ -1,10 +1,11 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+// import Container from 'react-bootstrap/Container';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
 import { Header } from "./components/Header";
 import { SpinnerComponent } from './components/Spinner'
+import { ToastProvider } from 'react-toast-notifications'
 
 
 // const Home = lazy(() => import('./pages/Home'))
@@ -21,16 +22,18 @@ export const Routes: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <Header user={user} loading={loading}  />
-            <Suspense fallback={<SpinnerComponent/>}>
-              <Switch>
-                <Route exact path="/"> {loggedIn ? <Redirect to="/profile" /> : <Home />} </Route>
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/profile" component={Profile} />
-                <Route exact path="/discover" component={Discover} />
-              </Switch>
-            </Suspense>
+      <ToastProvider autoDismissTimeout={2500} placement='top-center' autoDismiss={true}>
+        <Header user={user} loading={loading} />
+        <Suspense fallback={<SpinnerComponent />}>
+          <Switch>
+            <Route exact path="/"> {loggedIn ? <Redirect to="/profile" /> : <Home />} </Route>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/discover" component={Discover} />
+          </Switch>
+        </Suspense>
+      </ToastProvider>
     </BrowserRouter>
   );
 };

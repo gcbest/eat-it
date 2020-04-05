@@ -51,7 +51,6 @@ const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeD
     const [params, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
-        debugger
         if (!recipeData)
             return;
 

@@ -17,7 +17,6 @@ interface Props {
 
 const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChange, value, details, className, toggleEditable}: Props, ref: any) => {
     useEffect(() => {
-        debugger
         if(ref && ref.current)
             ref.current.focus()
     }, [isEditable])

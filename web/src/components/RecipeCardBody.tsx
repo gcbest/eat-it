@@ -8,6 +8,10 @@ import { useAccordionToggle } from 'react-bootstrap/AccordionToggle'
 import { createMarkup, convertToJSON } from 'lib/utils'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, ADD_MANY_CART_ITEMS } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
+import classNames from 'classnames/bind'
+import recipeCardBodyStyles from './RecipeCardBody.module.css'
+
+const cx = classNames.bind(recipeCardBodyStyles)
 
 interface Props {
     recipe: Recipe
@@ -16,7 +20,12 @@ interface Props {
 }
 
 const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) => {
-    const { title, readyInMinutes, servings, image, summary, analyzedInstructions, extendedIngredients, sourceUrl } = recipe
+    const { title, readyInMinutes, servings, image, summary, analyzedInstructions, extendedIngredients } = recipe
+    const isDiscoveryCard = handleShow ? true : false // function only passed from discovery cards
+    let className = cx({
+        cardImage: true,
+        pointer: isDiscoveryCard
+    })
 
     const imgUrlBase = 'https://spoonacular.com/cdn/ingredients_100x100/'
 
@@ -49,7 +58,6 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
 
     const handleAddAllIngredients = (ingredientsArr: [any]) => {
         const items = ingredientsArr.map(convertIngredientToItem)
-        debugger
         addManyCartItems({
             variables: { items }
         })
@@ -57,28 +65,12 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
 
     return (
         <Fragment>
-            <Card.Img variant="top" src={image} style={{ width: '100%', padding: '0.5rem', borderRadius: '1.5rem', boxShadow: '1px 1px 1px 1px #ccc;' }}/>
-                {/* <Card.ImgOverlay onClick={handleShow}>
-                    <Card.Title style={{ margin: 'auto', textAlign: 'center' }}>Click Image to Add</Card.Title>
-                    <Card.Text style={{ margin: 'auto', textAlign: 'center' }}>
-                        Click Image to Add
-                            </Card.Text>
-                </Card.ImgOverlay> */}
-            {/* {
-                handleShow ? // if on discovery card
-                <Card.ImgOverlay onClick={handleShow}>
-                        <Card.Title style={{margin: 'auto', textAlign: 'center'}}>Click Image to Add</Card.Title>
-                        <Card.Text style={{margin: 'auto', textAlign: 'center'}}>
-                            Click Image to Add
-                        </Card.Text>
-                    </Card.ImgOverlay>
-                    :
-                    null
-                } */}
+            <Card.Img className={className} variant="top" src={image} onClick={handleShow} />
             <Card.Body style={{ maxHeight: '28vh', overflowY: "scroll" }}>
                 <Card.Title>{title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">Servings: {servings}</Card.Subtitle>
                 <Card.Subtitle className="mb-2 text-muted">Ready in: {readyInMinutes} mins</Card.Subtitle>
+                {children}
                 <Card.Text>
                     {<span dangerouslySetInnerHTML={createMarkup(summary)}></span>}
                 </Card.Text>
@@ -116,7 +108,7 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
                                     <Button style={{ margin: '1rem 0' }} onClick={() => handleAddAllIngredients(JSON.parse(extendedIngredients))} variant="primary">Add all ingredients to cart</Button>
                                     <ListGroup>
                                         {JSON.parse(extendedIngredients).map((extIng: any) => {
-                                            return (<ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)}> <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} /> {extIng.name} | {extIng.originalString} </ListGroup.Item>)
+                                            return (<ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)}> <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} className={recipeCardBodyStyles.pointer} /> {extIng.name} | {extIng.originalString} </ListGroup.Item>)
                                         })}
                                     </ListGroup>
                                 </Card.Body>
@@ -125,7 +117,6 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
                     </Accordion>
                     : null
                 }
-                {children}
             </Card.Body>
         </Fragment>
     )

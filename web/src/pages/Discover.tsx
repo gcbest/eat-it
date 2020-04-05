@@ -6,13 +6,10 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 // import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks'
-import { ModalInterface } from '../lib/interfaces'
-import { useAddRecipeMutation, AddRecipeInput, useMeLocalQuery, useMeLocalLazyQuery } from 'generated/graphql';
+import { useMeLocalQuery } from 'generated/graphql';
 import Form from 'react-bootstrap/Form';
 import discoverStyles from '../styles/Discover.module.css'
 import { Redirect } from 'react-router-dom';
@@ -23,14 +20,14 @@ const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if(queryRef && queryRef.current)
+        if (queryRef && queryRef.current)
             queryRef.current.focus()
     }, [])
-    
+
     const [hasSearched, setHasSearched] = useState(false)
     const { data: user, loading: loadingLocal } = useMeLocalQuery()
 
-    
+
     const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
         randomRecipes(tags: $tags, number: $number) {
@@ -65,40 +62,40 @@ const Discover: React.FC = () => {
         }
     }
 
-    if(!user)
+    if (!user)
         return <Redirect to="/login" push={true} />
-    
+
     return (
-        <div className={discoverStyles.background}>
-        <Container>
-        <DiscoverContext.Provider value={{ me: user ? user.me : null }}>
-            <Form>
-                <Form.Group>
-                    <Form.Label>
-                        <h2>Find New Recipes!</h2>
-                    </Form.Label>
-                <InputGroup className="mb-3">
-                    <FormControl
-                        type="input"
-                        placeholder="e.g. shrimp"
-                        aria-label="recipe"
-                        aria-describedby="basic-addon2"
-                        ref={queryRef as any} // react-bootstrap TS bug
-                        />
-                    <InputGroup.Append>
-                        <Button variant="secondary" type="submit" onClick={handleSearch}>Discover</Button>
-                    </InputGroup.Append>
-                </InputGroup>
+        <div className={discoverStyles.background} style={{ position: 'relative' }}>
+            <Container>
+                <DiscoverContext.Provider value={{ me: user ? user.me : null }}>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>
+                                <h2>Find New Recipes!</h2>
+                            </Form.Label>
+                            <InputGroup className="mb-3">
+                                <FormControl
+                                    type="input"
+                                    placeholder="e.g. shrimp"
+                                    aria-label="recipe"
+                                    aria-describedby="basic-addon2"
+                                    ref={queryRef as any} // react-bootstrap TS bug
+                                />
+                                <InputGroup.Append>
+                                    <Button variant="secondary" type="submit" onClick={handleSearch}>Discover</Button>
+                                </InputGroup.Append>
+                            </InputGroup>
                         </Form.Group>
-            </Form>
-            {
-                loading ?
-                <SpinnerComponent /> :
-                <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
-            }
-        </DiscoverContext.Provider>
-        </Container>
-            </div>
+                    </Form>
+                    {
+                        loading ?
+                            <SpinnerComponent /> :
+                            <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
+                    }
+                </DiscoverContext.Provider>
+            </Container>
+        </div>
     )
 }
 
