@@ -56,7 +56,6 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
               setAccessToken(response.data.login.accessToken);
               history.push("/");
             }
-
           }}
         >
           {/* <div>

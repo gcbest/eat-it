@@ -8,6 +8,7 @@ import { ProfileContext } from 'pages/Profile'
 import { useGenerateModalParts } from 'lib/useGenerateModalParts'
 import './MainModal.css'
 import { RecipeTag } from './RecipeTag'
+import Form from 'react-bootstrap/Form'
 interface Props<T> {
     params: T
     me: User
@@ -19,8 +20,8 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
     const { show, modalType, recipe } = params
     const [tags, setTags] = useState<Tag[]>([])
     // use params.mealType for create modal and recipe.mealType for others
-    const [mealType, setMealType] = useState<MealCategory|undefined>(params.mealType || (recipe && recipe.mealType)) //since meal type is found in header and body contains rest of form 
-    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, {...params, mealType, setMealType, tags}, me, handleClose)
+    const [mealType, setMealType] = useState<MealCategory | undefined>(params.mealType || (recipe && recipe.mealType)) //since meal type is found in header and body contains rest of form 
+    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, { ...params, mealType, setMealType, tags }, me, handleClose)
 
     // REACT TAGS
     /////////////////////////////////// 
@@ -38,7 +39,7 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
         if (modalType === ModalCategory.View)
             return // not allowed to edit tags in view mode
 
-        tag = { ...tag, id: nanoid(8), __typename: 'TagInput'}
+        tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
     }
@@ -63,6 +64,8 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
                 </Modal.Body>
                 <Modal.Footer>
                     <div style={{ width: '100%' }}>
+                        <Form.Label>Recipe Tags</Form.Label> 
+                        <br/>
                         {modalType === ModalCategory.View ? // replace editable tags with display badges
                             tags && tags.map(t => <RecipeTag key={t.id} text={t.name} />)
                             :

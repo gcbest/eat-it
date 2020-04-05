@@ -25,14 +25,15 @@ export const EditRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params 
 
     return (
         <Fragment>
-            <Modal.Title>Edit Recipe</Modal.Title>
-            <Form>
-                <Form.Group controlId="edit-header">
-                    <Form.Control as="select" name="mealType" value={currentMealType.toString()} onChange={handleMealChange}>
-                        {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
-                    </Form.Control>
-                </Form.Group>
-            </Form>
+            <Modal.Title>Edit Recipe
+                <Form>
+                    <Form.Group controlId="edit-header">
+                        <Form.Control as="select" name="mealType" value={currentMealType.toString()} onChange={handleMealChange}>
+                            {getEnumNames(MealCategory).map((key: string | any) => <option key={key} value={MealCategory[key]}>{key}</option>)}
+                        </Form.Control>
+                    </Form.Group>
+                </Form>
+            </Modal.Title>
         </Fragment>
     )
 }
@@ -56,8 +57,8 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
             console.log('fill out all the mandatory fields');
             return
         }
-        const updatedRecipe: EditRecipeInput = { 
-            ...inputs, 
+        const updatedRecipe: EditRecipeInput = {
+            ...inputs,
             id,
             tags,
             mealType,
@@ -68,10 +69,10 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
         const response = await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache) {
-                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: {...updatedRecipe} } })
-                const x = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }})
+                cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: { ...updatedRecipe } } })
+                const x = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id } })
                 console.log(x);
-                
+
                 // update recipes on me object
                 // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
                 // me.recipes = me.recipes.map((r: RecipeSlim) => r.id === updatedRecipe.id ? updatedRecipe : r)

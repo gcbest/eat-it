@@ -10,7 +10,7 @@ import { RecipeTag } from './RecipeTag';
 import { ProfileContext } from 'pages/Profile';
 import { MealsAreaContext } from './MealsArea';
 import LazyLoadPic from './LazyLoadPic';
-import './MealItem.css'
+import mealItemStyles from './MealItem.module.css'
 
 
 
@@ -122,14 +122,14 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
     }
 
     return (<ListGroup.Item>
-        <div className='item'>
+        <div className={mealItemStyles.item}>
             <span onClick={() => handleShowModal(ModalCategory.View)} >
                 <LazyLoadPic image={imgInfo} />
             </span>
             <span style={{ marginLeft: "3rem" }}>
-                <FaEdit onClick={() => handleShowModal(ModalCategory.Edit)} /> <FaTrashAlt onClick={handleDelete} />
+                <FaEdit className={mealItemStyles.pointer} onClick={() => handleShowModal(ModalCategory.Edit)} /> <FaTrashAlt className={mealItemStyles.pointer} onClick={handleDelete} />
                 <span style={{ marginLeft: "3rem" }}>
-                    {isStarred ? <FaStar onClick={handleStarToggle} /> : <FaRegStar onClick={handleStarToggle} />}
+                    {isStarred ? <FaStar className={mealItemStyles.pointer} onClick={handleStarToggle} /> : <FaRegStar className={mealItemStyles.pointer} onClick={handleStarToggle} />}
                 </span>
             </span>
         </div>

@@ -3,3 +3,8 @@
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   grid-gap: 1rem;
 }
+
+.pointer {
+  cursor: pointer;
+  font-size: 1.4rem;
+}

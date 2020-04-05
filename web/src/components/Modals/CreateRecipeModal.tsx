@@ -96,7 +96,7 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
             </Form.Group>
             <Button variant="secondary" type="submit">
                 Create Recipe
-                    </Button>
+            </Button>
         </Form>
     )
 }
