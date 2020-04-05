@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, ReactNode } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 // import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
@@ -20,9 +20,11 @@ export const Routes: React.FC = () => {
   const { data: user, loading } = useMeLocalQuery()
   const loggedIn = user && user.me ? true : false
 
+  
+
   return (
     <BrowserRouter>
-      <ToastProvider autoDismissTimeout={2500} placement='top-center' autoDismiss={true}>
+      <ToastProvider autoDismissTimeout={2500} placement='bottom-right' autoDismiss={true}>
         <Header user={user} loading={loading} />
         <Suspense fallback={<SpinnerComponent />}>
           <Switch>

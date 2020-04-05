@@ -5,11 +5,12 @@ import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle'
-import { createMarkup, convertToJSON } from 'lib/utils'
+import { createMarkup, convertToJSON, capitalize } from 'lib/utils'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, ADD_MANY_CART_ITEMS } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import classNames from 'classnames/bind'
 import recipeCardBodyStyles from './RecipeCardBody.module.css'
+import { useToasts } from 'react-toast-notifications'
 
 const cx = classNames.bind(recipeCardBodyStyles)
 
@@ -26,6 +27,9 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
         cardImage: true,
         pointer: isDiscoveryCard
     })
+
+    const { addToast } = useToasts()
+
 
     const imgUrlBase = 'https://spoonacular.com/cdn/ingredients_100x100/'
 
@@ -49,18 +53,29 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
         return item;
     }
 
-    const handleAddIngredient = (ingredient: any) => {
+    const handleAddIngredient = async (ingredient: any) => {
         const item = convertIngredientToItem(ingredient)
-        addCartItem({
+        const {errors, data} = await addCartItem({
             variables: { item }
         })
+        if(errors) 
+            addToast(errors[0].message, { appearance: 'error' })
+        if(data)
+            addToast(`${capitalize(item.name)} Added to Cart`, { appearance: 'success' })
+
+
     }
 
-    const handleAddAllIngredients = (ingredientsArr: [any]) => {
+    const handleAddAllIngredients = async (ingredientsArr: [any]) => {
         const items = ingredientsArr.map(convertIngredientToItem)
-        addManyCartItems({
+        const {errors, data} = await addManyCartItems({
             variables: { items }
         })
+
+        if(errors) 
+            addToast(errors[0].message, { appearance: 'error' })
+        if(data)
+            addToast('All Items Added to Cart', { appearance: 'success' })
     }
 
     return (

@@ -14,3 +14,7 @@ export const createMarkup = (markup: string): { __html: string } => ({ __html: m
 
 export const convertToJSON = (stringifiedContent: string): Instructions => JSON.parse(stringifiedContent)
 
+export const capitalize = (s: string) => {
+    if (typeof s !== 'string') return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+  }

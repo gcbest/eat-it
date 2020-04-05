@@ -130,7 +130,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         if(errors)
             addToast(errors[0].message, { appearance: 'error' })
         if(data)
-            addToast('Recipe Added Successfully', { appearance: 'success' })
+            addToast('Recipe Saved to Profile', { appearance: 'success' })
 
 
     }

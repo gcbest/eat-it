@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import loginStyles from '../styles/Login.module.css'
 import Button from "react-bootstrap/Button";
+import { useToasts } from "react-toast-notifications";
 
 interface Props { }
 
@@ -34,6 +35,9 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
     }
   });
 
+  const { addToast } = useToasts()
+
+
   return (
     <div className={loginStyles.background}>
       <Card className={loginStyles.login}>
@@ -41,7 +45,11 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           onSubmit={async (e: any) => {
             e.preventDefault();
             console.log("form submitted");
-            const response = await login().catch(err => { return console.error(err) });
+            const response = await login()
+              .catch(error => { 
+              addToast('Incorrect Login Information', { appearance: 'error' })
+              console.error(error) 
+            });
 
             console.log(response);
             if (response && response.data) {
