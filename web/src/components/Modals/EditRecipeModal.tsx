@@ -9,6 +9,7 @@ import { useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql'
 import { getEnumNames } from 'lib/utils';
 // import cloneDeep from '@bit/lodash.lodash.clone-deep';
 import { GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations';
+import RecipeTagsArea from 'components/RecipeTagsArea';
 // import ReactTags, { Tag } from 'react-tag-autocomplete';
 // import nanoid from 'nanoid';
 
@@ -109,7 +110,8 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
                 <Form.Label>Summary</Form.Label>
                 <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
             </Form.Group>
-            <Button variant="primary" onClick={() => handleSubmit()}>
+            <RecipeTagsArea params={params} me={me} />
+            <Button variant="primary" onClick={() => handleSubmit()} style={{marginTop: '1.5rem'}}>
                 Edit Recipe
             </Button>
         </Form>

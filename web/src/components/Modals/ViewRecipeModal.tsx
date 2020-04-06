@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
@@ -8,6 +8,8 @@ import { GET_ME_LOCAL } from 'graphql/queriesAndMutations'
 import { useDeleteRecipeByIdMutation } from 'generated/graphql'
 import { MealCategory } from 'lib/enums'
 import RecipeCardBody from 'components/RecipeCardBody'
+import RecipeTagsArea from 'components/RecipeTagsArea';
+
 
 
 export const ViewRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params }) => {
@@ -19,7 +21,7 @@ export const ViewRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params 
 
 export const ViewRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, me }) => {
     const { recipe } = params
-    return (<RecipeCardBody recipe={recipe!} me={me!}></RecipeCardBody>)
+    return (<RecipeCardBody recipe={recipe!} me={me!}/>)
 }
 
 export const ViewRecipeFooter: React.FC<ModalProps<ModalInterface>> = ({ params, me }) => {
@@ -45,8 +47,11 @@ export const ViewRecipeFooter: React.FC<ModalProps<ModalInterface>> = ({ params,
     }
 
     return (
+        <Fragment>
+            <RecipeTagsArea params={params} me={me} />
         <Button variant="danger" onClick={deleteRecipe}>
             Delete
         </Button>
+        </Fragment>
     )
 }

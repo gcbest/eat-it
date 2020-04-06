@@ -11,6 +11,7 @@ import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import placeholder from '../../assets/images/recipe_placeholder.jpg'
 import { getKeyByValue } from 'lib/utils';
+import RecipeTagsArea from 'components/RecipeTagsArea';
 
 
 export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params: { mealType } }) => {
@@ -94,7 +95,8 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
                 <Form.Label>Summary</Form.Label>
                 <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
             </Form.Group>
-            <Button variant="secondary" type="submit">
+            <RecipeTagsArea params={params} me={me} />
+            <Button variant="secondary" type="submit" style={{marginTop: '1.5rem'}}>
                 Create Recipe
             </Button>
         </Form>

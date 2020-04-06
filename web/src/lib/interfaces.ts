@@ -88,6 +88,7 @@ export interface User {
     id: number
     email: string
     recipes: [Recipe] | [RecipeSlim]
+    tags: Tag[]
 }
 
 export interface ReducerAction {

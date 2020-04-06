@@ -12,21 +12,24 @@ import Button from 'react-bootstrap/Button'
 import { CreateRecipeHeader, CreateRecipeBody, CreateRecipeFooter } from 'components/Modals/CreateRecipeModal'
 import { EditRecipeHeader, EditRecipeBody, EditRecipeFooter } from 'components/Modals/EditRecipeModal'
 import { ViewRecipeHeader, ViewRecipeBody, ViewRecipeFooter } from 'components/Modals/ViewRecipeModal'
+import RecipeTagsArea from 'components/RecipeTagsArea'
 
 export const useGenerateModalParts = (type: ModalCategory, params: ModalInterface, me: User, handleClose?: () => void) => {
     let ModalHeader: React.ReactElement | null = null
     let ModalBody: React.ReactElement | null = null
     let ModalFooter: React.ReactElement | null = null
 
+
+
     switch (type) {
         case ModalCategory.Create:
             ModalHeader = <CreateRecipeHeader params={params} />
-            ModalBody = <CreateRecipeBody params={params} handleClose={handleClose} me={me} />
+            ModalBody = <CreateRecipeBody params={params} handleClose={handleClose} me={me}/>
             ModalFooter = <CreateRecipeFooter params={params} />
             break
         case ModalCategory.View:
             ModalHeader = <ViewRecipeHeader params={params} />
-            ModalBody = <ViewRecipeBody params={params} me={me} />
+            ModalBody = <ViewRecipeBody params={params} me={me}/>
             ModalFooter = <ViewRecipeFooter params={params} me={me} />
             break
         case ModalCategory.Edit:

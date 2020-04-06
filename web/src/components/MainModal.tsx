@@ -18,40 +18,40 @@ interface Props<T> {
 const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
     const { me } = useContext(ProfileContext)
     const { show, modalType, recipe } = params
-    const [tags, setTags] = useState<Tag[]>([])
+    // const [tags, setTags] = useState<Tag[]>([])
     // use params.mealType for create modal and recipe.mealType for others
     const [mealType, setMealType] = useState<MealCategory | undefined>(params.mealType || (recipe && recipe.mealType)) //since meal type is found in header and body contains rest of form 
-    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, { ...params, mealType, setMealType, tags }, me, handleClose)
+    const { getHeader, getBody, getFooter } = useGenerateModalParts(modalType!, { ...params, mealType, setMealType }, me, handleClose)
 
-    // REACT TAGS
-    /////////////////////////////////// 
-    const [suggestions, setSuggestions] = useState<Tag[]>([])
+    // // REACT TAGS
+    // /////////////////////////////////// 
+    // const [suggestions, setSuggestions] = useState<Tag[]>([])
 
-    const handleDelete = (indexToRmv: number) => {
-        if (modalType === ModalCategory.View)
-            return // not allowed to edit tags in view mode
+    // const handleDelete = (indexToRmv: number) => {
+    //     if (modalType === ModalCategory.View)
+    //         return // not allowed to edit tags in view mode
 
-        const updatedTags = tags.filter((_: any, index: number) => !(index === indexToRmv))
-        setTags(updatedTags)
-    }
+    //     const updatedTags = tags.filter((_: any, index: number) => !(index === indexToRmv))
+    //     setTags(updatedTags)
+    // }
 
-    const handleAddition = (tag: Tag) => {
-        if (modalType === ModalCategory.View)
-            return // not allowed to edit tags in view mode
+    // const handleAddition = (tag: Tag) => {
+    //     if (modalType === ModalCategory.View)
+    //         return // not allowed to edit tags in view mode
 
-        tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
-        const updatedTags = [...tags, tag]
-        setTags(updatedTags)
-    }
+    //     tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
+    //     const updatedTags = [...tags, tag]
+    //     setTags(updatedTags)
+    // }
 
-    useEffect(() => {
-        if (me && me.tags)
-            setSuggestions(me.tags)
-        if (recipe && recipe.tags) {
-            setTags(recipe.tags)
-        }
-    }, [recipe && recipe.tags])
-    /////////////////////////////////// 
+    // useEffect(() => {
+    //     if (me && me.tags)
+    //         setSuggestions(me.tags)
+    //     if (recipe && recipe.tags) {
+    //         setTags(recipe.tags)
+    //     }
+    // }, [recipe && recipe.tags])
+    // /////////////////////////////////// 
 
     return (
         <div>
@@ -63,7 +63,7 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
                     {getBody()}
                 </Modal.Body>
                 <Modal.Footer>
-                    <div style={{ width: '100%' }}>
+                    {/* <div style={{ width: '100%' }}>
                         <Form.Label>Recipe Tags</Form.Label> 
                         <br/>
                         {modalType === ModalCategory.View ? // replace editable tags with display badges
@@ -78,7 +78,7 @@ const MainModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => 
                                 allowBackspace={false}
                             />
                         }
-                    </div>
+                    </div> */}
                     {getFooter()}
                 </Modal.Footer>
             </Modal>
