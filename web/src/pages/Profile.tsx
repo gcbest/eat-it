@@ -157,7 +157,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
             }
             <Button {...btnProp} onClick={handleCartToggle}>Cart <FaShoppingCart /></Button>
           </div>
-          <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} title="Shopping Cart" children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />} />
+          <SlidingPane isOpen={showCart} onRequestClose={handleCartToggle} title="Shopping Cart" subtitle="Click item image to mark completed" children={<ShoppingCart items={cartItemsData ? cartItemsData.getCartItemsByUserId : []} />} />
           {/* create new object for recipeData so that componentShouldUpdate is triggered in MealsArea's useEffect  */}
           <MealsArea recipesSlim={userData.me.recipes} onlyShowStarred={onlyShowStarred} recipeData={showRecipeModal && recipeData ? { ...recipeData } : undefined} />
         </ProfileContext.Provider>

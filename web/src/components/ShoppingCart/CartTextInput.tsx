@@ -36,7 +36,7 @@ const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChang
     return (
         <Fragment> {
             isEditable ?
-            <Form.Control style={{width: 'fit-content'}} type={inputType} name={name} onChange={handleChange} value={value.toString()} min={min} ref={ref} onBlur={() => toggleEditable(details)}/> :
+            <Form.Control style={{width: 'fit-content'}} type={inputType} name={name} onChange={handleChange} value={value} min={min} ref={ref} onBlur={() => toggleEditable(details)}/> :
             <span style={{margin: '0.5rem'}} className={className} onClick={() => toggleEditable(details)}>{value}</span>
         }
         </Fragment>

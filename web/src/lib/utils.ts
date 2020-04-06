@@ -18,3 +18,10 @@ export const capitalize = (s: string) => {
     if (typeof s !== 'string') return ''
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
+
+export const truncateDecimal = (num: number): string => {
+    if((num - Math.floor(num)) !== 0) // has decimal
+        return (Math.floor(num * 100) / 100).toFixed(2)
+    else
+        return num.toString()
+}

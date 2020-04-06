@@ -8,7 +8,7 @@ import { CartItemInterface, User, CartItemEditables } from 'lib/interfaces'
 import ingredientPlaceholder from '../../assets/images/ingredients_placeholder.png'
 import Button from 'react-bootstrap/Button'
 import { ItemDetails } from 'lib/enums'
-import { getKeyByValue } from 'lib/utils'
+import { getKeyByValue, truncateDecimal } from 'lib/utils'
 import FormControl from 'react-bootstrap/FormControl'
 import useForm from 'lib/useForm'
 import classNames from 'classnames/bind'
@@ -101,40 +101,43 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
 
     return (
         <ListGroup.Item variant={isChecked ? 'dark' : 'light'}>
-            <img onClick={handleClick} src={imgUrl} alt={name} className={cartItemStyles.displayImage} />
+            <div className={cartItemStyles.layout}>
+
+                <img onClick={handleClick} src={imgUrl} alt={name} className={cartItemStyles.displayImage} />
 
 
-            <CartTextInput isEditable={isEditable.name} inputType="text" name="name"
-                handleChange={handleChange} value={inputs.name} ref={nameRef}
-                details={ItemDetails.name}
-                toggleEditable={toggleEditable}
-                className={className}
-            />
-            
-            <br/>
+                <CartTextInput isEditable={isEditable.name} inputType="text" name="name"
+                    handleChange={handleChange} value={inputs.name} ref={nameRef}
+                    details={ItemDetails.name}
+                    toggleEditable={toggleEditable}
+                    className={className}
+                />
 
-            <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
-                handleChange={handleChange} value={inputs.amount} ref={amountRef}
-                details={ItemDetails.amount}
-                toggleEditable={toggleEditable}
-                className={className}
-            />
+                <br />
 
-            <CartTextInput isEditable={isEditable.unit} inputType="text" name="unit"
-                handleChange={handleChange} value={inputs.unit} ref={unitRef}
-                details={ItemDetails.unit}
-                toggleEditable={toggleEditable}
-                className={className}
-            />
+                <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
+                    handleChange={handleChange} value={truncateDecimal(inputs.amount)} ref={amountRef}
+                    details={ItemDetails.amount}
+                    toggleEditable={toggleEditable}
+                    className={className}
+                />
 
-            <CartTextInput isEditable={isEditable.aisle} inputType="text" name="aisle"
-                handleChange={handleChange} value={inputs.aisle} ref={aisleRef}
-                details={ItemDetails.aisle}
-                toggleEditable={toggleEditable}
-                className={className}
-            />
+                <CartTextInput isEditable={isEditable.unit} inputType="text" name="unit"
+                    handleChange={handleChange} value={inputs.unit} ref={unitRef}
+                    details={ItemDetails.unit}
+                    toggleEditable={toggleEditable}
+                    className={className}
+                />
 
-            <Button variant="danger" onClick={handleClearItemFromList}>X</Button>
+                <CartTextInput isEditable={isEditable.aisle} inputType="text" name="aisle"
+                    handleChange={handleChange} value={inputs.aisle} ref={aisleRef}
+                    details={ItemDetails.aisle}
+                    toggleEditable={toggleEditable}
+                    className={className}
+                />
+
+                <Button variant="danger" onClick={handleClearItemFromList}>X</Button>
+            </div>
         </ListGroup.Item>
     )
 }
