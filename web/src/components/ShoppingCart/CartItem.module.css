@@ -20,14 +20,23 @@ input.edit {
 }
 
 .layout {
+  width: 100%;
   display: grid;
   /* grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); */
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas:
+  grid-template-rows: repeat(2, 1fr);
+  /* grid-template-areas:
     'image amount unit'
     'name aisle';
-  grid-gap: 1rem;
+  grid-gap: 1rem; */
 
+}
+
+.clearItemBtn {
+  position: absolute;
+  top:0;
+  right: 0;
+  width: 3rem;
 }
 
 

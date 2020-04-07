@@ -75,10 +75,10 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
                     <Accordion defaultActiveKey="0" style={{ marginTop: '4rem' }}>
                         <Card style={{border: '1px solid rgba(0, 0, 0, 0.125)', borderRadius: '0.4rem'}}>
                             <Card.Header>
-                                <Accordion.Toggle as={Button} variant="light" eventKey="0">
+                                <Accordion.Toggle as={Button} variant="light" eventKey="0" className={shoppingCartStyles.toggleBtn}>
                                     <h3>Items to Get</h3>
                                 </Accordion.Toggle>
-                                <Form.Control style={{ display: 'inline', width: '35%', marginLeft: '1.5rem' }} placeholder='Filter items' onChange={handleFilter}></Form.Control>
+                                <Form.Control className={shoppingCartStyles.filterInput} placeholder='Filter items' onChange={handleFilter}></Form.Control>
                             </Card.Header>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body className={shoppingCartStyles.itemsDisplay}>
@@ -98,10 +98,10 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
                     <Accordion defaultActiveKey="1" style={{ marginTop: '4rem' }}>
                         <Card style={{border: '1px solid rgba(0, 0, 0, 0.125)', borderRadius: '0.4rem'}}>
                             <Card.Header>
-                                <Accordion.Toggle as={Button} variant="light" eventKey="1">
+                                <Accordion.Toggle as={Button} variant="light" eventKey="1" className={shoppingCartStyles.toggleBtn}>
                                     <h3>Items Completed</h3>
                                 </Accordion.Toggle>
-                                <Button onClick={() => handleClearItems(completedItems)} style={{ marginLeft: '1.5rem' }}>Clear Items</Button>
+                                <Button onClick={() => handleClearItems(completedItems)} className={shoppingCartStyles.clearBtn}>Clear Items</Button>
 
                             </Card.Header>
                             <Accordion.Collapse eventKey="1">

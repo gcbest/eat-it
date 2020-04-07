@@ -11,3 +11,34 @@
   max-height: 30rem;
   overflow-y: scroll;
 }
+
+.filterInput {
+  display: inline-block;
+  /* width: 35%; */
+  width: fit-content;
+  margin-left: 1.5rem
+}
+
+.clearBtn {
+  margin-left: 1.5rem;
+}
+
+@media only screen and (max-width: 650px) {
+  .filterInput {
+    display: block;
+    width: fit-content;
+    margin: auto;
+  } 
+
+  .clearBtn {
+    display: block;
+    width: fit-content;
+    margin: auto;
+  }
+
+  .toggleBtn {
+    display: block;
+    margin: auto;
+    margin-bottom: 0.5rem;
+  }
+}

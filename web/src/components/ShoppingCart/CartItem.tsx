@@ -79,6 +79,9 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
 
     // set value equal to the opposite of what that value currently is 
     const toggleEditable = (type: any) => {
+        if (window.innerWidth < 650) // do not allow toggle on mobile, view only since it is easy to fat-finger the edit area
+            return
+
         const key: string | undefined = getKeyByValue(ItemDetails, type)
         if (!key) return
 
@@ -96,15 +99,19 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     let className = cx({
         completed: isChecked,
         itemInfo: true,
-        displayImage: true
+        displayImage: false
     })
 
     return (
-        <ListGroup.Item variant={isChecked ? 'dark' : 'light'}>
+        <ListGroup.Item variant={isChecked ? 'dark' : 'light'} style={{borderTopWidth: '0.5px'}}>
             <div className={cartItemStyles.layout}>
 
                 <img onClick={handleClick} src={imgUrl} alt={name} className={cartItemStyles.displayImage} />
 
+                <span style={{ position: 'relative' }}>
+
+                    <Button className={cartItemStyles.clearItemBtn} variant="danger" onClick={handleClearItemFromList}>X</Button>
+                </span>
 
                 <CartTextInput isEditable={isEditable.name} inputType="text" name="name"
                     handleChange={handleChange} value={inputs.name} ref={nameRef}
@@ -113,30 +120,29 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
                     className={className}
                 />
 
-                <br />
+                <span>
+                    <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
+                        handleChange={handleChange} value={truncateDecimal(inputs.amount)} ref={amountRef}
+                        details={ItemDetails.amount}
+                        toggleEditable={toggleEditable}
+                        className={className}
+                    />
 
-                <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
-                    handleChange={handleChange} value={truncateDecimal(inputs.amount)} ref={amountRef}
-                    details={ItemDetails.amount}
-                    toggleEditable={toggleEditable}
-                    className={className}
-                />
+                    <CartTextInput isEditable={isEditable.unit} inputType="text" name="unit"
+                        handleChange={handleChange} value={inputs.unit} ref={unitRef}
+                        details={ItemDetails.unit}
+                        toggleEditable={toggleEditable}
+                        className={className}
+                    />
 
-                <CartTextInput isEditable={isEditable.unit} inputType="text" name="unit"
-                    handleChange={handleChange} value={inputs.unit} ref={unitRef}
-                    details={ItemDetails.unit}
-                    toggleEditable={toggleEditable}
-                    className={className}
-                />
+                    <CartTextInput isEditable={isEditable.aisle} inputType="text" name="aisle"
+                        handleChange={handleChange} value={inputs.aisle} ref={aisleRef}
+                        details={ItemDetails.aisle}
+                        toggleEditable={toggleEditable}
+                        className={className}
+                    />
 
-                <CartTextInput isEditable={isEditable.aisle} inputType="text" name="aisle"
-                    handleChange={handleChange} value={inputs.aisle} ref={aisleRef}
-                    details={ItemDetails.aisle}
-                    toggleEditable={toggleEditable}
-                    className={className}
-                />
-
-                <Button variant="danger" onClick={handleClearItemFromList}>X</Button>
+                </span>
             </div>
         </ListGroup.Item>
     )
