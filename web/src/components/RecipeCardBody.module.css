@@ -5,5 +5,20 @@
 .cardImage {
     width: 100%;
     padding: 0.5rem;
-    borderRadius: 1.5rem;
+    border-radius: 1.5rem;
 }
+
+.ingContainer {
+    display: flex;
+    align-items: center;
+}
+
+.ingImage {
+    width: 25%;
+    max-height: 7rem;
+}
+
+.itemDesc {
+    margin-left: 1.5rem;
+}
+

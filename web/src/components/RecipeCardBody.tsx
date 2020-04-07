@@ -27,6 +27,10 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
         cardImage: true,
         pointer: isDiscoveryCard
     })
+    let ingImage = cx({
+        pointer: true,
+        ingImage: true
+    })
 
     const { addToast } = useToasts()
 
@@ -123,7 +127,8 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
                                     <Button style={{ margin: '1rem 0' }} onClick={() => handleAddAllIngredients(JSON.parse(extendedIngredients))} variant="primary">Add all ingredients to cart</Button>
                                     <ListGroup>
                                         {JSON.parse(extendedIngredients).map((extIng: any) => {
-                                            return (<ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)}> <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} className={recipeCardBodyStyles.pointer} /> {extIng.name} | {extIng.originalString} </ListGroup.Item>)
+                                            // <p className={recipeCardBodyStyles.itemName}>{extIng.name}</p> <br/>
+                                            return (<ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)} className={recipeCardBodyStyles.ingContainer}> <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} className={recipeCardBodyStyles.ingImage} />  <p className={recipeCardBodyStyles.itemDesc}>{extIng.originalString}</p> </ListGroup.Item>)
                                         })}
                                     </ListGroup>
                                 </Card.Body>
