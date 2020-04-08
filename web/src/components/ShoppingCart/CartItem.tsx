@@ -137,7 +137,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
                         className={className}
                     />
 
-                    <CartTextInput isEditable={isEditable.aisle} inputType="text" name="aisle"
+                    <CartTextInput isEditable={isEditable.aisle} inputType="number" min="0" name="aisle"
                         handleChange={handleChange} value={inputs.aisle} ref={aisleRef}
                         details={ItemDetails.aisle}
                         toggleEditable={toggleEditable}
