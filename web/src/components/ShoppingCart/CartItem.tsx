@@ -91,8 +91,10 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
         dispatch({ type, value: !isInputEditable }) // e.g. ['name'] of true set = to false now
     }
 
-    const handleClearItemFromList = () => clearCartItem()
-
+    const handleClearItemFromList = () => {
+        if (window.confirm('Are you sure you want to clear item?'))
+            clearCartItem()
+    }
     const imgUrl = img ? img : ingredientPlaceholder
 
     // Add conditional classNames
@@ -122,7 +124,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
 
                 <span>
                     <CartTextInput isEditable={isEditable.amount} inputType="number" min="1" name="amount"
-                        handleChange={handleChange} value={truncateDecimal(inputs.amount)} ref={amountRef}
+                        handleChange={handleChange} value={truncateDecimal(inputs.amount).toString()} ref={amountRef}
                         details={ItemDetails.amount}
                         toggleEditable={toggleEditable}
                         className={className}

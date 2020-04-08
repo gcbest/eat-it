@@ -19,9 +19,9 @@ export const capitalize = (s: string) => {
     return s.charAt(0).toUpperCase() + s.slice(1)
   }
 
-export const truncateDecimal = (num: number): string => {
+export const truncateDecimal = (num: number): number => {
     if((num - Math.floor(num)) !== 0) // has decimal
-        return (Math.floor(num * 100) / 100).toFixed(2)
+        return parseFloat((Math.floor(num * 1000) / 1000).toFixed(2))
     else
-        return num.toString()
+        return parseFloat(num.toString())
 }

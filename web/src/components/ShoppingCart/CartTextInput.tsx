@@ -12,7 +12,7 @@ interface Props {
     handleChange: (e: any) => void
     toggleEditable: (detail: ItemDetails) => void
     value: string
-    className: string,
+    className: string
 }
 
 const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChange, value, details, className, toggleEditable}: Props, ref: any) => {
@@ -26,7 +26,7 @@ const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChang
         return (
             <Fragment> {
                 isEditable ?
-                (<span>Aisle # <Form.Control style={{width: '100%', display: 'inline'}} type={inputType} min={min} name={name} onChange={handleChange} value={value} ref={ref} onBlur={() => toggleEditable(details)}/> </span>)
+                (<span>Aisle # <Form.Control style={{width: 'fit-content', display: 'inline'}} type={inputType} min={min} name={name} onChange={handleChange} value={value} ref={ref} onBlur={() => toggleEditable(details)}/> </span>)
                     : <span className={className} onClick={() => toggleEditable(details)}><Badge variant="primary"><span className={className}>Aisle {value}</span></Badge></span>
             }
             </Fragment>
@@ -36,7 +36,7 @@ const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChang
     return (
         <Fragment> {
             isEditable ?
-            <Form.Control style={{width: '100%'}} type={inputType} name={name} onChange={handleChange} value={value} min={min} ref={ref} onBlur={() => toggleEditable(details)}/> :
+            <Form.Control style={{width: 'fit-content'}} type={inputType} name={name} onChange={handleChange} value={value} min={min} ref={ref} onBlur={() => toggleEditable(details)}/> :
             <span style={{margin: '0.5rem'}} className={className} onClick={() => toggleEditable(details)}>{value}</span>
         }
         </Fragment>
