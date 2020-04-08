@@ -4,6 +4,10 @@
     rgba(204, 240, 180, 0.45)
   );
   background-image: url(../assets/images/variety-of-dishes-1640771.jpg);
-  height: 100vh;
+  background-position: center center;
+  background-repeat: repeat;
+  background-attachment: fixed;
   background-size: cover;
+  height: 100vh;
 }
+

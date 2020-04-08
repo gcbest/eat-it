@@ -1,0 +1,16 @@
+.discCard { 
+    margin: 3rem;
+    padding: 1rem;
+    background-color: #fdfffef5;
+    max-width: 25%;
+    min-width: 16rem;
+    box-shadow: rgba(204, 204, 204, 0.68) 3px 3px 5px 6px 
+}
+
+@media only screen and (max-width: 600px) {
+    .discCard {
+      max-width: 90%;
+    }
+  }
+
+

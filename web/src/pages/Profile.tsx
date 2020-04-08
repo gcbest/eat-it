@@ -4,7 +4,8 @@ import { RouteComponentProps, Link, Redirect } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
 import Downshift from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
-import { ApolloConsumer, useLazyQuery } from "@apollo/react-hooks";
+import { useLazyQuery } from "@apollo/react-hooks";
+import { SpinnerComponent } from 'components/Spinner'
 import debounce from 'lodash.debounce';
 import { FaStar, FaRegStar, FaShoppingCart, FaDice } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
@@ -30,7 +31,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const hasRecipes = userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0
 
   if (loading)
-    return <div>loading...</div>;
+    return <SpinnerComponent/>;
 
   // DOWNSHIFT 
   const handleShowRecipe = (id: number) => {

@@ -121,19 +121,21 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
         }
     }
 
-    return (<ListGroup.Item>
+    return (<ListGroup.Item className={mealItemStyles.item}>
         <div className={mealItemStyles.item}>
             <span onClick={() => handleShowModal(ModalCategory.View)} >
                 <LazyLoadPic image={imgInfo} />
             </span>
-            <span style={{ marginLeft: "3rem" }}>
+            {/* <span style={{ marginLeft: "3rem" }}> */}
+            <span className={mealItemStyles.itemIcons}>
                 <FaEdit className={mealItemStyles.pointer} onClick={() => handleShowModal(ModalCategory.Edit)} /> <FaTrashAlt className={mealItemStyles.pointer} onClick={handleDelete} />
-                <span style={{ marginLeft: "3rem" }}>
+                {/* <span style={{ marginLeft: "3rem" }}> */}
+                <span>
                     {isStarred ? <FaStar className={mealItemStyles.pointer} onClick={handleStarToggle} /> : <FaRegStar className={mealItemStyles.pointer} onClick={handleStarToggle} />}
                 </span>
             </span>
         </div>
-        <div>
+        <div style={{marginTop: '1rem'}}>
             {tags && tags.map(t => <RecipeTag key={t.id} text={t.name} />)}
         </div>
     </ListGroup.Item>)

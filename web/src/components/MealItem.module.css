@@ -4,7 +4,20 @@
   grid-gap: 1rem;
 }
 
+.itemIcons {
+  display: flex;
+  justify-content: space-around;
+}
+
 .pointer {
   cursor: pointer;
   font-size: 1.4rem;
+}
+
+.item {
+  border-bottom-width: 1.5px;
+}
+
+.item:last-child {
+  border-bottom-width: 1px;
 }

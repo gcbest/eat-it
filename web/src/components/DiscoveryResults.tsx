@@ -15,7 +15,7 @@ export const DiscoveryResults: React.FC<Props> = ({ recipes, hasSearched }) => {
     return (
         <div>
             {hasSearched && recipes === null ? 'No Results Found' :
-                Array.isArray(recipes) && recipes.length > 0 ? <CardDeck> {DiscoveryCardList(recipes)}  </CardDeck> : null}
+                Array.isArray(recipes) && recipes.length > 0 ? <CardDeck id="cardDeck" style={{justifyContent: "space-around"}}> {DiscoveryCardList(recipes)}  </CardDeck> : null}
         </div>
     )
 }

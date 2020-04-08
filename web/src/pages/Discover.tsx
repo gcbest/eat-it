@@ -9,7 +9,7 @@ import Container from 'react-bootstrap/Container';
 // import hasIn from '@bit/lodash.lodash.has-in'
 import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks'
-import { useMeLocalQuery } from 'generated/graphql';
+import { useMeLocalQuery, useMeQuery } from 'generated/graphql';
 import Form from 'react-bootstrap/Form';
 import discoverStyles from '../styles/Discover.module.css'
 import { Redirect } from 'react-router-dom';
@@ -18,17 +18,14 @@ export const DiscoverContext = React.createContext<any>(undefined)
 
 const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
+    const [height, setHeight] = useState('100vh')
 
-    useEffect(() => {
-        if (queryRef && queryRef.current)
-            queryRef.current.focus()
-    }, [])
+    // const { data: user, loading: loadingLocal } = useMeLocalQuery()
+    const { data: user, loading: loadingUser, error } = useMeQuery();
 
     const [hasSearched, setHasSearched] = useState(false)
-    const { data: user, loading: loadingLocal } = useMeLocalQuery()
 
-
-    const [getRandomRecipes, { loading, data }] = useLazyQuery(gql`
+    const [getRandomRecipes, { loading: loadingRandomRecipes, data }] = useLazyQuery(gql`
         query randomRecipes($tags: String!, $number: Float!) {
         randomRecipes(tags: $tags, number: $number) {
             id
@@ -44,6 +41,15 @@ const Discover: React.FC = () => {
         }
         }
     `);
+
+    useEffect(() => {
+        const cardDeck = document.getElementById('cardDeck');
+        if (cardDeck && cardDeck.hasChildNodes() && window.innerWidth < 992)
+            setHeight('auto') // make background expand to fit newly added cards
+
+        if (queryRef && queryRef.current)
+            queryRef.current.focus()
+    }, [data && data.randomRecipes])
 
     const handleSearch = (e: any) => {
         e.preventDefault()
@@ -62,11 +68,15 @@ const Discover: React.FC = () => {
         }
     }
 
+    if (loadingUser)
+        return <SpinnerComponent />;
+
     if (!user)
-        return <Redirect to="/login" push={true} />
+        return <Redirect to="/login" push={true} /> 
+
 
     return (
-        <div className={discoverStyles.background} style={{ position: 'relative' }}>
+        <div className={discoverStyles.background} style={{ position: 'relative', height }}>
             <Container>
                 <DiscoverContext.Provider value={{ me: user ? user.me : null }}>
                     <Form>
@@ -89,7 +99,7 @@ const Discover: React.FC = () => {
                         </Form.Group>
                     </Form>
                     {
-                        loading ?
+                        loadingRandomRecipes ?
                             <SpinnerComponent /> :
                             <DiscoveryResults recipes={data && data.randomRecipes ? data.randomRecipes : null} hasSearched={hasSearched} />
                     }

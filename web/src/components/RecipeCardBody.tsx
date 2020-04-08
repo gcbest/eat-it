@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle'
+import { LazyLoadComponent, LazyLoadImage } from 'react-lazy-load-image-component';
+
 import { createMarkup, convertToJSON, capitalize } from 'lib/utils'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, ADD_MANY_CART_ITEMS } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
@@ -27,13 +29,12 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
         cardImage: true,
         pointer: isDiscoveryCard
     })
-    let ingImage = cx({
+    let ingImageStyles = cx({
         pointer: true,
         ingImage: true
     })
 
     const { addToast } = useToasts()
-
 
     const imgUrlBase = 'https://spoonacular.com/cdn/ingredients_100x100/'
 
@@ -59,12 +60,12 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
 
     const handleAddIngredient = async (ingredient: any) => {
         const item = convertIngredientToItem(ingredient)
-        const {errors, data} = await addCartItem({
+        const { errors, data } = await addCartItem({
             variables: { item }
         })
-        if(errors) 
+        if (errors)
             addToast(errors[0].message, { appearance: 'error' })
-        if(data)
+        if (data)
             addToast(`${capitalize(item.name)} Added to Cart`, { appearance: 'success' })
 
 
@@ -72,19 +73,25 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
 
     const handleAddAllIngredients = async (ingredientsArr: [any]) => {
         const items = ingredientsArr.map(convertIngredientToItem)
-        const {errors, data} = await addManyCartItems({
+        const { errors, data } = await addManyCartItems({
             variables: { items }
         })
 
-        if(errors) 
+        if (errors)
             addToast(errors[0].message, { appearance: 'error' })
-        if(data)
+        if (data)
             addToast('All Items Added to Cart', { appearance: 'success' })
     }
 
     return (
         <Fragment>
-            <Card.Img className={className} variant="top" src={image} onClick={handleShow} />
+            <LazyLoadImage
+                className={className}
+                effect="blur"
+                alt={title}
+                src={image}
+                onClick={handleShow}
+                width="100%" />
             <Card.Body style={{ maxHeight: '28vh', overflowY: "scroll" }}>
                 <Card.Title>{title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">Servings: {servings}</Card.Subtitle>
@@ -128,7 +135,10 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
                                     <ListGroup>
                                         {JSON.parse(extendedIngredients).map((extIng: any) => {
                                             // <p className={recipeCardBodyStyles.itemName}>{extIng.name}</p> <br/>
-                                            return (<ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)} className={recipeCardBodyStyles.ingContainer}> <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} className={recipeCardBodyStyles.ingImage} />  <p className={recipeCardBodyStyles.itemDesc}>{extIng.originalString}</p> </ListGroup.Item>)
+                                            return (
+                                                <ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)} className={recipeCardBodyStyles.ingContainer}>
+                                                    <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} className={ingImageStyles} />  <p className={recipeCardBodyStyles.itemDesc}>{extIng.originalString}</p>
+                                                </ListGroup.Item>)
                                         })}
                                     </ListGroup>
                                 </Card.Body>

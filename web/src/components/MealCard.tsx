@@ -8,28 +8,16 @@ import { trackWindowScroll, LazyComponentProps }
 import { RecipeSlim, Recipe, ModalInterface } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory, MealCategory } from 'lib/enums';
-// import CreateRecipeModal from './CreateRecipeModal';
 import { Tag } from 'react-tag-autocomplete';
 import { MealsAreaContext } from './MealsArea';
-import { getKeyByValue } from 'lib/utils';
 import mealCardStyles from './MealCard.module.css'
 
 interface Props extends LazyComponentProps {
     mealType: MealCategory
     recipesSlim: RecipeSlim[]
-    // handleShow: (header: string) => void
-    // setModalType: (modalType: ModalCategory) => void
-    // setRecipe: (recipe: Recipe) => void
 }
 
-// export const MealCard: React.FC<Props> = ({ header, recipesSlim, handleShow, setModalType, setRecipe }) => {
 const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
-    // const [show, setShow] = useState(false);
-    // const handleClose = () => setShow(false);
-    // // const handleShow = () => setShow(true);
-
-    // const [recipes, setRecipes] = useState<RecipeSlim[]>([])
-    // const header = getKeyByValue(MealCategory, mealType)
     const header = MealCategory[mealType]
 
     const { dispatch, currPos: scrollPosition } = useContext(MealsAreaContext)
@@ -57,15 +45,7 @@ const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
             type: ModalCategory.Create,
             value: { mealType }
         })
-        // setModalType(ModalCategory.Create)
-        // handleShow(header)
     }
-
-    // const modalMethods = {
-    //     setModalType,
-    //     handleShow,
-    //     setRecipe
-    // }
 
     return (
         <Card>
@@ -79,10 +59,9 @@ const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
                         </Form.Group>
                     </Form>
                 </Card.Title>
-                <ListGroup>
+                <ListGroup className={mealCardStyles.cardItems}>
                     {searchResults &&
                         searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} scrollPosition={scrollPosition} />)}
-                    {/* searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} />)} */}
                 </ListGroup>
             </Card.Body>
             <Card.Footer>
