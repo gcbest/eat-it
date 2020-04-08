@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -10,7 +10,7 @@ import { useAddRecipeMutation } from 'generated/graphql';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import placeholder from '../../assets/images/recipe_placeholder.jpg'
-import { getKeyByValue } from 'lib/utils';
+// import { getKeyByValue } from 'lib/utils';
 import RecipeTagsArea from 'components/RecipeTagsArea';
 
 
@@ -23,8 +23,8 @@ export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ param
 }
 
 export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, handleClose, me }) => {
-    const { tags } = params
-    const { header }: any = params
+    const { tags = [], mealType } = params
+    const [updatedTags, setUpdatedTags] = useState(tags)
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title: '',
@@ -34,6 +34,7 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
         summary: '',
         sourceUrl: '',
         analyzedInstructions: '',
+        extendedIngredients: '',
     });
     const [addRecipe] = useAddRecipeMutation()
 
@@ -46,11 +47,11 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
         }
         const recipe = {
             ...inputs,
-            tags,
+            tags: updatedTags,
             userId: me!.id,
             isStarred: false,
             image: inputs.image ? inputs.image : placeholder,
-            mealType: parseFloat(MealCategory[header])
+            mealType
         }
         console.log(recipe);
         const response = await addRecipe({
@@ -73,11 +74,11 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="title">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="text" name="title" placeholder="Tasty Miso Soup" value={inputs.title} onChange={handleChange} />
+                <Form.Control type="text" name="title" placeholder="e.g. Tasty Miso Soup" value={inputs.title} onChange={handleChange} />
             </Form.Group>
             <Form.Group controlId="sourceUrl">
                 <Form.Label>Link to recipe</Form.Label>
-                <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
+                <Form.Control type="text" name="sourceUrl" placeholder="e.g. www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
             </Form.Group>
             <Form.Group controlId="readyInMinutes">
                 <Form.Label>Prep + Cook Time</Form.Label>
@@ -95,7 +96,7 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
                 <Form.Label>Summary</Form.Label>
                 <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
             </Form.Group>
-            <RecipeTagsArea params={params} me={me} />
+            <RecipeTagsArea params={params} me={me} setUpdatedTags={setUpdatedTags} />
             <Button variant="secondary" type="submit" style={{marginTop: '1.5rem'}}>
                 Create Recipe
             </Button>

@@ -9,9 +9,10 @@ import { Recipe, User, ModalInterface } from 'lib/interfaces'
 interface Props {
     params: ModalInterface
     me?: User
+    setUpdatedTags?: (tags: Tag[]) => void
 }
 
-const RecipeTagsArea: React.FC<Props> = ({ params, me }) => {
+const RecipeTagsArea: React.FC<Props> = ({ params, me, setUpdatedTags }) => {
     const { recipe, modalType } = params
     const [tags, setTags] = useState<Tag[]>([])
 
@@ -26,6 +27,8 @@ const RecipeTagsArea: React.FC<Props> = ({ params, me }) => {
 
         const updatedTags = tags.filter((_: any, index: number) => !(index === indexToRmv))
         setTags(updatedTags)
+        if(setUpdatedTags)
+            setUpdatedTags(updatedTags)
     }
 
     const handleAddition = (tag: Tag) => {
@@ -35,6 +38,8 @@ const RecipeTagsArea: React.FC<Props> = ({ params, me }) => {
         tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
         const updatedTags = [...tags, tag]
         setTags(updatedTags)
+        if(setUpdatedTags)
+            setUpdatedTags(updatedTags)
     }
 
     useEffect(() => {

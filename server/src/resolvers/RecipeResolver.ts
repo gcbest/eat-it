@@ -66,6 +66,8 @@ class EditRecipeInput implements Partial<Recipe> { //TODO: check if can implemen
     @Field()
     analyzedInstructions: string
     @Field()
+    extendedIngredients: string
+    @Field()
     mealType: number
     @Field()
     isStarred: boolean

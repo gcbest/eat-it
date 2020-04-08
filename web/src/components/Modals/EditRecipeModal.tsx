@@ -40,10 +40,11 @@ export const EditRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params 
 }
 
 export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, handleClose, me }) => {
-    const { recipe, tags, mealType } = params
-    const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions } = recipe!
+    const { recipe, tags = [], mealType } = params
+    const [updatedTags, setUpdatedTags] = useState(tags)
+    const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, extendedIngredients } = recipe!
     const [updateRecipe] = useUpdateRecipeByIdMutation()
-    const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
+    const { inputs, handleChange, isCreateRecipeValid } = useForm({
         title,
         readyInMinutes,
         servings,
@@ -51,6 +52,7 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
         summary,
         sourceUrl,
         analyzedInstructions,
+        extendedIngredients
     });
 
     const handleSubmit = async () => {
@@ -61,23 +63,17 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
         const updatedRecipe: EditRecipeInput = {
             ...inputs,
             id,
-            tags,
+            tags: updatedTags,
             mealType,
             userId: me!.id,
             __typename: 'Recipe',
             isStarred: recipe!.isStarred
         }
-        const response = await updateRecipe({
+        await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache) {
                 cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: { ...updatedRecipe } } })
-                const x = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id } })
-                console.log(x);
-
-                // update recipes on me object
-                // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
-                // me.recipes = me.recipes.map((r: RecipeSlim) => r.id === updatedRecipe.id ? updatedRecipe : r)
-                // cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
+                cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id } })
             }
         })
 
@@ -110,7 +106,7 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
                 <Form.Label>Summary</Form.Label>
                 <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
             </Form.Group>
-            <RecipeTagsArea params={params} me={me} />
+            <RecipeTagsArea params={params} me={me} setUpdatedTags={setUpdatedTags}/>
             <Button variant="primary" onClick={() => handleSubmit()} style={{marginTop: '1.5rem'}}>
                 Edit Recipe
             </Button>
