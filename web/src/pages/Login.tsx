@@ -89,7 +89,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
               setPassword(e.target.value);
             }} />
           </Form.Group>
-          <Button type="submit">login</Button>
+          <Button type="submit" variant='secondary'>login</Button>
         </Form>
       </Card>
     </div>

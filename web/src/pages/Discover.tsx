@@ -82,7 +82,7 @@ const Discover: React.FC = () => {
                     <Form>
                         <Form.Group>
                             <Form.Label>
-                                <h2><strong>Find New Recipes!</strong></h2>
+                                <h2 className={discoverStyles.header}>Find New Recipes!</h2>
                             </Form.Label>
                             <InputGroup className="mb-3">
                                 <FormControl
