@@ -5,13 +5,17 @@
 
 .labels {
   color: #5a5a5a;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 @media only screen and (max-width: 768px) {
   .addBtn {
     position: relative;
     margin-top: 2rem;
+  }
+
+  .labels {
+    color: #212529eb;
   }
 }
