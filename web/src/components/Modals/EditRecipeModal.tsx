@@ -9,6 +9,7 @@ import { useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql'
 import { getEnumNames } from 'lib/utils';
 import { GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations';
 import RecipeTagsArea from 'components/RecipeTagsArea';
+import { useToasts } from "react-toast-notifications";
 
 export const EditRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params }) => {
     const { recipe, setMealType } = params
@@ -41,6 +42,7 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
     const [updatedTags, setUpdatedTags] = useState(tags)
     const { id, title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, extendedIngredients } = recipe!
     const [updateRecipe] = useUpdateRecipeByIdMutation()
+    const { addToast } = useToasts()
     const { inputs, handleChange, isCreateRecipeValid } = useForm({
         title,
         readyInMinutes,
@@ -54,7 +56,7 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
 
     const handleSubmit = async () => {
         if (!isCreateRecipeValid()) {
-            console.log('fill out all the mandatory fields');
+            addToast('Mandatory Fields Not Completed', { appearance: 'error' })
             return
         }
         const updatedRecipe: EditRecipeInput = {
@@ -103,8 +105,8 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
                 <Form.Label>Summary</Form.Label>
                 <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
             </Form.Group>
-            <RecipeTagsArea params={params} me={me} setUpdatedTags={setUpdatedTags}/>
-            <Button variant="primary" onClick={() => handleSubmit()} style={{marginTop: '1.5rem'}}>
+            <RecipeTagsArea params={params} me={me} setUpdatedTags={setUpdatedTags} />
+            <Button variant="primary" onClick={() => handleSubmit()} style={{ marginTop: '1.5rem' }}>
                 Edit Recipe
             </Button>
         </Form>

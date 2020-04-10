@@ -33,7 +33,6 @@ export const RegistrationForm: React.FC = () => {
             return;
         }
 
-        console.log("form submitted");
         const { email, password, exerciseLevel, diets } = inputs
         const defaultTags: Tag[] = [{ id: nanoid(8), name: 'high-protein' }, { id: nanoid(8), name: 'vegan' }]
         // e.g. (['keto', 'pescatarian']) => [{id: 123, name: 'keto'}, {id: 456, name: 'pescatarian'}]
@@ -47,7 +46,7 @@ export const RegistrationForm: React.FC = () => {
         const selectedDietTags: Tag[] = convertDietTypesToTags(dietsArr) // e.g. [{id: 123, name: 'keto'}, {id: 456, name: 'pescatarian'}]
 
         try {
-            const response = await register({
+            await register({
                 variables: {
                     email,
                     password,
@@ -56,7 +55,6 @@ export const RegistrationForm: React.FC = () => {
                     tags: [...defaultTags, ...selectedDietTags]
                 }
             });
-            console.log(response);
 
             await login({
                 variables: {
@@ -67,10 +65,6 @@ export const RegistrationForm: React.FC = () => {
                     if (!data) {
                         return null;
                     }
-
-                    console.log('DATA from CACHE');
-                    console.log(data);
-
                     store.writeQuery<MeQuery>({
                         query: MeDocument,
                         data: {

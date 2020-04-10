@@ -15,6 +15,8 @@ import ShoppingCart from "components/ShoppingCart/ShoppingCart";
 import { GET_CART_ITEMS_BY_USER_ID } from "graphql/queriesAndMutations";
 import Container from "react-bootstrap/Container";
 import profileStyles from '../styles/Profile.module.css'
+import { useToasts } from "react-toast-notifications";
+
 
 
 export const ProfileContext = React.createContext<any>(undefined)
@@ -29,6 +31,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   let [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
   const [getCartItems, { data: cartItemsData }] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
   const hasRecipes = userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0
+  const { addToast } = useToasts()
 
   if (loading)
     return <SpinnerComponent/>;
@@ -47,7 +50,6 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const onSearchChange = debounce((e: any) => {
-    console.log('Searching...');
     // turn loading on
     setShowRecipeModal(false)
     setLoadingSearch(true)
@@ -87,9 +89,8 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   }
   /////////////////////////
 
-  // TODO: set error name to check if not logged in
-  // if (error && error.name === 'userNotFound') {
   if (error) {
+    addToast('Error Logging In', { appearance: 'error' })
     history.push('/register')
   }
 

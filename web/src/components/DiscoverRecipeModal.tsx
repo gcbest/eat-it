@@ -69,10 +69,6 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         mealType
     });
 
-
-    if (user)
-        console.log(user);
-
     const addRecipeFromDiscover = async () => {
         if (!recipe)
             throw new Error('recipe from discover not found')
@@ -91,15 +87,12 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         // remove properties not needed by mutation
         delete formattedRecipe.id
         delete formattedRecipe.dishTypes
-        console.log('adding recipe');
 
         const {errors, data} = await addRecipe({
             variables: {
                 recipe: formattedRecipe
             },
             update(cache, { data }) {
-                console.log(data);
-
                 const { me }: any = cache.readQuery({ query: GET_ME_LOCAL })
                 if (data && data.addRecipe) {
                     cache.writeQuery({
@@ -123,39 +116,6 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         addRecipeFromDiscover()
         handleClose()
     }
-
-    // const displayViewContent = (recipe: Recipe) => (
-
-    //     <Fragment>
-    //         {image &&
-    //             <img src={image} alt={title} style={{ width: '100%' }} />}
-    //         <h3>{title}</h3>
-    //         <p>
-    //             <span>Ready in: <strong>{readyInMinutes}</strong> mins</span><span style={{ marginLeft: '1rem' }}>Servings: {servings}</span>
-    //         </p>
-    //         {<p dangerouslySetInnerHTML={createMarkup(summary)}></p>}
-    //     </Fragment>
-    // )
-
-    // const handleSubmit = async (e: any) => {
-    //     e.preventDefault()
-    //     console.log('submit edit');
-
-    //     if (!isCreateRecipeValid()) {
-    //         console.log('fill out the mandatory fields');
-    //         return
-    //     }
-    //     const recipe = { ...inputs, userId: user!.me!.id }
-    //     console.log(recipe);
-    //     const response = await addRecipe({
-    //         variables: { recipe }
-    //     })
-
-    //     console.log(response);
-
-    //     resetForm()
-    //     handleClose()
-    // }
 
     return (
         <Modal show={show} onHide={handleClose}>

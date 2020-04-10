@@ -75,8 +75,6 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
     // Autosuggest will call this function every time you need to update suggestions.
     const onSuggestionsFetchRequested = ({ value }: { value: any }) => {
         setSuggestions(getSuggestions(value))
-        console.log(value);
-
     };
 
     const onSuggestionsClearRequested = () => {
@@ -114,19 +112,25 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                         />
                     </Col>
                     <Col sm={7} md={3}>
-                        <Form.Label className={addCartItemStyles.labels}>Amount</Form.Label>
-                        <Form.Control type="number" name="amount" value={inputs.amount} onChange={handleChange} min="1" />
+                        <Form.Group controlId="amount">
+                            <Form.Label className={addCartItemStyles.labels}>Amount</Form.Label>
+                            <Form.Control type="number" name="amount" value={inputs.amount} onChange={handleChange} min="1" />
+                        </Form.Group>
                     </Col>
                     <Col sm={7} md={2}>
-                        <Form.Label className={addCartItemStyles.labels}>Units</Form.Label>
-                        <Form.Control type="text" name="unit" value={inputs.unit} onChange={handleChange} placeholder="lbs/bags/etc" />
+                        <Form.Group controlId="unit">
+                            <Form.Label className={addCartItemStyles.labels}>Units</Form.Label>
+                            <Form.Control type="text" name="unit" value={inputs.unit} onChange={handleChange} placeholder="lbs/bags/etc" />
+                        </Form.Group>
                     </Col>
                     <Col sm={7} md={3}>
-                        <Form.Label className={addCartItemStyles.labels}>Aisle #</Form.Label>
-                        <Form.Control type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
+                        <Form.Group controlId="aisle">
+                            <Form.Label className={addCartItemStyles.labels}>Aisle #</Form.Label>
+                            <Form.Control type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
+                        </Form.Group>
                     </Col>
-                    <Col sm={7} md={1} style={{position: 'relative'}}>
-                        <Button className={addCartItemStyles.addBtn} variant="secondary" type="submit">Add <FaPlus/></Button>
+                    <Col sm={7} md={1} style={{ position: 'relative' }}>
+                        <Button className={addCartItemStyles.addBtn} variant="secondary" type="submit">Add <FaPlus /></Button>
                     </Col>
                 </Form.Row>
             </Form.Group>

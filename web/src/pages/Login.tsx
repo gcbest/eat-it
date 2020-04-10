@@ -13,6 +13,7 @@ interface Props { }
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { addToast } = useToasts()
   const [login] = useLoginMutation({
     variables: {
       email,
@@ -22,10 +23,6 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
       if (!data) {
         return null;
       }
-
-      console.log('DATA from CACHE');
-      console.log(data);
-
       store.writeQuery<MeQuery>({
         query: MeDocument,
         data: {
@@ -35,7 +32,6 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
     }
   });
 
-  const { addToast } = useToasts()
 
 
   return (
@@ -44,14 +40,12 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
         <Form
           onSubmit={async (e: any) => {
             e.preventDefault();
-            console.log("form submitted");
             const response = await login()
               .catch(error => { 
               addToast('Incorrect Login Information', { appearance: 'error' })
               console.error(error) 
             });
 
-            console.log(response);
             if (response && response.data) {
               setAccessToken(response.data.login.accessToken);
               history.push("/");

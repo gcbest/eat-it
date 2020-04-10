@@ -105,8 +105,6 @@ const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeD
             {params.show && <MainModal params={params} handleClose={handleClose} me={me} />}
 
             <div className="mealsArea">
-                {console.log(params)}
-
                 <MealsAreaContext.Provider value={{ dispatch, currPos }}>
                     {/* create a new meal card for each meal of the day */}
                     {getEnumNames(MealCategory).map(mealName => {

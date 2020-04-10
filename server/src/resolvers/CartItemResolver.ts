@@ -57,6 +57,7 @@ export class CartItemResolver {
                 .where("user.id = :id", { id })
                 // .andWhere('cartItems.isCleared = :isCleared', {isCleared: false}) // keeping the cleared items for suggestions
                 .orderBy('cartItems.aisle', 'ASC')
+                .addOrderBy('cartItems.name', 'ASC')
                 .getOne();
 
             if (!user)

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { ModalCategory } from 'lib/enums';
 import { RecipeSlim, Image } from 'lib/interfaces';
@@ -37,7 +37,7 @@ query meLocal {
 
 export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }) => {
     const { image, title, id, tags, isStarred } = rcpSlm
-    const imgInfo: Image = { src: image, alt: title, width: '90%', caption: title, scrollPosition, style: {display: 'block', cursor: 'pointer'} }
+    const imgInfo: Image = { src: image, alt: title, width: '90%', caption: title, scrollPosition, style: { display: 'block', cursor: 'pointer' } }
     const [modalType, setModalType] = useState<ModalCategory | undefined>(undefined)
     const { dispatch } = useContext(MealsAreaContext)
     const { me } = useContext(ProfileContext)
@@ -45,10 +45,22 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
 
     const recipeById = data && data.getRecipeById
 
+    const showModal = useCallback((type: ModalCategory) => {
+            if (data && data.getRecipeById) {
+                dispatch({
+                    type,
+                    value: {
+                        tags,
+                        recipe: data.getRecipeById,
+                    }
+                })
+            }
+    }, [data, dispatch, tags])
+
     useEffect(() => {
         if (modalType && recipeById)
             showModal(modalType)
-    }, [recipeById, modalType, ])
+    }, [recipeById, modalType, showModal])
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
         variables: { recipeId: id, userId: me.id },
@@ -73,17 +85,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
         showModal(modalType)
     }
 
-    const showModal = (type: ModalCategory) => {
-        if (data && data.getRecipeById) {
-            dispatch({
-                type,
-                value: {
-                    tags,
-                    recipe: data.getRecipeById,
-                }
-            })
-        }
-    }
+
 
     const handleStarToggle = () => {
         const starred = !isStarred
@@ -94,7 +96,8 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
                 isStarred: starred
             },
             update(cache, { data }) {
-                cache.writeQuery({ query: GET_ME_LOCAL, data: { me: toggleStar } })
+                if(data && data.toggleRecipeStar)
+                    cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data.toggleRecipeStar } })
             }
         })
     }
@@ -120,7 +123,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
                 </span>
             </span>
         </div>
-        <div style={{marginTop: '1rem'}}>
+        <div style={{ marginTop: '1rem' }}>
             {tags && tags.map(t => <RecipeTag key={t.id} text={t.name} />)}
         </div>
     </ListGroup.Item>)

@@ -10,11 +10,12 @@ import { useAddRecipeMutation } from 'generated/graphql';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import placeholder from '../../assets/images/recipe_placeholder.jpg'
 import RecipeTagsArea from 'components/RecipeTagsArea';
+import { useToasts } from "react-toast-notifications";
 
 
 export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params: { mealType } }) => {
     const header = MealCategory[mealType!]
-    
+
     return (
         <Modal.Title>Create New Recipe <Badge variant="secondary">{header}</Badge></Modal.Title>
     )
@@ -23,6 +24,7 @@ export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ param
 export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, handleClose, me }) => {
     const { tags = [], mealType } = params
     const [updatedTags, setUpdatedTags] = useState(tags)
+    const { addToast } = useToasts()
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
         title: '',
@@ -40,7 +42,7 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
         e.preventDefault()
 
         if (!isCreateRecipeValid()) {
-            console.log('fill out the mandatory fields');
+            addToast('Mandatory Fields Not Completed', { appearance: 'error' })
             return
         }
         const recipe = {
@@ -51,16 +53,13 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
             image: inputs.image ? inputs.image : placeholder,
             mealType
         }
-        console.log(recipe);
-        const response = await addRecipe({
+        await addRecipe({
             variables: { recipe },
             update(cache, { data }) {
                 if (data && data.addRecipe)
                     cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data.addRecipe } })
             }
         })
-
-        console.log(response);
 
         resetForm()
         handleClose!()
@@ -93,7 +92,7 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
                 <Form.Control name="summary" value={inputs.summary} onChange={handleChange} as="textarea" rows="3" />
             </Form.Group>
             <RecipeTagsArea params={params} me={me} setUpdatedTags={setUpdatedTags} />
-            <Button variant="secondary" type="submit" style={{marginTop: '1.5rem'}}>
+            <Button variant="secondary" type="submit" style={{ marginTop: '1.5rem' }}>
                 Create Recipe
             </Button>
         </Form>

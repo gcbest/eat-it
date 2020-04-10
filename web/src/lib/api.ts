@@ -37,7 +37,6 @@ export const spoonacular = {
     random: async function (params: RandomParams) {
         try {
             params.apiKey = this.apiKey
-            console.log('sending request to spoonacular');
             const results = await apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params })
             return results;
         } catch (error) {
