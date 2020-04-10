@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "0.0.1",
-  "description": "Awesome project developed with TypeORM.",
+  "description": "EatIt!",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.2",
@@ -10,6 +10,7 @@
     "@types/graphql": "^14.5.0",
     "@types/jsonwebtoken": "^8.3.3",
     "@types/node": "^12.7.5",
+    "concurrently": "^5.1.0",
     "nodemon": "^1.19.2",
     "ts-node": "8.3.0",
     "typescript": "3.6.3"
@@ -30,6 +31,12 @@
     "typeorm": "^0.2.21"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "node dist/index.js",
+    "build-ts": "tsc",
+    "postinstall": "yarn build-ts",
+    "start:dev": "concurrently \"nodemon --exec ts-node src/index.ts\" \"yarn client\"",
+    "client": "cd ../web && yarn start",
+    "build": "cd ../web && yarn build",
+    "heroku-postbuild": "yarn build"
   }
 }

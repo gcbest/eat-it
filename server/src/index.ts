@@ -1,5 +1,6 @@
 import "dotenv/config";
 import "reflect-metadata";
+import path from "path";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -25,7 +26,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
     })
   );
   app.use(cookieParser());
-  app.get("/", (_req, res) => res.send("hello"));
+
   app.post("/refresh_token", async (req, res) => {
     const token = req.cookies.jid;
     if (!token) {
@@ -67,6 +68,14 @@ import { createAccessToken, createRefreshToken } from "./auth";
   });
 
   apolloServer.applyMiddleware({ app, cors: false });
+
+  if (process.env.NODE_ENV === "production") {
+    app.use(express.static("../../web/build"));
+  }
+
+  app.use((_, res) =>
+    res.sendFile(path.join(__dirname, "../../web/build/index.html"))
+  );
 
   app.listen(PORT, () => {
     console.log(`express server started on port: ${PORT}`);
