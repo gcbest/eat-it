@@ -1,7 +1,5 @@
-import React, { useState, useReducer, useRef, useEffect } from 'react'
+import React, { useReducer, useRef } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
-import Form from 'react-bootstrap/Form'
-import Badge from 'react-bootstrap/Badge'
 import { GET_CART_ITEMS_BY_USER_ID, UPDATE_CART_ITEM_BY_ID, TOGGLE_CART_ITEM_CHECKED_BY_ID, CLEAR_ITEM_FROM_SHOPPING_LIST } from 'graphql/queriesAndMutations'
 import { useMutation } from '@apollo/react-hooks'
 import { CartItemInterface, User, CartItemEditables } from 'lib/interfaces'
@@ -53,7 +51,7 @@ const CartItem: React.FC<Props> = ({ me, item }) => {
     const aisleRef = useRef<FormControl<"input"> & HTMLInputElement>(null)
     const [isEditable, dispatch] = useReducer(reducer, initialState)
 
-    const { inputs, handleChange, resetForm } = useForm({
+    const { inputs, handleChange } = useForm({
         name,
         amount,
         unit,

@@ -8,9 +8,7 @@ import { ModalInterface, ModalProps } from 'lib/interfaces'
 import useForm from 'lib/useForm';
 import { useAddRecipeMutation } from 'generated/graphql';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
-import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import placeholder from '../../assets/images/recipe_placeholder.jpg'
-// import { getKeyByValue } from 'lib/utils';
 import RecipeTagsArea from 'components/RecipeTagsArea';
 
 
@@ -57,8 +55,6 @@ export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params,
         const response = await addRecipe({
             variables: { recipe },
             update(cache, { data }) {
-                // cloning to prevent any issues with not being able to update cache
-                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
                 if (data && data.addRecipe)
                     cache.writeQuery({ query: GET_ME_LOCAL, data: { me: data.addRecipe } })
             }

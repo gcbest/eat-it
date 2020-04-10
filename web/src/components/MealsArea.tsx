@@ -8,9 +8,6 @@ import { ProfileContext } from 'pages/Profile'
 import { useScrollPosition } from '../lib/useScrollPosition'
 import { GetRecipeByIdQuery } from 'generated/graphql'
 import './MealsArea.css'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
-import Container from 'react-bootstrap/Container'
 
 interface Props {
     recipesSlim: RecipeSlim[] | undefined

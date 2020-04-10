@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
@@ -7,11 +7,8 @@ import { ModalInterface, ModalProps } from '../../lib/interfaces'
 import useForm from 'lib/useForm';
 import { useUpdateRecipeByIdMutation, EditRecipeInput } from 'generated/graphql';
 import { getEnumNames } from 'lib/utils';
-// import cloneDeep from '@bit/lodash.lodash.clone-deep';
 import { GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations';
 import RecipeTagsArea from 'components/RecipeTagsArea';
-// import ReactTags, { Tag } from 'react-tag-autocomplete';
-// import nanoid from 'nanoid';
 
 export const EditRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ params }) => {
     const { recipe, setMealType } = params
@@ -88,7 +85,7 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
             </Form.Group>
             <Form.Group controlId="sourceUrl">
                 <Form.Label>Link to recipe</Form.Label>
-                <Form.Control type="text" name="sourceUrl" placeholder="www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
+                <Form.Control type="text" name="sourceUrl" placeholder="e.g. www.recipesRus.com/tastymisosoup" value={inputs.sourceUrl} onChange={handleChange} />
             </Form.Group>
             <Form.Group controlId="readyInMinutes">
                 <Form.Label>Prep + Cook Time</Form.Label>

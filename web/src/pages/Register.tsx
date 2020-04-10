@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useRegisterMutation } from "../generated/graphql";
-import { RouteComponentProps } from "react-router-dom";
+import React from "react";
 import { RegistrationForm } from "components/RegistrationForm";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

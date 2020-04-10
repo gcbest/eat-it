@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Form from 'react-bootstrap/Form';
 import { trackWindowScroll, LazyComponentProps }
     from 'react-lazy-load-image-component';
-import { RecipeSlim, Recipe, ModalInterface } from 'lib/interfaces';
+import { RecipeSlim } from 'lib/interfaces';
 import { MealItem } from './MealItem';
 import { ModalCategory, MealCategory } from 'lib/enums';
 import { Tag } from 'react-tag-autocomplete';

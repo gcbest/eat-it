@@ -1,6 +1,6 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import { useGetRecipeByIdLazyQuery, useMeQuery } from "../generated/graphql";
-import { RouteComponentProps, Link, Redirect } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import MealsArea from "components/MealsArea";
 import Downshift from 'downshift';
 import { DropDown, DropDownItem, SearchStyles } from '../styles/Dropdown';
@@ -27,7 +27,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
   const [recipes, setRecipes] = useState<RecipeSlim[]>([])
   const [onlyShowStarred, setOnlyShowStarred] = useState(false)
   let [getRecipeById, { data: recipeData }] = useGetRecipeByIdLazyQuery()
-  const [getCartItems, { loading: cartItemsLoading, error: cartItemsError, data: cartItemsData }] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
+  const [getCartItems, { data: cartItemsData }] = useLazyQuery(GET_CART_ITEMS_BY_USER_ID)
   const hasRecipes = userData && userData.me && userData.me.recipes && userData.me.recipes.length > 0
 
   if (loading)

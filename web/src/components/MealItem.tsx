@@ -1,8 +1,8 @@
-import React, { useState, memo, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { ModalCategory } from 'lib/enums';
 import { RecipeSlim, Image } from 'lib/interfaces';
-import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useMeLocalQuery, useUpdateRecipeByIdMutation, useToggleRecipeStarMutation } from 'generated/graphql';
+import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useToggleRecipeStarMutation } from 'generated/graphql';
 import { FaEdit, FaTrashAlt, FaRegStar, FaStar } from "react-icons/fa";
 import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
@@ -43,10 +43,12 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
     const { me } = useContext(ProfileContext)
     const [getRecipeById, { data }] = useGetRecipeByIdLazyQuery()
 
+    const recipeById = data && data.getRecipeById
+
     useEffect(() => {
-        if (modalType && data && data.getRecipeById)
+        if (modalType && recipeById)
             showModal(modalType)
-    }, [data && data.getRecipeById])
+    }, [recipeById, modalType, ])
 
     const [deleteRecipeById] = useDeleteRecipeByIdMutation({
         variables: { recipeId: id, userId: me.id },
@@ -65,11 +67,6 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
 
     const [toggleStar] = useToggleRecipeStarMutation()
 
-
-    // const [show, setShow] = useState(false);
-    // const [showEdit, setShowEdit] = useState(false);
-    // const handleClose = () => setShow(false);
-    // const handleCloseEdit = () => setShowEdit(false);
     const handleShowModal = (modalType: ModalCategory) => {
         setModalType(modalType) // so that we know if View or Edit was selected
         getRecipeById({ variables: { id } })
@@ -81,19 +78,12 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
             dispatch({
                 type,
                 value: {
-                    // header,
                     tags,
                     recipe: data.getRecipeById,
                 }
             })
         }
     }
-    // const handleShowEdit = () => {
-    //     getRecipeById({ variables: { id } })
-    //     setShowEdit(true)
-    // }
-
-    const { data: notData, loading, error } = useMeLocalQuery();
 
     const handleStarToggle = () => {
         const starred = !isStarred
@@ -104,10 +94,6 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
                 isStarred: starred
             },
             update(cache, { data }) {
-                console.log(data);
-
-                // cloning to prevent any issues with not being able to update cache
-                const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
                 cache.writeQuery({ query: GET_ME_LOCAL, data: { me: toggleStar } })
             }
         })
@@ -117,7 +103,6 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
         if (window.confirm('Are you sure you want to delete?')) {
             // deleteRecipeById({ variables: { id } })
             deleteRecipeById()
-            console.log(notData);
         }
     }
 

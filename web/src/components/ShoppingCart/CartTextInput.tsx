@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, forwardRef, RefForwardingComponent } from 'react'
+import React, { Fragment, useEffect, forwardRef } from 'react'
 import Form from 'react-bootstrap/Form'
 import { ItemDetails } from 'lib/enums'
 import Badge from 'react-bootstrap/Badge'
@@ -19,7 +19,7 @@ const CartTextInput = forwardRef(({isEditable, inputType, name, min, handleChang
     useEffect(() => {
         if(ref && ref.current)
             ref.current.focus()
-    }, [isEditable])
+    }, [isEditable, ref])
 
     const detailsStyles: {margin: string, wordBreak: 'break-word' | 'normal'} = {margin: window.innerWidth > 600 ? '0 0.5rem' : '0', wordBreak: name === 'unit' ? 'break-word' : 'normal'}
 

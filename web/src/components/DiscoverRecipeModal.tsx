@@ -14,28 +14,12 @@ import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import { FaHeart } from 'react-icons/fa'
 import { useToasts } from 'react-toast-notifications'
 
-
-
-
-// interface Props extends ModalInterface {
-//     options: {
-//         type: ModalCategory
-//     }
-//     recipe: Recipe | null | undefined
-// }
-
 interface Props<T> {
     params: T
     handleClose: () => void
 }
 
-// interface ModalContent { title: string, actionButton: string, body: any }
-
-// const DiscoverRecipeModal: React.FC<Props> = ({ show, handleClose, recipe, options }) => {
 const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
-    // const handleClose = () => null
-    // const [isEditing, setIsEditing] = useState(false)
-
     const { addToast } = useToasts()
 
     const { show, recipe } = params
@@ -43,7 +27,6 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
     const user = useContext(DiscoverContext)
 
     const [addRecipe] = useAddRecipeMutation()
-    // const { type } = options
     const { title, readyInMinutes, servings, image, summary, sourceUrl, analyzedInstructions, extendedIngredients, dishTypes = [], mealType = 1 } = recipe!
 
 
@@ -70,11 +53,11 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
     useEffect(() => {
         if (user && user.me && user.me.tags)
             setSuggestions(user.me.tags)
-    }, [])
+    }, [user])
 
     /////////////////////////////////
 
-    const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
+    const { inputs, handleChange} = useForm({
         title,
         readyInMinutes,
         servings,

@@ -5,7 +5,6 @@ import Nav from 'react-bootstrap/Nav';
 import { setAccessToken } from "../lib/accessToken";
 import { useLogoutMutation } from '../generated/graphql';
 import { Me } from 'lib/interfaces';
-import Col from 'react-bootstrap/Col';
 
 const LoginLink = () => (<Nav.Link as={Link} to="/login">Login</Nav.Link>)
 const LogoutLink = () => (<Nav.Link eventKey="1" as={Link} to="/login">Logout</Nav.Link>)

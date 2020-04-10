@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Accordion from 'react-bootstrap/Accordion'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle'
-import { LazyLoadComponent, LazyLoadImage } from 'react-lazy-load-image-component';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { createMarkup, convertToJSON, capitalize } from 'lib/utils'
 import { ADD_CART_ITEM, GET_CART_ITEMS_BY_USER_ID, ADD_MANY_CART_ITEMS } from 'graphql/queriesAndMutations'
@@ -13,6 +13,7 @@ import { useMutation } from '@apollo/react-hooks'
 import classNames from 'classnames/bind'
 import recipeCardBodyStyles from './RecipeCardBody.module.css'
 import { useToasts } from 'react-toast-notifications'
+import nanoid from 'nanoid'
 
 const cx = classNames.bind(recipeCardBodyStyles)
 
@@ -134,7 +135,7 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
                                     <Button style={{ margin: '1rem 0' }} onClick={() => handleAddAllIngredients(JSON.parse(extendedIngredients))} variant="primary">Add all ingredients to cart</Button>
                                     <ListGroup>
                                         {JSON.parse(extendedIngredients).map((extIng: any) => {
-                                            // <p className={recipeCardBodyStyles.itemName}>{extIng.name}</p> <br/>
+                                            extIng.id = nanoid(6) // overwriting to prevent duplicate keys in shopping cart
                                             return (
                                                 <ListGroup.Item key={extIng.id} onClick={() => handleAddIngredient(extIng)} className={recipeCardBodyStyles.ingContainer}>
                                                     <img src={`${imgUrlBase}${extIng.image}`} alt={extIng.name} className={ingImageStyles} />  <p className={recipeCardBodyStyles.itemDesc}>{extIng.originalString}</p>

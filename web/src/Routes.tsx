@@ -1,14 +1,9 @@
-import React, { lazy, Suspense, ReactNode } from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-// import Container from 'react-bootstrap/Container';
-// import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
 import { Header } from "./components/Header";
 import { SpinnerComponent } from './components/Spinner'
 import { ToastProvider } from 'react-toast-notifications'
 
-
-// const Home = lazy(() => import('./pages/Home'))
 import Home from './pages/Home'
 import { useMeLocalQuery } from "generated/graphql";
 const Register = lazy(() => import('./pages/Register'))
@@ -19,8 +14,6 @@ const Discover = lazy(() => import('./pages/Discover'))
 export const Routes: React.FC = () => {
   const { data: user, loading } = useMeLocalQuery()
   const loggedIn = user && user.me ? true : false
-
-  
 
   return (
     <BrowserRouter>

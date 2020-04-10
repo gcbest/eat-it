@@ -6,10 +6,8 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container';
-// import hasIn from '@bit/lodash.lodash.has-in'
-import { Recipe } from 'lib/interfaces'
 import { useLazyQuery } from '@apollo/react-hooks'
-import { useMeLocalQuery, useMeQuery } from 'generated/graphql';
+import { useMeQuery } from 'generated/graphql';
 import Form from 'react-bootstrap/Form';
 import discoverStyles from '../styles/Discover.module.css'
 import { Redirect } from 'react-router-dom';
@@ -20,8 +18,7 @@ const Discover: React.FC = () => {
     const queryRef = useRef<HTMLInputElement>(null);
     const [height, setHeight] = useState('100vh')
 
-    // const { data: user, loading: loadingLocal } = useMeLocalQuery()
-    const { data: user, loading: loadingUser, error } = useMeQuery();
+    const { data: user, loading: loadingUser } = useMeQuery();
 
     const [hasSearched, setHasSearched] = useState(false)
 
@@ -42,6 +39,8 @@ const Discover: React.FC = () => {
         }
     `);
 
+    const randomRecipes = data && data.randomRecipes
+
     useEffect(() => {
         const cardDeck = document.getElementById('cardDeck');
         if (cardDeck && cardDeck.hasChildNodes() && window.innerWidth < 992)
@@ -49,7 +48,7 @@ const Discover: React.FC = () => {
 
         if (queryRef && queryRef.current)
             queryRef.current.focus()
-    }, [data && data.randomRecipes])
+    }, [randomRecipes])
 
     const handleSearch = (e: any) => {
         e.preventDefault()

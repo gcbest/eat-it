@@ -5,7 +5,6 @@ import CartItem from './CartItem'
 import AddCartItem from './AddCartItem'
 import { ProfileContext } from 'pages/Profile'
 import Accordion from 'react-bootstrap/Accordion'
-import Collapse from 'react-bootstrap/Collapse'
 import { useMutation } from '@apollo/react-hooks'
 import { CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST, GET_CART_ITEMS_BY_USER_ID } from 'graphql/queriesAndMutations'
 import Button from 'react-bootstrap/Button'
@@ -19,9 +18,6 @@ import shoppingCartStyles from './ShoppingCart.module.css'
 
 const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     const { me } = useContext(ProfileContext)
-    const [openToComplete, setOpenToComplete] = useState(true);
-    const [openCompleted, setOpenCompleted] = useState(true);
-
     const [itemsToComplete, setItemsToComplete] = useState<CartItemInterface[]>([])
     const [completedItems, setCompletedItems] = useState<CartItemInterface[]>([])
     const [filteredItems, setFilteredItems] = useState<CartItemInterface[]>([])

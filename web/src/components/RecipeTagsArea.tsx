@@ -4,7 +4,7 @@ import { ModalCategory } from 'lib/enums'
 import { RecipeTag } from './RecipeTag'
 import ReactTags, { Tag } from 'react-tag-autocomplete'
 import nanoid from 'nanoid'
-import { Recipe, User, ModalInterface } from 'lib/interfaces'
+import { User, ModalInterface } from 'lib/interfaces'
 
 interface Props {
     params: ModalInterface
@@ -42,13 +42,16 @@ const RecipeTagsArea: React.FC<Props> = ({ params, me, setUpdatedTags }) => {
             setUpdatedTags(updatedTags)
     }
 
+    const recipeTags = recipe && recipe.tags
+    const userTags = me && me.tags
+
     useEffect(() => {
-        if (me && me.tags)
-            setSuggestions(me.tags)
-        if (recipe && recipe.tags) {
-            setTags(recipe.tags)
+        if (userTags)
+            setSuggestions(userTags)
+        if (recipeTags) {
+            setTags(recipeTags)
         }
-    }, [recipe && recipe.tags])
+    }, [userTags, recipeTags])
     /////////////////////////////////// 
 
     return (

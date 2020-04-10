@@ -1,18 +1,9 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { ModalInterface, User, RecipeSlim, ModalProps } from './interfaces'
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
-import { getEnumNames, createMarkup } from './utils'
-import { MealCategory, ModalCategory } from './enums'
-import useForm from './useForm'
-import Badge from 'react-bootstrap/Badge'
-import { useDeleteRecipeByIdMutation, useAddRecipeMutation, EditRecipeInput, useUpdateRecipeByIdMutation } from 'generated/graphql'
-import { GET_ME_LOCAL, GET_RECIPE_BY_ID } from 'graphql/queriesAndMutations'
-import Button from 'react-bootstrap/Button'
+import React from 'react'
+import { ModalInterface, User } from './interfaces'
+import { ModalCategory } from './enums'
 import { CreateRecipeHeader, CreateRecipeBody, CreateRecipeFooter } from 'components/Modals/CreateRecipeModal'
 import { EditRecipeHeader, EditRecipeBody, EditRecipeFooter } from 'components/Modals/EditRecipeModal'
 import { ViewRecipeHeader, ViewRecipeBody, ViewRecipeFooter } from 'components/Modals/ViewRecipeModal'
-import RecipeTagsArea from 'components/RecipeTagsArea'
 
 export const useGenerateModalParts = (type: ModalCategory, params: ModalInterface, me: User, handleClose?: () => void) => {
     let ModalHeader: React.ReactElement | null = null
@@ -50,6 +41,4 @@ export const useGenerateModalParts = (type: ModalCategory, params: ModalInterfac
     const getFooter = () => ModalFooter
 
     return { getHeader, getBody, getFooter }
-
-
 }
