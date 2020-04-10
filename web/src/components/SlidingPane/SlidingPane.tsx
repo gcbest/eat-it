@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import './SlidingPane.css';
 import { SlidingPaneInterface } from 'lib/interfaces';
@@ -20,6 +20,10 @@ export default function SlidingPane({
     width,
     shouldCloseOnEsc = true
 }: SlidingPaneInterface) {
+    useEffect(() => {
+        Modal.setAppElement('body');
+    }, [])
+
     const directionClass = `slide-pane_from_${from}`;
 
     return <Modal
