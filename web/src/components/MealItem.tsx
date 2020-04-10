@@ -4,36 +4,19 @@ import { ModalCategory } from 'lib/enums';
 import { RecipeSlim, Image } from 'lib/interfaces';
 import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useToggleRecipeStarMutation } from 'generated/graphql';
 import { FaEdit, FaTrashAlt, FaRegStar, FaStar } from "react-icons/fa";
-import gql from 'graphql-tag';
 import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import { RecipeTag } from './RecipeTag';
 import { ProfileContext } from 'pages/Profile';
 import { MealsAreaContext } from './MealsArea';
 import LazyLoadPic from './LazyLoadPic';
 import mealItemStyles from './MealItem.module.css'
-
-
+import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 
 interface Props<T> {
     rcpSlm: T
     header: string
     scrollPosition?: any
 }
-
-const GET_ME_LOCAL = gql`
-query meLocal {
-    me @client {
-        id
-        email
-        recipes {
-            id
-            title
-            image
-            mealType
-        }
-    }
-}
-`
 
 export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }) => {
     const { image, title, id, tags, isStarred } = rcpSlm
@@ -76,7 +59,6 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
         }
     })
 
-
     const [toggleStar] = useToggleRecipeStarMutation()
 
     const handleShowModal = (modalType: ModalCategory) => {
@@ -84,8 +66,6 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
         getRecipeById({ variables: { id } })
         showModal(modalType)
     }
-
-
 
     const handleStarToggle = () => {
         const starred = !isStarred
