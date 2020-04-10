@@ -90,6 +90,16 @@ const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeD
         }
     })
 
+    const compare = (mealA: RecipeSlim|any, mealB: RecipeSlim|any) => {
+        const titleA = mealA.title.toUpperCase(); 
+        const titleB = mealB.title.toUpperCase(); 
+        if (titleA < titleB)
+            return -1;
+        if (titleA > titleB)
+            return 1;
+        return 0;
+    }
+
     return (
         <Fragment>
             {params.show && <MainModal params={params} handleClose={handleClose} me={me} />}
@@ -101,6 +111,7 @@ const MealsArea: React.FC<Props> = ({ recipesSlim = [], onlyShowStarred, recipeD
                     {/* create a new meal card for each meal of the day */}
                     {getEnumNames(MealCategory).map(mealName => {
                         const recipesForThisMeal = sortedMeals[mealName]
+                        recipesForThisMeal.sort(compare) // sort so that toggling star doesn't change order
                         const mealType = getKeyByValue(MealCategory, mealName)
                         return <MealCard key={mealName} mealType={parseInt(mealType!)} recipesSlim={recipesForThisMeal} />
                     })}
