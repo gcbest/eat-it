@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "EatIt!",
   "engines": {
-    "node": "12.16.x"
+    "node": "12.x"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
