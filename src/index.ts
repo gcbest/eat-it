@@ -69,13 +69,13 @@ import { createAccessToken, createRefreshToken } from "./auth";
 
   apolloServer.applyMiddleware({ app, cors: false });
 
-  // if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../web/build")));
-  // }
 
-  app.use((_, res) =>
-    res.sendFile(path.join(__dirname, "../web/build/index.html"))
-  );
+    app.use((_, res) =>
+      res.sendFile(path.join(__dirname, "../web/build/index.html"))
+    );
+  }
 
   app.listen(PORT, () => {
     console.log(`express server started on port: ${PORT}`);
