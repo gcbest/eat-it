@@ -35,7 +35,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
     const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({ id: nanoid(8), name: tagName }))
 
     const defaultTags = createTags(dishTypes)
-    const [tags, setTags] = useState<Tag[]>(defaultTags)
+    const [tags, setTags] = useState<Tag[]|any[]>(defaultTags)
     const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
