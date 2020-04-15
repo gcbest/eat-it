@@ -71,8 +71,10 @@ export const EditRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, h
         await updateRecipe({
             variables: { input: updatedRecipe },
             update(cache) {
+                console.log(updatedRecipe);
                 cache.writeQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id }, data: { getRecipeById: { ...updatedRecipe } } })
-                cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id } })
+                const updated = cache.readQuery({ query: GET_RECIPE_BY_ID, variables: { id: recipe!.id } })
+                console.log(updated);
             }
         })
 

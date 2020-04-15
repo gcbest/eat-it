@@ -1,7 +1,6 @@
-import { Tag, MeLocalQuery } from "generated/graphql";
+import { Tag, MeLocalQuery, TagInput } from "generated/graphql";
 import { ModalCategory, MealCategory } from "./enums";
 import { CSSProperties } from "react";
-import {Tag as ReactTag} from 'react-tag-autocomplete'
 
 export interface Instructions {
     name: string;
@@ -24,7 +23,7 @@ export interface Recipe {
     // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
     extendedIngredients: string;
-    tags: Tag[];
+    tags: Tag[]|TagInput[];
     mealType: number;
     isStarred: boolean
     dishTypes?: string[]

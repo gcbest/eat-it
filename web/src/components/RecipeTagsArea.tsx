@@ -5,7 +5,7 @@ import { RecipeTag } from './RecipeTag'
 import ReactTags, {Tag as ReactTag} from 'react-tag-autocomplete'
 import nanoid from 'nanoid'
 import { User, ModalInterface } from 'lib/interfaces'
-import { Tag } from 'generated/graphql'
+import { Tag, TagInput } from 'generated/graphql'
 
 interface Props {
     params: ModalInterface
@@ -36,7 +36,7 @@ const RecipeTagsArea: React.FC<Props> = ({ params, me, setUpdatedTags }) => {
         if (modalType === ModalCategory.View)
             return // not allowed to edit tags in view mode
 
-        const newTag: Tag = { ...tag, id: nanoid(8) }
+        const newTag: TagInput = { ...tag, id: nanoid(8), __typename: 'TagInput' }
         const updatedTags = [...tags, newTag]
         setTags(updatedTags)
         if(setUpdatedTags)
