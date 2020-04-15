@@ -36,7 +36,6 @@ const RecipeTagsArea: React.FC<Props> = ({ params, me, setUpdatedTags }) => {
         if (modalType === ModalCategory.View)
             return // not allowed to edit tags in view mode
 
-        // tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
         const newTag: Tag = { ...tag, id: nanoid(8) }
         const updatedTags = [...tags, newTag]
         setTags(updatedTags)
