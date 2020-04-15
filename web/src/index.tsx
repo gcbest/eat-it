@@ -14,7 +14,8 @@ import { resolvers, typeDefs } from './resolvers'
 import './assets/css/bootswatch.min.css'
 
 const cache = new InMemoryCache()
-const ENDPOINT = process.env.PROD_ENDPOINT || 'http://localhost:4000'
+// const ENDPOINT = process.env.PROD_ENDPOINT || 'http://localhost:4000'
+const ENDPOINT = 'https://eat--it.herokuapp.com/'
 
 const cleanTypeName = new ApolloLink((operation, forward) => {
   if (operation.variables) {
