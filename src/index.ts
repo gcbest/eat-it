@@ -21,7 +21,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
 
   app.use(
     cors({
-      origin: process.env.PORT || "http://localhost:3000",
+      origin: 'https://eat--it.herokuapp.com/' || 'http://localhost:3000',
       credentials: true
     })
   );
