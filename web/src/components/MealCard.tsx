@@ -64,7 +64,7 @@ const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
                             </Form.Group>
                         </Form>
                         :
-                        'No Recipes in Meal'
+                        'No Recipes for this Meal'
                     }
                 </Card.Title>
                 <Accordion.Collapse eventKey={header}>

@@ -15,8 +15,6 @@ import Col from 'react-bootstrap/Col'
 import shoppingCartStyles from './ShoppingCart.module.css'
 import CollapsibleCard from 'components/CollapsibleCard/CollapsibleCard'
 
-
-
 const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     const { me } = useContext(ProfileContext)
     const [itemsToComplete, setItemsToComplete] = useState<CartItemInterface[]>([])
@@ -42,7 +40,6 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         })
     }
 
-
     const handleFilter = (e: any) => {
         if (e.target.value === '')
             return setFilteredItems(itemsToComplete)
@@ -60,13 +57,10 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         )
     }
 
-
     return (
         <div>
-
             <AddCartItem itemSuggestions={items} me={me} />
 
-            {/* Unchecked Section */}
             <Row>
                 <Col sm={12} md={12} lg={10}>
                     <CollapsibleCard defaultActiveKey="0">
