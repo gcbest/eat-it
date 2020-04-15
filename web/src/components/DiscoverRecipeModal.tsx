@@ -5,9 +5,9 @@ import Form from 'react-bootstrap/Form';
 import { MealCategory } from '../lib/enums'
 import { ModalInterface, AddRecipeInput } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useAddRecipeMutation } from 'generated/graphql';
+import { useAddRecipeMutation, Tag } from 'generated/graphql';
 import { getEnumNames, createMarkup } from 'lib/utils';
-import ReactTags, { Tag } from 'react-tag-autocomplete'
+import ReactTags, {Tag as ReactTag} from 'react-tag-autocomplete'
 import nanoid from 'nanoid';
 import { DiscoverContext } from 'pages/Discover';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
@@ -18,6 +18,11 @@ interface Props<T> {
     params: T
     handleClose: () => void
 }
+
+// interface newReactTag extends Omit<ReactTag, 'id'> {
+//     id: string
+// }
+
 
 const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleClose }) => {
     const { addToast } = useToasts()
@@ -35,7 +40,7 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
     const createTags = (tagNamesArr: string[]): Tag[] => tagNamesArr.map<Tag>(tagName => ({ id: nanoid(8), name: tagName }))
 
     const defaultTags = createTags(dishTypes)
-    const [tags, setTags] = useState<Tag[]|any[]>(defaultTags)
+    const [tags, setTags] = useState<Tag[]>(defaultTags)
     const [suggestions, setSuggestions] = useState<Tag[]>([])
 
     const handleDelete = (indexToRmv: number) => {
@@ -43,9 +48,9 @@ const DiscoverRecipeModal: React.FC<Props<ModalInterface>> = ({ params, handleCl
         setTags(updatedTags)
     }
 
-    const handleAddition = (tag: Tag) => {
-        tag = { ...tag, id: nanoid(8) }
-        const updatedTags = [...tags, tag]
+    const handleAddition = (tag: ReactTag) => {
+        const newTag: Tag = { ...tag, id: nanoid(8) } // convert to regular tag
+        const updatedTags = [...tags, newTag]
         setTags(updatedTags)
     }
 

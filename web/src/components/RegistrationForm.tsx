@@ -4,11 +4,10 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import { Redirect } from 'react-router-dom';
 import nanoid from 'nanoid';
-import { useRegisterMutation, useLoginMutation, MeQuery, MeDocument } from "../generated/graphql";
+import { useRegisterMutation, useLoginMutation, MeQuery, MeDocument, Tag } from "../generated/graphql";
 import useForm from 'lib/useForm';
 import { getKeyByValue } from 'lib/utils';
 import { Diet } from 'lib/enums';
-import { Tag } from 'react-tag-autocomplete';
 import formStyles from './RegistrationForm.module.css';
 import Card from 'react-bootstrap/Card';
 

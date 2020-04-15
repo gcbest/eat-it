@@ -1,6 +1,7 @@
 import { Tag, MeLocalQuery } from "generated/graphql";
 import { ModalCategory, MealCategory } from "./enums";
 import { CSSProperties } from "react";
+import {Tag as ReactTag} from 'react-tag-autocomplete'
 
 export interface Instructions {
     name: string;

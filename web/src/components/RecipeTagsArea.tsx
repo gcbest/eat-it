@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Form from 'react-bootstrap/Form'
 import { ModalCategory } from 'lib/enums'
 import { RecipeTag } from './RecipeTag'
-import ReactTags, { Tag } from 'react-tag-autocomplete'
+import ReactTags, {Tag as ReactTag} from 'react-tag-autocomplete'
 import nanoid from 'nanoid'
 import { User, ModalInterface } from 'lib/interfaces'
+import { Tag } from 'generated/graphql'
 
 interface Props {
     params: ModalInterface
@@ -31,12 +32,13 @@ const RecipeTagsArea: React.FC<Props> = ({ params, me, setUpdatedTags }) => {
             setUpdatedTags(updatedTags)
     }
 
-    const handleAddition = (tag: Tag) => {
+    const handleAddition = (tag: ReactTag) => {
         if (modalType === ModalCategory.View)
             return // not allowed to edit tags in view mode
 
-        tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
-        const updatedTags = [...tags, tag]
+        // tag = { ...tag, id: nanoid(8), __typename: 'TagInput' }
+        const newTag: Tag = { ...tag, id: nanoid(8) }
+        const updatedTags = [...tags, newTag]
         setTags(updatedTags)
         if(setUpdatedTags)
             setUpdatedTags(updatedTags)

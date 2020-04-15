@@ -6,7 +6,7 @@ import Badge from 'react-bootstrap/Badge'
 import { MealCategory } from '../../lib/enums'
 import { ModalInterface, ModalProps } from 'lib/interfaces'
 import useForm from 'lib/useForm';
-import { useAddRecipeMutation } from 'generated/graphql';
+import { useAddRecipeMutation, Tag } from 'generated/graphql';
 import { GET_ME_LOCAL } from 'graphql/queriesAndMutations';
 import placeholder from '../../assets/images/recipe_placeholder.jpg'
 import RecipeTagsArea from 'components/RecipeTagsArea';
@@ -23,7 +23,7 @@ export const CreateRecipeHeader: React.FC<ModalProps<ModalInterface>> = ({ param
 
 export const CreateRecipeBody: React.FC<ModalProps<ModalInterface>> = ({ params, handleClose, me }) => {
     const { tags = [], mealType } = params
-    const [updatedTags, setUpdatedTags] = useState(tags)
+    const [updatedTags, setUpdatedTags] = useState<Tag[]>(tags)
     const { addToast } = useToasts()
 
     const { inputs, handleChange, resetForm, isCreateRecipeValid } = useForm({
