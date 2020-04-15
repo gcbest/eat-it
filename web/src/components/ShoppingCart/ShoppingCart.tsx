@@ -13,6 +13,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import shoppingCartStyles from './ShoppingCart.module.css'
+import CollapsibleCard from 'components/CollapsibleCard/CollapsibleCard'
 
 
 
@@ -68,48 +69,43 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
             {/* Unchecked Section */}
             <Row>
                 <Col sm={12} md={12} lg={10}>
-                    <Accordion defaultActiveKey="0" style={{ marginTop: '4rem' }}>
-                        <Card style={{border: '1px solid rgba(0, 0, 0, 0.125)', borderRadius: '0.4rem'}}>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="light" eventKey="0" className={shoppingCartStyles.toggleBtn}>
-                                    <h3>Items to Get</h3>
-                                </Accordion.Toggle>
-                                <Form.Control className={shoppingCartStyles.filterInput} placeholder='Filter items' onChange={handleFilter}></Form.Control>
-                            </Card.Header>
-                            <Accordion.Collapse eventKey="0">
-                                <Card.Body className={shoppingCartStyles.itemsDisplay}>
-                                    <ListGroup>
-                                        {filteredItems.length ? filteredItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
-                                    </ListGroup>
-
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
-                    </Accordion>
+                    <CollapsibleCard defaultActiveKey="0">
+                        <Card.Header>
+                            <Accordion.Toggle as={Button} variant="light" eventKey="0" className={shoppingCartStyles.toggleBtn}>
+                                <h3>Items to Get</h3>
+                            </Accordion.Toggle>
+                            <Form.Control className={shoppingCartStyles.filterInput} placeholder='Filter items' onChange={handleFilter}></Form.Control>
+                        </Card.Header>
+                        <Accordion.Collapse eventKey="0">
+                            <Card.Body className={shoppingCartStyles.itemsDisplay}>
+                                <ListGroup>
+                                    {filteredItems.length ? filteredItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
+                                </ListGroup>
+                            </Card.Body>
+                        </Accordion.Collapse>
+                    </CollapsibleCard>
                 </Col>
             </Row>
 
             <Row>
                 <Col sm={12} md={8} lg={10}>
-                    <Accordion defaultActiveKey="1" style={{ marginTop: '4rem' }}>
-                        <Card style={{border: '1px solid rgba(0, 0, 0, 0.125)', borderRadius: '0.4rem'}}>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="light" eventKey="1" className={shoppingCartStyles.toggleBtn}>
-                                    <h3>Items Completed</h3>
-                                </Accordion.Toggle>
-                                <Button onClick={() => handleClearItems(completedItems)} className={shoppingCartStyles.clearBtn}>Clear Items</Button>
+                    <CollapsibleCard defaultActiveKey="1">
+                        <Card.Header>
+                            <Accordion.Toggle as={Button} variant="light" eventKey="1" className={shoppingCartStyles.toggleBtn}>
+                                <h3>Items Completed</h3>
+                            </Accordion.Toggle>
+                            <Button onClick={() => handleClearItems(completedItems)} className={shoppingCartStyles.clearBtn}>Clear Items</Button>
 
-                            </Card.Header>
-                            <Accordion.Collapse eventKey="1">
-                                <Card.Body className={shoppingCartStyles.itemsDisplay}>
-                                    <ListGroup>
-                                        {completedItems.length ? completedItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
-                                    </ListGroup>
+                        </Card.Header>
+                        <Accordion.Collapse eventKey="1">
+                            <Card.Body className={shoppingCartStyles.itemsDisplay}>
+                                <ListGroup>
+                                    {completedItems.length ? completedItems.map(item => <CartItem key={item.id} me={me} item={item} />) : <h4>No items in list</h4>}
+                                </ListGroup>
 
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
-                    </Accordion>
+                            </Card.Body>
+                        </Accordion.Collapse>
+                    </CollapsibleCard>
                 </Col>
             </Row>
 

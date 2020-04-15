@@ -11,6 +11,8 @@ import { ModalCategory, MealCategory } from 'lib/enums';
 import { Tag } from 'react-tag-autocomplete';
 import { MealsAreaContext } from './MealsArea';
 import mealCardStyles from './MealCard.module.css'
+import CollapsibleCard from './CollapsibleCard/CollapsibleCard';
+import Accordion from 'react-bootstrap/Accordion';
 
 interface Props extends LazyComponentProps {
     mealType: MealCategory
@@ -48,26 +50,34 @@ const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
     }
 
     return (
-        <Card>
-            <Card.Header>{header}</Card.Header>
+        <CollapsibleCard defaultActiveKey={header}>
+            <Accordion.Toggle as={Card.Header} eventKey={header}>
+                {header}
+            </Accordion.Toggle>
             <Card.Body className={mealCardStyles.cardContainer}>
                 <Card.Title>
-                    <Form>
-                        <Form.Group controlId={`${header}Filter`}>
-                            <Form.Control name={`${header}Query`} value={searchTerm} onChange={handleFilter} placeholder='Filter Recipes'>
-                            </Form.Control>
-                        </Form.Group>
-                    </Form>
+                    {recipesSlim && recipesSlim.length > 0 ?
+                        <Form>
+                            <Form.Group controlId={`${header}Filter`}>
+                                <Form.Control name={`${header}Query`} value={searchTerm} onChange={handleFilter} placeholder='Filter Recipes'>
+                                </Form.Control>
+                            </Form.Group>
+                        </Form>
+                        :
+                        'No Recipes in Meal'
+                    }
                 </Card.Title>
-                <ListGroup className={mealCardStyles.cardItems}>
-                    {searchResults &&
-                        searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} scrollPosition={scrollPosition} />)}
-                </ListGroup>
+                <Accordion.Collapse eventKey={header}>
+                    <ListGroup className={mealCardStyles.cardItems}>
+                        {searchResults &&
+                            searchResults.map(rcpSlm => <MealItem key={rcpSlm.id} rcpSlm={rcpSlm} header={header} scrollPosition={scrollPosition} />)}
+                    </ListGroup>
+                </Accordion.Collapse>
             </Card.Body>
             <Card.Footer>
                 <Button onClick={showCreateModal}>Add New</Button>
             </Card.Footer>
-        </Card>
+        </CollapsibleCard>
     )
 }
 
