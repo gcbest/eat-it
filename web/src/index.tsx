@@ -14,6 +14,7 @@ import { resolvers, typeDefs } from './resolvers'
 import './assets/css/bootswatch.min.css'
 
 const cache = new InMemoryCache()
+const ENDPOINT = process.env.PROD_ENDPOINT || 'http://localhost:4000'
 
 const cleanTypeName = new ApolloLink((operation, forward) => {
   if (operation.variables) {
@@ -80,7 +81,7 @@ const client = new ApolloClient({
         }
       },
       fetchAccessToken: () => {
-        return fetch("http://localhost:4000/refresh_token", {
+        return fetch(`${ENDPOINT}/refresh_token`, {
           method: "POST",
           credentials: "include"
         })
@@ -100,7 +101,7 @@ const client = new ApolloClient({
     cleanTypeName,
     requestLink,
     new HttpLink({
-      uri: "http://localhost:4000/graphql",
+      uri: `${ENDPOINT}/graphql`,
       credentials: "include"
     })
   ]),
