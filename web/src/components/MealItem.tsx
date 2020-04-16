@@ -92,7 +92,7 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
     return (<ListGroup.Item className={mealItemStyles.item}>
         <div className={mealItemStyles.item}>
             <span onClick={() => handleShowModal(ModalCategory.View)} >
-                <LazyLoadPic image={imgInfo} />
+                <LazyLoadPic usePlaceholder={true} image={imgInfo} />
             </span>
             {/* <span style={{ marginLeft: "3rem" }}> */}
             <span className={mealItemStyles.itemIcons}>

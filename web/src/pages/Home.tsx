@@ -76,7 +76,7 @@ const Home: React.FC<Props> = () => {
     <Fragment>
       {/* <div className="hero" style={{ overflowY: 'hidden', height: '100%', position: 'relative' }}> */}
       <div className="hero">
-        <LazyLoadPic image={heroImg} />
+        <LazyLoadPic usePlaceholder={false} image={heroImg} />
         <div className="content">
 
           <MainText>Discover New Recipes</MainText>

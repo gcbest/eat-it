@@ -5,10 +5,11 @@ import { Image } from 'lib/interfaces';
 import placeholderImg from '../assets/images/recipe_placeholder.jpg'
 
 interface Props<T> {
-    image: T
+    image: T,
+    usePlaceholder?: boolean
 }
 
-const LazyLoadPic: React.FC<Props<Image>> = ({ image }) => (
+const LazyLoadPic: React.FC<Props<Image>> = ({ image, usePlaceholder }) => (
     <div>
         <LazyLoadImage
             className={image.className}
@@ -18,7 +19,7 @@ const LazyLoadPic: React.FC<Props<Image>> = ({ image }) => (
             src={image.src} 
             style={image.style}
             scrollPosition={image.scrollPosition}
-            placeholderSrc={placeholderImg}
+            placeholderSrc={usePlaceholder ? placeholderImg : ''}
             width={image.width} />
         <span style={{display: 'block'}}>{image.caption}</span>
     </div>

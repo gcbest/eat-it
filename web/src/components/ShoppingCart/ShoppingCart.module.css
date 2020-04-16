@@ -48,3 +48,9 @@
     margin-bottom: 0.5rem;
   }
 }
+
+@media only screen and (max-width: 420px) {
+  .filterInput {
+    width: 80%
+  }
+}
