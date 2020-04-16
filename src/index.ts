@@ -1,7 +1,6 @@
 import "dotenv/config";
 import "reflect-metadata";
 import path from "path";
-import fs from 'fs';
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -9,7 +8,7 @@ import * as PostgressConnectionStringParser from "pg-connection-string";
 import { UserResolver } from "./resolvers/UserResolver";
 import { RecipeResolver } from "./resolvers/RecipeResolver";
 import { CartItemResolver } from "./resolvers/CartItemResolver";
-import { createConnection } from "typeorm";
+import { createConnection, ConnectionOptions } from "typeorm";
 import cookieParser from "cookie-parser";
 import { verify } from "jsonwebtoken";
 import cors from "cors";
@@ -62,40 +61,39 @@ import { createAccessToken, createRefreshToken } from "./auth";
   });
 
 
-  console.log('DATABASE URL!!!!!: ' + process.env.DATABASE_URL);
   
   if (process.env.DATABASE_URL) {
-
+    console.log('DATABASE URL!!!!!: ' + process.env.DATABASE_URL);
     const databaseUrl: string | undefined = process.env.DATABASE_URL;
     if (!databaseUrl) return
     const connectionOptions = PostgressConnectionStringParser.parse(databaseUrl);
-    const typeOrmOptions = {
+    const typeOrmOptions: ConnectionOptions = {
       type: "postgres",
       // name: connectionOptions.name,
-      host: connectionOptions.host,
-      port: connectionOptions.port,
+      host: connectionOptions.host!,
+      port: parseInt(connectionOptions.port!),
       username: connectionOptions.user,
       password: connectionOptions.password,
-      database: connectionOptions.database,
+      database: connectionOptions.database!,
       synchronize: true,
-      entities: ["./entity/**/*.ts"],
-      // ssl: true
+      // entities: ["./entity/**/*.ts"],
+      ssl: true,
       cli: {
         entitiesDir: "src/entity",
       }
     }
 
-    const json = JSON.stringify(typeOrmOptions, null, 2);
-    fs.writeFile("../ormconfig.json", json, async (err:any) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
+    // const json = JSON.stringify(typeOrmOptions, null, 2);
+    // fs.writeFile("../ormconfig.json", json, async (err:any) => {
+    //   if (err) {
+    //     console.error(err);
+    //     return;
+    //   }
       
-      console.log("File has been created");
-      console.log(json);
-      await createConnection().catch(err => { console.error(err.message) });
-    });
+    //   console.log("File has been created");
+    //   console.log(json);
+    // });
+    await createConnection(typeOrmOptions).catch(err => { console.error(err.message) });
 
 
   }
