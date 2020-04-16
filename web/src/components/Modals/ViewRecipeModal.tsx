@@ -48,7 +48,9 @@ export const ViewRecipeFooter: React.FC<ModalProps<ModalInterface>> = ({ params,
 
     return (
         <Fragment>
+            {recipe && recipe.tags.length && 
             <RecipeTagsArea params={params} me={me} />
+            }
         <Button variant="danger" onClick={deleteRecipe}>
             Delete
         </Button>
