@@ -82,7 +82,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
       ],
       // ssl: true,
       cli: {
-        entitiesDir: "../dist/entity",
+        entitiesDir: path.join(__dirname, "../dist/entity"),
         migrationsDir: "./migration",
         subscribersDir: "./subscriber"
       }
