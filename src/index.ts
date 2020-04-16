@@ -62,6 +62,8 @@ import { createAccessToken, createRefreshToken } from "./auth";
   });
 
 
+  console.log('DATABASE URL!!!!!: ' + process.env.DATABASE_URL);
+  
   if (process.env.DATABASE_URL) {
 
     const databaseUrl: string | undefined = process.env.DATABASE_URL;
@@ -89,7 +91,9 @@ import { createAccessToken, createRefreshToken } from "./auth";
         console.error(err);
         return;
       }
+      
       console.log("File has been created");
+      console.log(json);
       await createConnection().catch(err => { console.error(err.message) });
     });
 
