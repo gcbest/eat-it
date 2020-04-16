@@ -44,7 +44,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         if (e.target.value === '')
             return setFilteredItems(itemsToComplete)
 
-        const itemsLeft = itemsToComplete.filter(item => item.name.includes(e.target.value))
+        const itemsLeft = itemsToComplete.filter(item => item.name.toLowerCase().includes(e.target.value.toLowerCase()))
         setFilteredItems(itemsLeft)
     }
 
@@ -60,7 +60,6 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     return (
         <div>
             <AddCartItem itemSuggestions={items} me={me} />
-
             <Row>
                 <Col sm={12} md={12} lg={10}>
                     <CollapsibleCard defaultActiveKey="0">
