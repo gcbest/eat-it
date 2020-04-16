@@ -61,7 +61,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
   });
 
 
-  
+
   if (process.env.DATABASE_URL) {
     console.log('DATABASE URL!!!!!: ' + process.env.DATABASE_URL);
     const databaseUrl: string | undefined = process.env.DATABASE_URL;
@@ -76,7 +76,10 @@ import { createAccessToken, createRefreshToken } from "./auth";
       password: connectionOptions.password,
       database: connectionOptions.database!,
       synchronize: true,
-      entities: ["../dist/entity/**/*.js"],
+      entities: [
+        path.join(__dirname, "../dist/entity/**/*.js"),
+        path.join(__dirname, "./entity/**/*.ts")
+      ],
       // ssl: true,
       cli: {
         entitiesDir: "../dist/entity",
@@ -91,9 +94,9 @@ import { createAccessToken, createRefreshToken } from "./auth";
     //     console.error(err);
     //     return;
     //   }
-      
+
     //   console.log("File has been created");
-      // console.log(json);
+    // console.log(json);
     // });
     await createConnection(typeOrmOptions).catch(err => { console.error(err.message) });
 
