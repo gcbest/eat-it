@@ -76,16 +76,16 @@ import { createAccessToken, createRefreshToken } from "./auth";
       password: connectionOptions.password,
       database: connectionOptions.database!,
       synchronize: true,
-      entities: ["./entity/**/*.js"],
+      entities: ["../dist/entity/**/*.js"],
       // ssl: true,
       cli: {
-        entitiesDir: "./entity",
+        entitiesDir: "../dist/entity",
         migrationsDir: "./migration",
         subscribersDir: "./subscriber"
       }
     }
 
-    const json = JSON.stringify(typeOrmOptions, null, 2);
+    // const json = JSON.stringify(typeOrmOptions, null, 2);
     // fs.writeFile("../ormconfig.json", json, async (err:any) => {
     //   if (err) {
     //     console.error(err);
@@ -93,7 +93,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
     //   }
       
     //   console.log("File has been created");
-      console.log(json);
+      // console.log(json);
     // });
     await createConnection(typeOrmOptions).catch(err => { console.error(err.message) });
 
