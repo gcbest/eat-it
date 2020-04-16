@@ -51,7 +51,7 @@ const MealCard: React.FC<Props> = ({ mealType, recipesSlim }) => {
 
     return (
         <CollapsibleCard defaultActiveKey={header}>
-            <Accordion.Toggle as={Card.Header} eventKey={header}>
+            <Accordion.Toggle as={Card.Header} eventKey={header} style={{cursor: 'pointer'}}>
                 {header}
             </Accordion.Toggle>
             <Card.Body className={mealCardStyles.cardContainer}>
