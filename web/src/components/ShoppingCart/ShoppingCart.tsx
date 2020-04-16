@@ -52,7 +52,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
         return (
             <div>
                 <AddCartItem itemSuggestions={items} me={me} />
-                <h2>No Items in Cart</h2>
+                <h2 className={shoppingCartStyles.labels}>No Items in Cart</h2>
             </div>
         )
     }

@@ -63,13 +63,11 @@ import { createAccessToken, createRefreshToken } from "./auth";
 
 
   if (process.env.DATABASE_URL) {
-    console.log('DATABASE URL!!!!!: ' + process.env.DATABASE_URL);
     const databaseUrl: string | undefined = process.env.DATABASE_URL;
     if (!databaseUrl) return
     const connectionOptions = PostgressConnectionStringParser.parse(databaseUrl);
     const typeOrmOptions: ConnectionOptions = {
       type: "postgres",
-      // name: connectionOptions.name,
       host: connectionOptions.host!,
       port: parseInt(connectionOptions.port!),
       username: connectionOptions.user,
@@ -80,27 +78,12 @@ import { createAccessToken, createRefreshToken } from "./auth";
         path.join(__dirname, "../dist/entity/**/*.js"),
         path.join(__dirname, "./entity/**/*.ts")
       ],
-      // ssl: true,
+      ssl: true,
       cli: {
         entitiesDir: path.join(__dirname, "../dist/entity"),
-        migrationsDir: "./migration",
-        subscribersDir: "./subscriber"
       }
     }
-
-    // const json = JSON.stringify(typeOrmOptions, null, 2);
-    // fs.writeFile("../ormconfig.json", json, async (err:any) => {
-    //   if (err) {
-    //     console.error(err);
-    //     return;
-    //   }
-
-    //   console.log("File has been created");
-    // console.log(json);
-    // });
     await createConnection(typeOrmOptions).catch(err => { console.error(err.message) });
-
-
   }
   else {
     await createConnection().catch(err => { console.error(err.message) });

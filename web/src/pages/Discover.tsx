@@ -86,7 +86,7 @@ const Discover: React.FC = () => {
                             <InputGroup className="mb-3">
                                 <FormControl
                                     type="input"
-                                    placeholder="e.g. shrimp"
+                                    placeholder="e.g. salmon"
                                     aria-label="recipe"
                                     aria-describedby="basic-addon2"
                                     ref={queryRef as any} // react-bootstrap TS bug

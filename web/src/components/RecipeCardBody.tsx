@@ -132,7 +132,7 @@ const RecipeCardBody: React.FC<Props> = ({ recipe, me, handleShow, children }) =
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <h5>Click on Item to Add to Cart</h5>
-                                    <Button style={{ margin: '1rem 0' }} onClick={() => handleAddAllIngredients(JSON.parse(extendedIngredients))} variant="primary">Add all ingredients to cart</Button>
+                                    <Button style={{ margin: '1rem 0' }} onClick={() => handleAddAllIngredients(JSON.parse(extendedIngredients))} variant="primary">Add All to Cart</Button>
                                     <ListGroup>
                                         {JSON.parse(extendedIngredients).map((extIng: any) => {
                                             extIng.id = nanoid(6) // overwriting to prevent duplicate keys in shopping cart

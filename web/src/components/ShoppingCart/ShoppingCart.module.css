@@ -23,6 +23,12 @@
   margin-left: 1.5rem;
 }
 
+.labels {
+  color: #5a5a5a;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
 @media only screen and (max-width: 650px) {
   .filterInput {
     display: block;
