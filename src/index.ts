@@ -79,7 +79,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
       entities: ["./entity/**/*.ts"],
       ssl: true,
       cli: {
-        entitiesDir: "src/entity",
+        entitiesDir: "./entity",
       }
     }
 
