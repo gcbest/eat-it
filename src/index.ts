@@ -76,7 +76,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
       password: connectionOptions.password,
       database: connectionOptions.database!,
       synchronize: true,
-      entities: ["./entity/**/*.ts"],
+      entities: ["./entity/**/*.js"],
       // ssl: true,
       cli: {
         entitiesDir: "./entity",
