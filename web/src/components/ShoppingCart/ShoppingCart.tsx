@@ -12,6 +12,8 @@ import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import uniqWith from 'lodash.uniqwith'
+import isEqual from 'lodash.isequal'
 import shoppingCartStyles from './ShoppingCart.module.css'
 import CollapsibleCard from 'components/CollapsibleCard/CollapsibleCard'
 
@@ -20,13 +22,24 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     const [itemsToComplete, setItemsToComplete] = useState<CartItemInterface[]>([])
     const [completedItems, setCompletedItems] = useState<CartItemInterface[]>([])
     const [filteredItems, setFilteredItems] = useState<CartItemInterface[]>([])
+    const [itemSuggestions, setItemSuggestions] = useState<CartItemInterface[]>([])
     const [clearItems] = useMutation(CLEAR_MULTIPLE_ITEMS_FROM_SHOPPING_LIST, {
         refetchQueries: [{ query: GET_CART_ITEMS_BY_USER_ID, variables: { id: me.id } }]
     })
 
+    const compareSuggestions = (item1:CartItemInterface, item2:CartItemInterface) => {
+        const {name, amount, unit, aisle} = item1
+        const item1Only = {name, amount, unit, aisle}
+        const {name: name2, amount: amount2, unit: unit2, aisle:aisle2} = item2
+        const item2Only = {name: name2, amount: amount2, unit: unit2, aisle:aisle2}
+        return isEqual(item1Only, item2Only)
+    }
+
     useEffect(() => {
         const toComplete: CartItemInterface[] = []
         const completed: CartItemInterface[] = []
+        const uniqueSuggestions = uniqWith(items, compareSuggestions)
+        setItemSuggestions(uniqueSuggestions)
         items.filter(item => !item.isCleared).forEach(item => { item.isChecked ? completed.push(item) : toComplete.push(item) })
         setItemsToComplete(toComplete)
         setCompletedItems(completed)
@@ -51,7 +64,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
     if (!items || items.length < 1) {
         return (
             <div>
-                <AddCartItem itemSuggestions={items} me={me} />
+                <AddCartItem itemSuggestions={itemSuggestions} me={me} />
                 <h2 className={shoppingCartStyles.labels}>No Items in Cart</h2>
             </div>
         )
@@ -59,7 +72,7 @@ const ShoppingCart: React.FC<ShoppingCartInterface> = ({ items }) => {
 
     return (
         <div>
-            <AddCartItem itemSuggestions={items} me={me} />
+            <AddCartItem itemSuggestions={itemSuggestions} me={me} />
             <Row>
                 <Col sm={12} md={12} lg={10}>
                     <CollapsibleCard defaultActiveKey="0">
