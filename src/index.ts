@@ -20,12 +20,21 @@ import { createAccessToken, createRefreshToken } from "./auth";
   const app = express();
   const PORT = process.env.PORT || 4000;
 
+
+  const whitelist = ['https://eat--it.herokuapp.com/', 'http://localhost:3000']
+  const corsOptions: any = {
+    origin: function (origin:string, callback: (arg1: null|Error, arg2?: boolean )=>void) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
+    credentials: true
+  }
+  
   app.use(
-    cors({
-      origin: 'https://eat--it.herokuapp.com/' || 'http://localhost:3000',
-      // origin: 'http://localhost:3000',
-      credentials: true
-    })
+    cors(corsOptions)
   );
   app.use(cookieParser());
 

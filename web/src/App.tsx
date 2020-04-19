@@ -4,7 +4,7 @@ import { setAccessToken } from './lib/accessToken';
 import './styles/App.css'
 
 interface Props { }
-const URL_BASE = process.env.PUBLIC_URL || 'http://localhost:4000/refresh_token'
+const URL_BASE = process.env.PUBLIC_URL || 'http://localhost:4000'
 
 export const App: React.FC<Props> = () => {
   const [loading, setLoading] = useState(true);
