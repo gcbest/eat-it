@@ -21,7 +21,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
   const PORT = process.env.PORT || 4000;
 
 
-  const whitelist = ['https://eat--it.herokuapp.com', 'eat--it.herokuapp.com','http://localhost:3000']
+  const whitelist = ['https://eat--it.herokuapp.com', 'eat--it.herokuapp.com','http://localhost:3000', undefined]
   const corsOptions: any = {
     origin: function (origin:string, callback: (arg1: null|Error, arg2?: boolean )=>void) {
       console.log(`ORIGIN: ${origin}`);
