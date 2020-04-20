@@ -11,8 +11,6 @@ export const App: React.FC<Props> = () => {
 
   useEffect(() => {
     fetch(`${URL_BASE}/refresh_token`, {
-    // fetch('http://localhost:4000', {
-    // fetch(`https://eat--it.herokuapp.com`, {
       method: 'POST',
       credentials: 'include'
     }).then(async x => {

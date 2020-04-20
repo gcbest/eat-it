@@ -100,16 +100,18 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
             <Form.Group controlId="addCartItem">
                 <Form.Row>
                     <Col sm={7} md={3}>
-                        <Form.Label className={addCartItemStyles.labels}>Item Name</Form.Label>
-                        <Autosuggest
-                            suggestions={suggestions}
-                            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                            onSuggestionsClearRequested={onSuggestionsClearRequested}
-                            getSuggestionValue={getSuggestionValue}
-                            onSuggestionSelected={onSuggestionSelected}
-                            renderSuggestion={renderSuggestion}
-                            inputProps={inputProps}
-                        />
+                        <Form.Group controlId="name">
+                            <Form.Label className={addCartItemStyles.labels}>Item Name</Form.Label>
+                            <Autosuggest
+                                suggestions={suggestions}
+                                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                                getSuggestionValue={getSuggestionValue}
+                                onSuggestionSelected={onSuggestionSelected}
+                                renderSuggestion={renderSuggestion}
+                                inputProps={inputProps}
+                            />
+                        </Form.Group>
                     </Col>
                     <Col sm={7} md={3}>
                         <Form.Group controlId="amount">
@@ -129,7 +131,7 @@ const AddCartItem: React.FC<Props> = ({ itemSuggestions, me }) => {
                             <Form.Control type="number" name="aisle" value={inputs.aisle} onChange={handleChange} min="0" />
                         </Form.Group>
                     </Col>
-                    <Col sm={7} md={1} style={{ position: 'relative' }}>
+                    <Col sm={7} md={1} style={{ position: 'relative', marginBottom: '1rem' }}>
                         <Button className={addCartItemStyles.addBtn} variant="secondary" type="submit">Add <FaPlus /></Button>
                     </Col>
                 </Form.Row>

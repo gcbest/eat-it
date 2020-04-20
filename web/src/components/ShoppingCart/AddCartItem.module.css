@@ -4,18 +4,16 @@
 }
 
 .labels {
-  color: #5a5a5a;
   font-size: 1.5rem;
-  font-weight: 600;
+  border-radius: 5px;
+  padding: 0.25rem;
+  color: #4bfbc9;
+  background-color: #f3969aeb;
 }
 
 @media only screen and (max-width: 768px) {
   .addBtn {
     position: relative;
     margin-top: 2rem;
-  }
-
-  .labels {
-    color: #212529eb;
   }
 }
