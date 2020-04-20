@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios'
-// import { Recipe } from 'src/entity/Recipe';
 
 interface RandomParams {
     tags: string | undefined;
@@ -22,7 +21,6 @@ export const spoonacular = {
     async random(params: RandomParams): Promise<any> {
         try {
             params.apiKey = this.apiKey;
-            console.log('sending request to spoonacular');
             const { data: { recipes: randomRecipesArr } } = await this.apiSpoonClient.get(`${SPOONACULAR_ENDPOINT}/random`, { params });
             return randomRecipesArr;
         } catch (error) {

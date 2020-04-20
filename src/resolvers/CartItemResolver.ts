@@ -1,8 +1,6 @@
 import {
     Resolver, Query,
     Arg,
-    // InputType,
-    // Field,
     UseMiddleware,
     Mutation,
     InputType,
@@ -63,8 +61,6 @@ export class CartItemResolver {
             if (!user)
                 return
 
-            console.log(user);
-            
             return user.cartItems
         } catch (error) {
             console.error(error);
@@ -95,10 +91,6 @@ export class CartItemResolver {
                 delete item.userId
                 return {...item, user}
             })
-
-            console.log(itemsUserAdded);
-            
-            
             
             await getConnection()
                 .createQueryBuilder()
@@ -196,16 +188,12 @@ export class CartItemResolver {
     @UseMiddleware(isAuth)
     async deleteCartItem(@Arg("id") id: number): Promise<Boolean> {
         try {
-            console.log(id);
-
             await getConnection()
                 .createQueryBuilder()
                 .delete()
                 .from(CartItem)
                 .where("id = :id", { id })
                 .execute();
-
-            console.log('DELETED');
 
             return true
         } catch (error) {

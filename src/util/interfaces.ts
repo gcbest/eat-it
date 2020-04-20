@@ -1,13 +1,4 @@
 /* eslint-disable prettier/prettier */
-// export interface Instructions {
-//     name: string;
-//     steps: Array<{
-//         number: number;
-//         step: string;
-//         ingredients: Object[];
-//         equipment: Object[];
-//     }>;
-// }
 
 export interface Tag {
     id: number;
@@ -22,7 +13,6 @@ export interface RecipeInterface {
     image: string;
     summary: string;
     sourceUrl: string;
-    // analyzedInstructions: Instructions[];
     analyzedInstructions: string;
     tags?: Tag;
     mealType: number

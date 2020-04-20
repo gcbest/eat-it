@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Response } from 'express';
 
 export const sendRefreshToken = (res: Response, token: string) => {

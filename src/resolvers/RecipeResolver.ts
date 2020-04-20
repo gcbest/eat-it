@@ -89,7 +89,6 @@ export class RecipeResolver {
         let params = { tags, number }
         try {
             const results = await spoonacular.random(params)
-            console.log(results);
             // convert analyzedInstructions into string
             const formattedResults = results.map((r: Recipe) => {
                 r.analyzedInstructions = JSON.stringify(r.analyzedInstructions[0])
@@ -108,7 +107,6 @@ export class RecipeResolver {
     async getRecipeById(@Arg('id') id: number) {
         try {
             const recipe = await Recipe.findOne({ id })
-            console.log(recipe);
             return recipe
         } catch (error) {
             console.error(error);
@@ -125,7 +123,6 @@ export class RecipeResolver {
             await Recipe.insert(newRecipe)
             user = await User.findOne({ where: { id: input.userId }, relations: ["recipes"] })
 
-            console.log(user);
             return user;
         } catch (error) {
             console.error(error);
@@ -142,7 +139,6 @@ export class RecipeResolver {
             let user = await User.findOne({ where: { id: userId }})
             const updatedRecipe = { ...input, user: user! }
 
-            // let recipeToUpdate = Recipe.findOne({where: {id: }})
             await getConnection()
                 .createQueryBuilder()
                 .update(Recipe)
@@ -193,7 +189,6 @@ export class RecipeResolver {
                 .where("id = :id", { id: recipeId })
                 .execute();
             const user = await User.findOne({ where: { id: userId }, relations: ["recipes"] })
-            console.log(user);
 
             if (user)
                 return user
@@ -207,37 +202,3 @@ export class RecipeResolver {
 
 
 }
-
-
-
-
-
-/*
-
-@Mutation(() => Boolean)
-async createRecipe(
-        // @Arg("recipe", () => RecipeClass) recipe: RecipeClass
-        @Arg("data", () => RecipeClass)
-{
-    // email,
-    // firstName,
-    // lastName,
-    title
-}: Recipe
-    ) {
-    try {
-        let x = {
-            title
-            // email,
-            // firstName,
-            // lastName,
-        }
-        await Recipe.create(x).save()
-    } catch (error) {
-        console.error(error);
-        return false
-    }
-    return true
-}
-}
-*/
