@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes } from './Routes';
 import { setAccessToken } from './lib/accessToken';
 import './styles/App.css'
+import { SpinnerComponent } from 'components/Spinner';
 
 interface Props { }
 const URL_BASE = process.env.NODE_ENV === 'production' ? 'https://eat--it.herokuapp.com' : 'http://localhost:4000'
@@ -20,9 +21,8 @@ export const App: React.FC<Props> = () => {
     });
   }, []);
 
-  if (loading) {
-    return <div>loading...</div>;
-  }
+  if (loading)
+    return <SpinnerComponent />
 
   return <Routes />;
 };
