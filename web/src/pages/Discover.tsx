@@ -9,7 +9,7 @@ import Container from 'react-bootstrap/Container';
 import { useLazyQuery } from '@apollo/react-hooks'
 import { useMeQuery } from 'generated/graphql';
 import Form from 'react-bootstrap/Form';
-import discoverStyles from '../styles/Discover.module.css'
+import discoverStyles from '../styles/Discover.module.css';
 import { Redirect } from 'react-router-dom';
 
 export const DiscoverContext = React.createContext<any>(undefined)
