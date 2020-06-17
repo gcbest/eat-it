@@ -4,7 +4,7 @@ import { ModalCategory } from 'lib/enums';
 import { RecipeSlim, Image } from 'lib/interfaces';
 import { useGetRecipeByIdLazyQuery, useDeleteRecipeByIdMutation, useToggleRecipeStarMutation } from 'generated/graphql';
 import { FaEdit, FaTrashAlt, FaRegStar, FaStar } from "react-icons/fa";
-import cloneDeep from '@bit/lodash.lodash.clone-deep'
+// import cloneDeep from '@bit/lodash.lodash.clone-deep'
 import { RecipeTag } from './RecipeTag';
 import { ProfileContext } from 'pages/Profile';
 import { MealsAreaContext } from './MealsArea';
@@ -53,7 +53,8 @@ export const MealItem: React.FC<Props<RecipeSlim>> = ({ rcpSlm, scrollPosition }
 
             const { deleteRecipeById } = data
             // cloning to prevent any issues with not being able to update cache
-            const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+            // const { me }: any = cloneDeep(cache.readQuery({ query: GET_ME_LOCAL }))
+            const { me }: any = cache.readQuery({ query: GET_ME_LOCAL });
             me.recipes = [...deleteRecipeById.recipes]
             cache.writeQuery({ query: GET_ME_LOCAL, data: { me } })
         }
