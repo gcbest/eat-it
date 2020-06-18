@@ -120,7 +120,7 @@ const Profile: React.FC<RouteComponentProps> = ({ history }) => {
                       <input
                         {...getInputProps({
                           type: 'search',
-                          placeholder: 'Search For A Recipe',
+                          placeholder: 'Search for a Recipe',
                           id: 'search',
                           className: loadingSearch ? 'loading' : '',
                           onChange: (e) => {
