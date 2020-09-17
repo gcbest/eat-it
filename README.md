@@ -2,7 +2,7 @@
 Keep track of your recipes and grocery list in one central location
 
 ### Discover New Recipes
-![Discover](http://g.recordit.co/55V5upJvbC.gif)
+![Discover](http://g.recordit.co/mnVmKaUTqF.gif)
 
 ### Add Ingredients To Your Shopping List
 ![Ingredients](http://g.recordit.co/uZk8d2gwhz.gif)
